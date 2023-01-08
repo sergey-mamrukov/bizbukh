@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} Организации{% endblock %}
+{% block linkname_bread %} {{client.client_name}}{% endblock %}
+
+{% block content %}
+
+
+<div class="card">
+       <div class="card-header">
+            <h6>Организация</h6>
+        </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col">
+                <label class = 'form-label'>Название организации</label>
+                <input class="form-control mb-3" type="text" placeholder= '{{client.client_name}}' disabled="">
+
+                <label class = 'form-label'>Организационно-правовая форма</label>
+                {%for opf in client.opf%}
+                <input class="form-control mb-3" type="text" placeholder= '{{opf.opf_name}}' disabled="">
+                {%endfor%}
+
+            </div>
+            <div class="col">
+                <label class = 'form-label'>ИНН</label>
+                <input class="form-control mb-3" type="text" placeholder= '{{client.client_inn}}' disabled="">
+
+                <label class = 'form-label'>Система налогообложения</label>
+                {%for nalog in client.sysnalog%}
+                <input class="form-control mb-3" type="text" placeholder= '{{nalog.nalog_name}}' disabled="">
+                {%endfor%}
+            </div>
+        </div>
+
+        <label class = 'form-label'>Комментарий</label>
+        <input class="form-control mb-3" type="text" placeholder= '{{client.client_description}}' disabled="">
+
+        <h6>Данные по зарплате</h6>
+        <div class="row">
+            <div class="col"><label class = 'form-label'>Дата ЗП</label>
+                <input class="form-control mb-3" type="text" placeholder= '{{client.client_datazp}}' disabled=""></div>
+            <div class="col"><label class = 'form-label'>Дата аванса</label>
+                <input class="form-control mb-3" type="text" placeholder= '{{client.client_dataavansa}}' disabled=""></div>
+        </div>
+
+        {%if tags%}
+        <h6>Тэги организации</h6>
+        <ul class="list-group">
+            {%for  tag in tags%}
+            <li class="list-group-item">{{tag.tag_name}}</li>
+            {%endfor%}
+        </ul>
+        {%endif%}
+    </div>
+
+
+</div>
+
+<div class="card">
+          <div class="card-header">
+            <h6>События</h6>
+        </div>
+    <div class="card-body">
+
+
+        {%for event in events%}
+        <div class="card shadow-none border">
+            <div class="card-body">
+                <div>
+                    <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
+                </div>
+                <div class="row row-cols-auto">
+                    <div class="col">
+                       <button type="button" class="btn btn-outline-success px-5">Выполнено</button>
+                     </div>
+                    <div class="col">
+                       <button type="button" class="btn btn-outline-secondary px-5">Не выполняется</button>
+                     </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+
+    </div>
+</div>
+{% endblock %}

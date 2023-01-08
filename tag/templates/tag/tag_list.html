@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} Справочник {% endblock %}
+{% block linkname_bread %} Список тэгов организации{% endblock %}
+
+{% block content %}
+
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h5 class="mb-0">Тэги организации</h5>
+            <form class="ms-auto position-relative" action="" method="get">
+                <div class="input-group">
+                    <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i></div>
+                    <input class="form-control ps-5 pr-5" type="text" placeholder="search">
+                    <a href = '' class="btn btn-outline-secondary"><i class="lni lni-search-alt"></i></a>
+                </div>
+            </form>
+            <a href = '/tag/addtag' class="btn btn-outline-primary ms-2">Добавить</a>
+
+
+        </div>
+        <div class="table-responsive mt-3">
+            <table class="table align-middle">
+                <thead class="table-secondary">
+                <tr>
+                    <th>Название тега</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for tag in tags%}
+
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3 cursor-pointer">
+                            <a href = '/tag/{{tag.id}}' class="mb-0">{{tag.tag_name}}</a>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                            <a href="/tag/tagedit/{{tag.id}}" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Edit" aria-label="Edit"><i class="bi bi-pencil-fill"></i></a>
+                            <a href="/tag/tagdel/{{tag.id}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="Delete" aria-label="Delete"><i class="bi bi-trash-fill"></i></a>
+                        </div>
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

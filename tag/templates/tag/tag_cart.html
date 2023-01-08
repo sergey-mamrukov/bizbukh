@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} События{% endblock %}
+{% block linkname_bread %} Список событий{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+                id = {{tag.id}} <br>
+                name = {{tag.tag_name}}<br>
+        clients =
+        {%for cl in tag.clients%}
+        {{cl.client_name}}
+        {%endfor%}
+
+
+    </div>
+</div>
+    {% endblock %}

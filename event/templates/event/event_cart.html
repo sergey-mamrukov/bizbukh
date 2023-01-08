@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} События{% endblock %}
+{% block linkname_bread %} Список событий{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+                id = {{event.id}} <br>
+                name = {{event.event_name}}<br>
+                date = {{event.event_data}}<br>
+
+        tags =
+        {%for tag in event.tag%}
+        {{tag.tag_name}}
+        {%endfor%}
+        <br>
+
+        opfs =
+        {%for opf in event.opf%}
+        {{opf.opf_name}}
+        {%endfor%}
+        <br>
+        nalogs =
+        {%for nalog in event.nalog%}
+        {{nalog.nalog_name}}
+        {%endfor%}
+        <br>
+
+        alltag =
+        {%for tag in alltag%}
+        {{tag}}
+        {%endfor%}
+        <br>
+
+        client =
+        {%for cl in client%}
+        {{cl.client_name}}
+        {%endfor%}
+
+
+    </div>
+</div>
+    {% endblock %}

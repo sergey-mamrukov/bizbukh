@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} Справочник{% endblock %}
+{% block linkname_bread %} Редактирование тэга {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-9 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <label class="form-label">{{form.vidotchetname.label}}</label>
+                    {{form.vidotchetname(class = "form-control mb-3", value = '{}'.format(value) )}}
+                    {{form.submit(class = "btn btn-primary")}}
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

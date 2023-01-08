@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} Календарь{% endblock %}
+{% block linkname_bread %} тест {% endblock %}
+
+{% block content %}
+
+<script>
+	$(document).ready( function () {
+    $('#caltable').DataTable();
+} );
+</script>
+
+
+<div class="card">
+    <div class="card card-body">
+        <table id="caltable" class="display" style="width:100%">
+            <h3>{{cal[0]}} - {{cal[2]}}г.</h3>
+            <hr>
+            <thead>
+
+            <tr>
+                <th></th>
+
+                {%for i in cal[1]%}
+
+                <th>{{i[0]}}</th>
+                {%endfor%}
+            </tr>
+            <tr>
+                <td></td>
+
+                {%for i in cal[1]%}
+                {%if i[1] == 'Сб' or i[1] == 'Вс' %}
+                <td class = 'text-danger'>{{i[1]}}</td>
+                {%else%}
+                <td>{{i[1]}}</td>
+                {%endif%}
+                {%endfor%}
+            </tr>
+            </thead>
+
+            <tbody>
+            <!--    {%for client in clients%}-->
+            <tr>
+                <td>{{client[0].client_name}}
+                </td>
+                {%for f in client[1]%}
+                <td>
+                    {%if f == 0%}
+                    <a class = 'btn btn-light' href="/client/{{client[0].id}}">{{f}}/2</a>
+                    {%else%}
+                    {%endif%}
+
+                </td>
+                {%endfor%}
+            </tr>
+            <!--    {%endfor%}-->
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--<script>-->
+<!--let table = new DataTable('#caltable', {-->
+<!--    paging: false,-->
+<!--    scrollY: 400-->
+<!--});-->
+<!--</script>-->
+{% endblock %}
