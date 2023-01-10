@@ -1,8 +1,8 @@
 from flask import Blueprint, url_for, render_template, redirect, request
 from models import db, Client, Opf, Tag, Systnalog
 
-from db_helper import get_all_clients, get_client
-from eventhelper import getEvents, getEventsbyobject
+from db_helper import get_all_clients, get_client, get_eventredy_all, get_eventstatuses
+from eventhelper import getEvents, getEventsbyobject, geteventok, addEventOk
 
 
 client = Blueprint('client', __name__, template_folder='templates')
@@ -14,6 +14,7 @@ def clientlist():
     clients = get_all_clients()
     return render_template("client/client_list.html",clients = clients)
 
+
 # Вывод карточки организации
 @client.route('/<int:clientid>')
 def clientcart(clientid):
@@ -22,7 +23,16 @@ def clientcart(clientid):
     tags = client.tag
     opfs = client.opf
 
+    # status = get_eventstatuses()
+
+    # addEventOk(client,events[0],status[0])
+    geteventok()
+    # geteventok()
+
     return render_template('client/client_cart.html', client=client, events=events, tags = tags, opfs=opfs)
+
+
+
 
 @client.route('/clientedit/<int:clientid>', methods = ['GET', 'POST'])
 def clientedit(clientid):
@@ -30,6 +40,8 @@ def clientedit(clientid):
     tags = Tag.query.all()
     nalogs = Systnalog.query.all()
     opfs = Opf.query.all()
+
+
 
 
 
