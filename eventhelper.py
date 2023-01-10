@@ -1,5 +1,4 @@
 from models import db, Event,Client, Eventready
-from db_helper import get_client, get_events
 
 
 # Возвращает список всех событий по айди клиента
@@ -9,14 +8,14 @@ def getEvents(clientid):
     clienttags = []
     events = []
 
-    for ttag in client.tag:
-        clienttags.append(ttag)
+    for tag in client.tag:
+        clienttags.append(tag)
 
     for tag in clienttags:
         for t in tag.events:
             events.append(t)
 
-    for nalog in client.sysnalog:
+    for nalog in client.nalog:
         for n in nalog.events:
             events.append(n)
 
@@ -27,28 +26,32 @@ def getEvents(clientid):
     return set(events)
 
 
-# Возвращает список всех событий по айди клиента
-def getEventsbyobject(client):
+# Возвращает список всех событий клиента
+def getClientEvents(client):
+    '''Возвращает список всех событий (Event) клиента (Client)'''
     clienttags = []
     events = []
 
-    for ttag in client.tag:
-        clienttags.append(ttag)
+    if client.tag:
+        for tag in client.tag:
+            clienttags.append(tag)
+
+    if client.nalog:
+        nalog = client.nalog
+        for n in nalog.events:
+            events.append(n)
+
+    if client.opf:
+        opf = client.opf
+        for o in opf.events:
+            events.append(o)
 
     for tag in clienttags:
         for t in tag.events:
             events.append(t)
 
-    for nalog in client.sysnalog:
-        for n in nalog.events:
-            events.append(n)
-
-    for opf in client.opf:
-        for o in opf.events:
-            events.append(o)
-
-    # return set(events)
-    return events
+    return set(events)
+    # return events
 
 def getCountEventsonDate(date, clientid):
     events = getEvents(clientid)
@@ -64,18 +67,19 @@ def getCountEventsonDate(date, clientid):
 
 
 def  geteventok():
-    eventredy = Eventready.query.all()
-    rr = eventredy[0]
+    # eventredy = Eventready.query.all()
+    # rr = eventredy[0]
+    #
+    # cl = rr.client
+    # ev = rr.event
+    # st = rr.status
+    #
+    #
+    # print(cl.client_name)
+    # print(ev.event_name)
+    # print(rr.status.status_name)
 
-    cl = rr.client
-    ev = rr.event
-    st = rr.status
-
-
-    print(cl.client_name)
-    print(ev.event_name)
-    print(rr.status.status_name)
-
+    pass
 
 def addEventOk(client, event, status):
     eventready = Eventready()

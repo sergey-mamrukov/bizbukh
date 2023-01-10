@@ -3,15 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 # ----------------- Таблицы для связи многие ко многим для клиента -----------------
-
-# Вспомогательная таблица налог + клиент
-nalogs = db.Table('nalogs', db.Column('nalog_id', db.Integer, db.ForeignKey("systnalog.id")),
-                  db.Column('client_id', db.Integer, db.ForeignKey("client.id")))
-
-# Вспомогательная таблица орг. форма + клиент
-opfs = db.Table('opfs', db.Column('opf_id', db.Integer, db.ForeignKey("opf.id")),
-                  db.Column('client_id', db.Integer, db.ForeignKey("client.id")))
-
 # Вспомогательная таблица тэги + клиент
 tags = db.Table('tags', db.Column('tag_id', db.Integer, db.ForeignKey("tag.id")),
                   db.Column('client_id', db.Integer, db.ForeignKey("client.id")))
@@ -90,6 +81,8 @@ class Eventstatus(db.Model):
 class Eventready(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
+    # user
+
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     client = db.relationship('Client', backref=db.backref("client"))
 
@@ -107,26 +100,23 @@ class Eventready(db.Model):
 # Модель организации
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    client_name = db.Column(db.String(80),unique=True)
+    client_name = db.Column(db.String(80))
     client_description = db.Column(db.Text)
-    client_inn = db.Column(db.String(15), unique=True)
+    client_inn = db.Column(db.String(25))
     client_datazp = db.Column(db.Integer)
     client_dataavansa = db.Column(db.Integer)
 
 
-    sysnalog = db.relationship('Systnalog', secondary = nalogs,
-                               backref = db.backref('clients', lazy = 'dynamic'))
+
+    nalog_id = db.Column(db.Integer, db.ForeignKey('systnalog.id'))
+    nalog = db.relationship('Systnalog', backref=db.backref("systnalog"))
 
 
-    opf = db.relationship('Opf', secondary=opfs,
-                               backref=db.backref('clients', lazy='dynamic'))
+    opf_id = db.Column(db.Integer, db.ForeignKey('opf.id'))
+    opf = db.relationship('Opf', backref=db.backref("opf"))
 
     tag = db.relationship('Tag', secondary=tags,
                                backref=db.backref('clients', lazy='dynamic'))
-
-
-    # def __init__(self, clientname):
-    #     self.client_name = clientname
 
 # Модель события
 class Event(db.Model):
@@ -152,8 +142,6 @@ class Event(db.Model):
     vidotchet = db.relationship('Vidotchet', secondary=evidotchet,
                                 backref=db.backref('events', lazy='dynamic'))
 
-    def __init__(self, eventname):
-        self.event_name = eventname
 
 
 

@@ -2,11 +2,11 @@ from flask import Blueprint, render_template
 from .calendarhelper import getmonthyname,getdaqyname
 
 
-from eventhelper import getEvents,getCountEventsonDate
-import calendar, datetime,locale
-from models import Client, db
+from eventhelper import getCountEventsonDate
+import calendar, datetime
 
-from db_helper import get_all_clients
+
+from client_helper import get_all_clients
 
 
 calend = Blueprint('calend', __name__, template_folder='templates')

@@ -18,9 +18,8 @@
                 <input class="form-control mb-3" type="text" placeholder= '{{client.client_name}}' disabled="">
 
                 <label class = 'form-label'>Организационно-правовая форма</label>
-                {%for opf in client.opf%}
-                <input class="form-control mb-3" type="text" placeholder= '{{opf.opf_name}}' disabled="">
-                {%endfor%}
+
+                <input class="form-control mb-3" type="text" placeholder= '{{client.opf.opf_name}}' disabled="">
 
             </div>
             <div class="col">
@@ -28,9 +27,9 @@
                 <input class="form-control mb-3" type="text" placeholder= '{{client.client_inn}}' disabled="">
 
                 <label class = 'form-label'>Система налогообложения</label>
-                {%for nalog in client.sysnalog%}
-                <input class="form-control mb-3" type="text" placeholder= '{{nalog.nalog_name}}' disabled="">
-                {%endfor%}
+
+                <input class="form-control mb-3" type="text" placeholder= '{{client.nalog.nalog_name}}' disabled="">
+
             </div>
         </div>
 
@@ -45,10 +44,10 @@
                 <input class="form-control mb-3" type="text" placeholder= '{{client.client_dataavansa}}' disabled=""></div>
         </div>
 
-        {%if tags%}
+        {%if client.tag%}
         <h6>Тэги организации</h6>
         <ul class="list-group">
-            {%for  tag in tags%}
+            {%for tag in client.tag%}
             <li class="list-group-item">{{tag.tag_name}}</li>
             {%endfor%}
         </ul>

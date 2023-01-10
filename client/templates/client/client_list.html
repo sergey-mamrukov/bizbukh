@@ -26,9 +26,6 @@
                 <thead class="table-secondary">
                 <tr>
                     <th>Организация</th>
-                    <th>Система налогообложения</th>
-                    <th>Орг форма</th>
-                    <th>Тэги</th>
                     <th>Действия</th>
                 </tr>
                 </thead>
@@ -43,33 +40,6 @@
                         </div>
                     </td>
 
-                    <td>
-                        <div class="d-flex align-items-center gap-3 cursor-pointer">
-                            <p class="mb-0">{% for nalog in client.sysnalog %}
-                                {{nalog.nalog_name}}
-                                {%endfor%}
-                            </p>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="d-flex align-items-center gap-3 cursor-pointer">
-                            <p class="mb-0">{% for opf in client.opf %}
-                                {{opf.opf_name}}
-                                {%endfor%}
-                            </p>
-                        </div>
-                    </td>
-
-                    <td>
-
-                        <div class="d-flex align-items-center gap-3 cursor-pointer">
-                            <p class="mb-0">{% for tag in client.tags %}
-                                {{tag.tag_name}}
-                                {%endfor%}
-                            </p>
-                        </div>
-                    </td>
 
                     <td>
                         <div class="table-actions d-flex align-items-center gap-3 fs-6">
