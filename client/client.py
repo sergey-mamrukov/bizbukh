@@ -5,7 +5,7 @@ from opf_helper import get_all_opf, get_opf
 from tag_helper import get_all_tag
 from nalog_helper import get_all_nalog, get_nalog
 
-from eventhelper import getClientEvents, geteventok, addEventOk
+from event_helper import getClientEvents, geteventok, addEventOk
 
 
 client = Blueprint('client', __name__, template_folder='templates')

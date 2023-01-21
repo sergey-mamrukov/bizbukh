@@ -21,12 +21,6 @@ etags = db.Table('etags', db.Column('tag_id', db.Integer, db.ForeignKey("tag.id"
 enalogs = db.Table('enalogs', db.Column('sysnalog_id', db.Integer, db.ForeignKey("systnalog.id")),
                     db.Column('event_id',db.Integer, db.ForeignKey('event.id')))
 
-# Вспомогательная таблица события + контролирующий орган
-econtrolorgan = db.Table('econtrolorgan', db.Column('controlorgan_id', db.Integer, db.ForeignKey("controlorgan.id")),
-                    db.Column('event_id',db.Integer, db.ForeignKey('event.id')))
-# Вспомогательная таблица события + вид отчета
-evidotchet = db.Table('evidotchet', db.Column('vidotchet_id', db.Integer, db.ForeignKey("vidotchet.id")),
-                    db.Column('event_id',db.Integer, db.ForeignKey('event.id')))
 
 
 # ----------------- Вспомогательные модели -----------------
@@ -118,6 +112,9 @@ class Client(db.Model):
     tag = db.relationship('Tag', secondary=tags,
                                backref=db.backref('clients', lazy='dynamic'))
 
+
+
+
 # Модель события
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -136,11 +133,11 @@ class Event(db.Model):
                           backref=db.backref('events', lazy='dynamic'))
 
 
-    contrologran = db.relationship('Controlorgan', secondary=econtrolorgan,
-                          backref=db.backref('events', lazy='dynamic'))
+    vidotchet_id = db.Column(db.Integer, db.ForeignKey('vidotchet.id'))
+    vidotchet = db.relationship('Vidotchet', backref=db.backref("vidotchet"))
 
-    vidotchet = db.relationship('Vidotchet', secondary=evidotchet,
-                                backref=db.backref('events', lazy='dynamic'))
+    controlorgan_id = db.Column(db.Integer, db.ForeignKey('controlorgan.id'))
+    controlorgan = db.relationship('Controlorgan', backref=db.backref("controlorgan"))
 
 
 

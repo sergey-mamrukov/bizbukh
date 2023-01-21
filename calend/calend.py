@@ -2,7 +2,7 @@ from flask import Blueprint, render_template
 from .calendarhelper import getmonthyname,getdaqyname
 
 
-from eventhelper import getCountEventsonDate
+from event_helper import getCountEventsonDate
 import calendar, datetime
 
 

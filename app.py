@@ -2,9 +2,8 @@ from flask import Flask, render_template, url_for, redirect
 from flask_migrate import Migrate
 
 # Импорт моделей, форм
-from models import db, Client, Opf, Systnalog
-from client.forms import ClientAdd
-from models import Tag
+from models import db
+
 
 
 # Импорт конфигурации
@@ -44,4 +43,4 @@ def index():
 
 # Точка входа
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

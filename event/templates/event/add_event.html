@@ -9,18 +9,96 @@
         <div class="card">
             <div class="card-body">
                 <form method="POST" action="">
-                    {{ form.hidden_tag() }}
-                    <label class="form-label">{{form.eventname.label}}</label>
-                    {{form.eventname(class = "form-control mb-3", id = "formFileSm")}}
-                    {{form.eventdate(class = "form-control mb-3")}}
-                    {{form.eventtag(class = "form-control mb-3")}}
-                    {{form.eventnalog(class = "form-control mb-3")}}
-                    {{form.eventopf(class = "form-control mb-3")}}
-                    {{form.eventvidotchet(class = "form-control mb-3")}}
-                    {{form.eventcontrolorgan(class = "form-control mb-3")}}
+                    <div class="card mt-2">
+                        <h5 class="card-header md-2">Название события</h5>
+                        <div class="card-body">
+                            <input class="form-control mb-3" placeholder="Название события (обязательное поле)" name = 'name'>
+                        </div>
+                    </div>
+
+                    <div class="card mt-2">
+                        <h5 class="card-header md-2">Дата события</h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label class="form-label">Начальная дата:</label>
+                                    <input type="date" class="form-control" name = "data_start">
+                                </div>
+
+                                <div class="col mb-3">
+                                    <label class="form-label">Конечная дата:</label>
+                                    <input type="date" class="form-control" name="data_end">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-                    {{form.submit(class = "btn btn-primary")}}
+                    <div class="card mt-2">
+                        <h5 class="card-header md-2">Параметры</h5>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col mb-3">
+                                    <label class="form-label">Контролирующий орган</label>
+                                    <select class="form-select mb-3" name = "controlorgan">
+                                        {%for control in controlorgans%}
+                                        <option value="{{control.id}}">{{control.control_name}}</option>
+                                        {%endfor%}
+                                    </select>
+
+                                </div>
+                                <div class="col mb-3">
+                                    <label class="form-label">Тип отчетности</label>
+                                    <select class="form-select mb-3" name = "vidotchet">
+                                        {%for vid in vidotchets%}
+                                        <option value="{{vid.id}}">{{vid.vid_name}}</option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-2">
+                        <h5 class="card-header md-2">Тэги</h5>
+                        <div class="card-body">
+                            {%for tag in tags%}
+                            <div class="form-check form-switch form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="checktag_{{tag.id}}" name = 'checktag_{{tag.id}}'>
+                                <label class="form-check-label" for="checktag_{{tag.id}}">{{tag.tag_name}}</label>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+
+                    <div class="card mt-2">
+                        <h5 class="card-header md-2">Организационно-правовая форма</h5>
+                        <div class="card-body">
+                            {%for opf in opfs%}
+                            <div class="form-check form-switch form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="checkopf_{{opf.id}}" name = 'checkopf_{{opf.id}}'>
+                                <label class="form-check-label" for="checkopf_{{opf.id}}">{{opf.opf_name}}</label>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+
+
+                    <div class="card mt-2">
+                        <h5 class="card-header md-2">Система налогообложения</h5>
+                        <div class="card-body">
+                            {%for nalog in nalogs%}
+                            <div class="form-check form-switch form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="checknalog_{{nalog.id}}" name = 'checknalog_{{nalog.id}}'>
+                                <label class="form-check-label" for="checknalog_{{nalog.id}}">{{nalog.nalog_name}}</label>
+                            </div>
+                            {%endfor%}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary px-5 radius-30">Добавить</button>
+
+
                 </form>
             </div>
 

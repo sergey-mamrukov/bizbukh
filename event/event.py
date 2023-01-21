@@ -1,133 +1,137 @@
-from flask import Blueprint, url_for, render_template, redirect
-from models import Event, db,Tag,Opf,Systnalog, Client,Vidotchet,Controlorgan
-from.forms import EventAdd, EventEdit
+from flask import Blueprint, url_for, render_template, redirect, request
+
+
+from event_helper import get_event,get_all_event, delEvent,addEvent,editEvent
+from controlorgan_helper import get_all_controlorgan, get_controlorgan
+from vidotchet_helper import get_all_vidotchet, get_vidotchet
+from tag_helper import get_all_tag
+from opf_helper import get_all_opf
+from nalog_helper import get_all_nalog
+from client_helper import get_all_clients
 
 event = Blueprint('event', __name__, template_folder='templates')
 
 @event.route('/')
 def eventlist():
-    form = EventAdd()
-    events = Event.query.all()
-    return render_template('event/event_list.html', events = events, form = form)
+    events = get_all_event()
+    return render_template('event/event_list.html', events = events)
+
 
 @event.route('/<int:eventid>')
 def eventcart(eventid):
-    event = Event.query.get(eventid)
-    alltag = []
-    client = []
-    cl = Client.query.all()
-
-    for tag in event.tag:
-        alltag.append(tag.tag_name)
-        for cl in tag.clients:
-            client.append(cl)
+    event = get_event(eventid)
 
 
 
-    for opf in event.opf:
-        alltag.append(opf.opf_name)
-        for cl in opf.clients:
-            client.append(cl)
+    return render_template('event/event_cart.html', event = event)
 
-    for nalog in event.nalog:
-        alltag.append(nalog.nalog_name)
-        for cl in nalog.clients:
-            client.append(cl)
+# Добавление события
+@event.route('/addevent', methods = ['GET', 'POST'])
+def addevent():
+
+    # формируем списки с параметрами
+    tags = get_all_tag()
+    controlorgans = get_all_controlorgan()
+    vidotchets = get_all_vidotchet()
+    opfs = get_all_opf()
+    nalogs = get_all_nalog()
+
+    # парсим форму
+    event_name = request.form.get('name')
+    data_start = request.form.get('data_start')
+    data_end = request.form.get('data_end')
+    controlorgan = get_controlorgan(request.form.get('controlorgan'))
+    vidotchet = get_vidotchet(request.form.get('vidotchet'))
+
+    eventTags = []
+    for tag in tags:
+        if (request.form.get(f'checktag_{tag.id}')) == 'on':
+            eventTags.append(tag)
+
+    eventOpfs = []
+    for opf in opfs:
+        if (request.form.get(f'checkopf_{opf.id}')) == 'on':
+            eventOpfs.append(opf)
+
+    eventNalogs = []
+    for nalog in nalogs:
+        if (request.form.get(f'checknalog_{nalog.id}')) == 'on':
+            eventNalogs.append(nalog)
 
 
+    # обрабатываем метод post
+    if request.method == 'POST':
 
-    return render_template('event/event_cart.html', event = event, alltag = alltag, client =set(client))
+        try:
+            addEvent(event_name,data_start,data_end,controlorgan,vidotchet,eventTags,eventNalogs,eventOpfs)
+            return redirect(url_for('event.eventlist'))
+        except:
+            print('error')
 
-# Удаление события
-@event.route('/eventdel/<int:eventid>/')
-def eventdel(eventid):
-
-    event = Event.query.get(eventid)
-    db.session.delete(event)
-    db.session.commit()
-
-    return redirect(url_for('event.eventlist'))
-
+    return render_template("event/add_event.html",
+                           controlorgans = controlorgans,
+                           vidotchets = vidotchets,
+                           tags = tags,
+                           opfs = opfs,
+                           nalogs = nalogs)
 
 # Редактирование события
 @event.route('/eventedit/<int:eventid>/', methods = ['GET', 'POST'])
 def eventedit(eventid):
 
+    event = get_event(eventid)
 
-    event = Event.query.get(eventid)
-    form = EventEdit()
-    val = event.event_name
+    # формируем списки с параметрами
+    tags = get_all_tag()
+    controlorgans = get_all_controlorgan()
+    vidotchets = get_all_vidotchet()
+    opfs = get_all_opf()
+    nalogs = get_all_nalog()
 
-    if form.validate_on_submit():
-        event.event_name = form.eventname.data
-        db.session.commit()
-        return redirect(url_for('event.eventlist'))
+    # парсим форму
+    event_name = request.form.get('name')
+    data_start = request.form.get('data_start')
+    data_end = request.form.get('data_end')
+    controlorgan = get_controlorgan(request.form.get('controlorgan'))
+    vidotchet = get_vidotchet(request.form.get('vidotchet'))
 
-    return render_template("event/edit_event.html",event = event, form = form, value = val)
-
-# Добавление события
-@event.route('/addevent', methods = ['GET', 'POST'])
-def addevent():
-    form = EventAdd()
-    tags = Tag.query.all()
-    nalogs = Systnalog.query.all()
-    opfs = Opf.query.all()
-    controlorgans = Controlorgan.query.all()
-    vidotchets = Vidotchet.query.all()
-
-
-    ftags = []
+    eventTags = []
     for tag in tags:
-        ftags.append([tag.id,tag.tag_name])
-    form.eventtag.choices = ftags
+        if (request.form.get(f'checktag_{tag.id}')) == 'on':
+            eventTags.append(tag)
 
-    fopfs = []
+    eventOpfs = []
     for opf in opfs:
-        fopfs.append([opf.id,opf.opf_name])
-    form.eventopf.choices = fopfs
+        if (request.form.get(f'checkopf_{opf.id}')) == 'on':
+            eventOpfs.append(opf)
 
-    fnalogs = []
+    eventNalogs = []
     for nalog in nalogs:
-        fnalogs.append([nalog.id,nalog.nalog_name])
-    form.eventnalog.choices = fnalogs
+        if (request.form.get(f'checknalog_{nalog.id}')) == 'on':
+            eventNalogs.append(nalog)
 
-    fcontrolorgans =[]
-    for controlorgan in controlorgans:
-        fcontrolorgans.append([controlorgan.id,controlorgan.control_name])
-    form.eventcontrolorgan.choices = fcontrolorgans
+    # обрабатываем метод post
+    if request.method == 'POST':
 
-    fvidotchets = []
-    for vidotchet in vidotchets:
-        fvidotchets.append([vidotchet.id,vidotchet.vid_name])
-    form.eventvidotchet.choices = fvidotchets
-
-
-    if form.validate_on_submit():
-        name = form.eventname.data
-        event = Event(name)
+        try:
+            editEvent(event, event_name, data_start, data_end, controlorgan, vidotchet, eventTags, eventNalogs, eventOpfs)
+            return redirect(url_for('event.eventlist'))
+        except:
+            print('error')
 
 
-        event.event_data = form.eventdate.data
+    return render_template("event/edit_event.html",
+                           event = event,
+                           controlorgans = controlorgans,
+                           vidotchets = vidotchets,
+                           tags = tags,
+                           opfs = opfs,
+                           nalogs = nalogs)
 
-        for op in form.eventopf.data:
-            event.opf.append(Opf.query.get(op))
+# Удаление события
+@event.route('/eventdel/<int:eventid>/')
+def eventdel(eventid):
+    event = get_event(eventid)
+    delEvent(event)
 
-        for sn in form.eventnalog.data:
-            event.nalog.append(Systnalog.query.get(sn))
-
-        for tg in form.eventtag.data:
-            event.tag.append(Tag.query.get(tg))
-
-        vo = form.eventvidotchet.data
-        event.vidotchet.append(Vidotchet.query.get(vo))
-
-        co = form.eventcontrolorgan.data
-        event.contrologran.append(Controlorgan.query.get(co))
-
-
-        db.session.add(event)
-        db.session.commit()
-        return redirect(url_for('event.eventlist'))
-
-
-    return render_template("event/add_event.html", form = form)
+    return redirect(url_for('event.eventlist'))

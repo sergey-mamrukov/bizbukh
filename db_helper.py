@@ -1,4 +1,4 @@
-from models import db, Client, Event, Eventready, Eventstatus, Tag,Systnalog,Opf
+from models import Event, Eventready, Eventstatus, Tag,Systnalog,Opf
 
 
 # ----------------- Работа с моделью Event -----------------
