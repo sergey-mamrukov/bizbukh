@@ -7,7 +7,6 @@ from vidotchet_helper import get_all_vidotchet, get_vidotchet
 from tag_helper import get_all_tag
 from opf_helper import get_all_opf
 from nalog_helper import get_all_nalog
-from client_helper import get_all_clients
 
 event = Blueprint('event', __name__, template_folder='templates')
 
@@ -20,8 +19,6 @@ def eventlist():
 @event.route('/<int:eventid>')
 def eventcart(eventid):
     event = get_event(eventid)
-
-
 
     return render_template('event/event_cart.html', event = event)
 

@@ -95,7 +95,7 @@ def editClient(client, client_name,
 
 # del client
 def delClient(client):
-      db.session.remove(client)
+      db.session.delete(client)
       db.session.commit()
 
 

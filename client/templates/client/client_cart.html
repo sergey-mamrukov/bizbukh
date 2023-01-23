@@ -7,9 +7,9 @@
 
 
 <div class="card">
-       <div class="card-header">
-            <h6>Организация</h6>
-        </div>
+    <div class="card-header">
+        <h6>Организация</h6>
+    </div>
     <div class="card-body">
 
         <div class="row">
@@ -53,18 +53,16 @@
         </ul>
         {%endif%}
     </div>
-
-
 </div>
 
 <div class="card">
-          <div class="card-header">
-            <h6>События</h6>
-        </div>
+    <div class="card-header">
+        <h6>Все события</h6>
+    </div>
     <div class="card-body">
 
 
-        {%for event in events%}
+        {%for event in all_events%}
         <div class="card shadow-none border">
             <div class="card-body">
                 <div>
@@ -72,11 +70,8 @@
                 </div>
                 <div class="row row-cols-auto">
                     <div class="col">
-                       <button type="button" class="btn btn-outline-success px-5">Выполнено</button>
-                     </div>
-                    <div class="col">
-                       <button type="button" class="btn btn-outline-secondary px-5">Не выполняется</button>
-                     </div>
+                        <a type="button"href = '/client/eventnotready/{{event.id}}/{{client.id}}' class="btn btn-outline-secondary px-5">Не выполняется</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,4 +79,92 @@
 
     </div>
 </div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h6>Актуальные события</h6>
+            </div>
+            <div class="card-body">
+
+
+                {%for event in actual_events%}
+                <div class="card shadow-none border">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
+                        </div>
+                        <div class="row row-cols-auto">
+                            <div class="col">
+                                <a type="button"href = '/client/eventok/{{event.id}}/{{client.id}}' class="btn btn-outline-success px-5">Выполнено</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h6>Выполненные события</h6>
+            </div>
+            <div class="card-body">
+
+
+                {%for event in ready_events%}
+                <div class="card shadow-none border">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
+                        </div>
+                        <div class="row row-cols-auto">
+                            <div class="col">
+                                <a type="button"href = '/client/eventproof/{{event.id}}/{{client.id}}' class="btn btn-success px-5">Подтвердить</a>
+                            </div>
+
+                            <div class="col">
+                                <a type="button"href = '/client/eventno/{{event.id}}/{{client.id}}' class="btn btn-outline-danger px-5">Отменить</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h6>Невыполняется</h6>
+    </div>
+    <div class="card-body">
+
+
+        {%for event in notready_events%}
+        <div class="card shadow-none border">
+            <div class="card-body">
+                <div>
+                    <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
+                </div>
+                <div class="row row-cols-auto">
+                    <div class="col">
+                        <a type="button"href = '/client/eventno/{{event.id}}/{{client.id}}' class="btn btn-outline-warning px-5">Выполняется (стутус не выполнено)</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+
+    </div>
+</div>
+
+
 {% endblock %}
