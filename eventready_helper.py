@@ -1,7 +1,4 @@
 from models import db, Eventready
-from eventstatus_helper import get_eventstatus,get_all_eventstatus
-from eventstatus_helper import st_ok,st_proof,st_notready
-
 
 # проверяет есть ли запись в таблице выполненных событие
 def check_event_ready(client, event):

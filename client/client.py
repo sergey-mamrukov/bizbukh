@@ -8,7 +8,7 @@ from event_helper import get_event
 
 from client_events import get_client_event_all,get_client_event_ready, get_client_event_actual, get_client_event_notready
 from eventready_helper import add_eventready,del_eventready, change_status
-from eventstatus_helper import get_eventstatus,st_ok,st_proof,st_notready, st_no
+from eventstatus_helper import st_ok,st_proof,st_notready, st_no
 
 client = Blueprint('client', __name__, template_folder='templates')
 

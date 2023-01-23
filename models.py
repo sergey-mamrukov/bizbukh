@@ -66,16 +66,11 @@ class Vidotchet(db.Model):
     def __init__(self, vidname):
         self.vid_name = vidname
 
-# Модель стутуса события
-class Eventstatus(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    status_name = db.Column(db.String(80),unique=True)
+
 
 # Модель выполненных событий
 class Eventready(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
-    # user
 
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     client = db.relationship('Client', backref=db.backref("client"))
@@ -83,8 +78,7 @@ class Eventready(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     event = db.relationship('Event', backref=db.backref("event"))
 
-    eventstatus_id = db.Column(db.Integer, db.ForeignKey('eventstatus.id'))
-    status = db.relationship('Eventstatus', backref=db.backref("eventstatus"))
+    status = db.Column(db.String())
 
 
 
