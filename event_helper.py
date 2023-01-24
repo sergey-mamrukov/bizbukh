@@ -1,4 +1,4 @@
-from models import db, Event, Client
+from models import db, Event
 
 
 # получить событие по id
@@ -13,7 +13,7 @@ def get_all_event():
 def get_event_for_opf(opf):
     events = []
     for event in get_all_event():
-        if opf in event.opf :
+        if opf in event.opf:
             events.append(event)
 
     return events

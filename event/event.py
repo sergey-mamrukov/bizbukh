@@ -109,7 +109,6 @@ def eventedit(eventid):
 
     # обрабатываем метод post
     if request.method == 'POST':
-
         try:
             editEvent(event, event_name, data_start, data_end, controlorgan, vidotchet, eventTags, eventNalogs, eventOpfs)
             return redirect(url_for('event.eventlist'))
