@@ -66,11 +66,11 @@
         <div class="card shadow-none border">
             <div class="card-body">
                 <div>
-                    <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
+                    <h5 class="card-title">{{event[0].event_name}} | {{event[1]}}</h5>
                 </div>
                 <div class="row row-cols-auto">
                     <div class="col">
-                        <a type="button"href = '/client/eventnotready/{{event.id}}/{{client.id}}' class="btn btn-outline-secondary px-5">Не выполняется</a>
+                        <a type="button"href = '/client/eventnotready/{{event[0].id}}/{{client.id}}' class="btn btn-outline-secondary px-5">Не выполняется</a>
                     </div>
                 </div>
             </div>

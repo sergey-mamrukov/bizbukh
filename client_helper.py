@@ -1,5 +1,6 @@
 from models import db, Client
 
+
 # add new client
 def addClient(client_name,
               client_description,

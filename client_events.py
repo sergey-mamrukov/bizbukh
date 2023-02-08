@@ -1,5 +1,7 @@
+import datetime
+
 from event_helper import get_event_for_opf, get_event_for_nalog, get_event_for_tags
-from eventready_helper import get_ready, check_event_ready
+from eventready_helper import get_ready, check_event_ready, change_status
 from eventstatus_helper import st_ok,st_notready,st_proof, st_no
 
 
@@ -64,3 +66,57 @@ def get_client_event_notready(client):
         if event.status ==  st_notready():
             notready.append(event.event)
     return notready
+
+# возвращает статус события
+def get_status_event(client,event):
+    readyevent = get_ready(client)
+
+    if readyevent:
+        for revent in readyevent:
+            if event == revent.event:
+                return revent.status
+
+    else:
+        change_status(client,event,st_no())
+        return st_no()
+
+# Получить все события на определенную дату по клиенту
+def get_event_on_client_day(client, data):
+    allevent = get_client_event_all(client)
+    print (allevent)
+    result = []
+    print (f"date input: {data}")
+    for event in allevent:
+        print(f"date event: {event.event_data_end}")
+        if str(event.event_data_end) == str(data):
+            print(event.event_name)
+            result.append(event)
+    return result
+
+# Получить выпоненные событий на дату по клиенту
+def get_eventok_on_client_day(client, data):
+    allevent = get_event_on_client_day(client,data)
+    readyevent = get_client_event_ready(client)
+    result = []
+
+    if allevent:
+        for event in allevent:
+            if event in readyevent:
+                result.append(event)
+
+    else: return result
+
+    return result
+
+
+# Получить все события на определенный месяц по клиенту
+def get_event_on_client_month(client, data):
+    allevent = get_client_event_all(client)
+    result = []
+    for event in allevent:
+        if event.event_data_end == data:
+            result.append(event)
+    return result
+
+
+

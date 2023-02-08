@@ -6,7 +6,7 @@ from tag_helper import get_all_tag
 from nalog_helper import get_all_nalog, get_nalog
 from event_helper import get_event
 
-from client_events import get_client_event_all,get_client_event_ready, get_client_event_actual, get_client_event_notready
+from client_events import get_client_event_all,get_client_event_ready, get_client_event_actual, get_client_event_notready,get_status_event
 from eventready_helper import change_status
 from eventstatus_helper import st_ok,st_proof,st_notready, st_no
 
@@ -23,14 +23,15 @@ def clientlist():
 @client.route('/<int:clientid>')
 def clientcart(clientid):
     client = get_client(clientid)
-    all_events = get_client_event_all(client)
+
+    all_events = []
+    for event in get_client_event_all(client):
+        all_events.append([event,get_status_event(client,event)])
+
+
     ready_events = get_client_event_ready(client)
     notready_events = get_client_event_notready(client)
     actual_events = get_client_event_actual(client)
-
-
-
-
 
 
     return render_template('client/client_cart.html', client=client, all_events = all_events,

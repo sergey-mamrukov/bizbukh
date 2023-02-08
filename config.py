@@ -6,3 +6,4 @@ class Config(object):
     # WTF_CSRF_SECRET_KEY = 'a random string'
     WTF_CSRF_ENABLED = False
     SECRET_KEY = 'somesecretke123somesecretey'
+    CORS_HEADERS = 'Content-Type'

@@ -5,16 +5,9 @@
 
 {% block content %}
 
-<script>
-	$(document).ready( function () {
-    $('#caltable').DataTable();
-} );
-</script>
-
-
 <div class="card">
     <div class="card card-body">
-        <table id="caltable" class="display" style="width:100%">
+        <table class="display" style="width:100%">
             <h3>{{cal[0]}} - {{cal[2]}}г.</h3>
             <hr>
             <thead>
@@ -41,30 +34,31 @@
             </thead>
 
             <tbody>
-            <!--    {%for client in clients%}-->
+            {%for client in client_info%}
             <tr>
-                <td>{{client[0].client_name}}
-                </td>
-                {%for f in client[1]%}
+                <td>{{client[0].client_name}}</td>
+                {%for t in client[1]%}
                 <td>
-                    {%if f == 0%}
-                    <a class = 'btn btn-light' href="/client/{{client[0].id}}">{{f}}/2</a>
+                    {%if t[0] == 0%}
+                    <span class = 'text-default' href = '#'>0</span>
                     {%else%}
+                        {%if t[0] > 0 and t[1]>0 and t[0] == t[1]%}
+                        <span class = 'text-success' href = '#'>{{t[0]}}/{{t[1]}}</span>
+                        {%else%}
+                        <span class = 'text-default' href = '#'>{{t[0]}}/{{t[1]}}</span>
+
+                        {%endif%}
                     {%endif%}
 
                 </td>
                 {%endfor%}
+
             </tr>
-            <!--    {%endfor%}-->
+            {%endfor%}
 
             </tbody>
         </table>
     </div>
 </div>
-<!--<script>-->
-<!--let table = new DataTable('#caltable', {-->
-<!--    paging: false,-->
-<!--    scrollY: 400-->
-<!--});-->
-<!--</script>-->
+
 {% endblock %}
