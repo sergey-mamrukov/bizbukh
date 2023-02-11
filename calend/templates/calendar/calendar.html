@@ -1,64 +1,49 @@
 {% extends 'base.html' %}
 
-{% block title_bread %} Календарь{% endblock %}
-{% block linkname_bread %} тест {% endblock %}
+{% block title_bread %} Календарь событий{% endblock %}
+{% block linkname_bread %} на <span class = "dateinfo"></span> {% endblock %}
 
 {% block content %}
 
 <div class="card">
     <div class="card card-body">
-        <table class="display" style="width:100%">
-            <h3>{{cal[0]}} - {{cal[2]}}г.</h3>
-            <hr>
+        <div class="row row-cols-auto g-3 mb-3">
+            <div class="col">
+                <h3 class = "dateinfo"></h3>
+            </div>
+            <div class="col">
+                <button class = "btn btn-primary px-5 prev" onclick = btnprev()>prev</button>
+            </div>
+            <div class="col">
+                <button class = "btn btn-primary px-5 next" onclick = btnnext()>next</button>
+            </div>
+        </div>
+
+        
+        <table class = "table table-bordered mb-0">
             <thead>
-
-            <tr>
-                <th></th>
-
-                {%for i in cal[1]%}
-
-                <th>{{i[0]}}</th>
-                {%endfor%}
-            </tr>
-            <tr>
-                <td></td>
-
-                {%for i in cal[1]%}
-                {%if i[1] == 'Сб' or i[1] == 'Вс' %}
-                <td class = 'text-danger'>{{i[1]}}</td>
-                {%else%}
-                <td>{{i[1]}}</td>
-                {%endif%}
-                {%endfor%}
-            </tr>
-            </thead>
-
-            <tbody>
-            {%for client in client_info%}
-            <tr>
-                <td>{{client[0].client_name}}</td>
-                {%for t in client[1]%}
-                <td>
-                    {%if t[0] == 0%}
-                    <span class = 'text-default' href = '#'>0</span>
-                    {%else%}
-                        {%if t[0] > 0 and t[1]>0 and t[0] == t[1]%}
-                        <span class = 'text-success' href = '#'>{{t[0]}}/{{t[1]}}</span>
-                        {%else%}
-                        <span class = 'text-default' href = '#'>{{t[0]}}/{{t[1]}}</span>
-
-                        {%endif%}
-                    {%endif%}
-
-                </td>
-                {%endfor%}
-
-            </tr>
-            {%endfor%}
-
-            </tbody>
+            <tr class = "days"></tr></thead>
+            <tbody class = "info"></tbody>
         </table>
+        
     </div>
 </div>
 
+<div class="modal fade ttt" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" onclick = closemodal() class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+
+            
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal-backdrop fade show"></div> -->
+<script src ={{url_for('static',filename='/calendar/calendar.js')}}></script>
 {% endblock %}

@@ -12,7 +12,8 @@
                     <div class="card mt-2">
                         <h5 class="card-header md-2">Название события</h5>
                         <div class="card-body">
-                            <input class="form-control mb-3" placeholder="Название события (обязательное поле)" name = 'name'>
+                            <input class="form-control mb-3" placeholder="Полное название" name = 'name'>
+                            <input class="form-control mb-3" placeholder="Краткое название" name = 'shortname'>
                         </div>
                     </div>
 
@@ -52,6 +53,15 @@
                                     <select class="form-select mb-3" name = "vidotchet">
                                         {%for vid in vidotchets%}
                                         <option value="{{vid.id}}">{{vid.vid_name}}</option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+
+                                 <div class="col mb-3">
+                                    <label class="form-label">Тип события</label>
+                                    <select class="form-select mb-3" name = "type_event">
+                                        {%for type in eventtypes%}
+                                        <option value="{{type}}">{{type}}</option>
                                         {%endfor%}
                                     </select>
                                 </div>

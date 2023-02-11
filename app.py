@@ -1,5 +1,3 @@
-import json
-
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
@@ -25,9 +23,10 @@ from vidotchet.vidotchet import vidotchet
 
 from eventready_helper import change_status
 from eventstatus_helper import st_no,st_ok,st_notready,st_proof
-from event_helper import get_event
+from event_helper import get_event,get_all_event
 from client_helper import get_all_clients,get_client
-from ajax import get_client_info, get_client_info_on_date
+from ajax import get_client_info, get_client_info_on_date,get_event_info
+from client_events import get_client_event_all
 
 
 app = Flask(__name__)
@@ -51,7 +50,9 @@ def index():
     return render_template("index.html")
 
 
-# AJSX роуты
+# AJAX роуты
+
+# возвращает информацию по клиентам с событиями
 @app.route('/ajax/get')
 @cross_origin()
 def ajax1():
@@ -73,17 +74,30 @@ def ajax1():
         return jsonify(resp)
 
 
-
-@app.route('/ajax/changestatus',methods = ["POST"])
+# возвращает все события
+@app.route('/ajax/getallevents')
 @cross_origin()
 def ajax2():
-    data = request.get_data()
+    events = []
+    clients = get_all_clients()
+    for client in clients:
+        events.extend(get_client_event_all(client))
 
-    print(data)
-    return jsonify("error")
+    resevents = list(set(events))
+
+    info = []
+    for event in resevents:
+        info.append(get_event_info(event))
+
+    return jsonify(info)
 
 
 
+
+
+
+
+# меняет статус события
 @app.route('/ajax/changestatus/<int:clientid>/<int:eventid>/<int:status>')
 @cross_origin()
 def ajax3(clientid, eventid, status):

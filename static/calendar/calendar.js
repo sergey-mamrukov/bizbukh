@@ -22,8 +22,8 @@ function drawdays(){
           rowdays.innerHTML += `<td>${i+1} \n ${t}</td>`;  
       }//обычные дни
       
-      let info = document.querySelector(".dateinfo");
-      info.textContent =  `${getNameMonth(m)} - ${y} года`;}//вывод информации в хлебных крошках
+      let dateinfo = document.querySelector(".dateinfo");
+      dateinfo.textContent =  `${getNameMonth(m)} - ${y} года`;}//вывод информации в хлебных крошках
   
      drawinfo();//вызов функции заполнения информацией
      changeButtonName()//вызов функции смены названия кнопок предыдущего и следующео месяца
@@ -141,7 +141,7 @@ async function getclientinfo(clientid, date){
         cardbody.innerHTML += `Действие с событием</br>`
         
 
-        if(info.events[e].status == "Не выполнено"){
+        if(info.events[e].status == "Не выполнено" || info.events[e].status == "None"){
             cardbody.innerHTML+=btn_ok;
             cardbody.innerHTML+=bnt_notready;
         }
@@ -182,13 +182,169 @@ async function changestatus(clientid, eventid, status, date){
 
 
 
-
-
-
-
-
-
 /////////// вспомогательные функции
+
+function dateFormater(date) {
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+  
+    if (day < 10) {
+      day = '0' + day;
+    }
+    if (month < 10) {
+      month = '0' + month;
+    }
+  
+    return year + '-' + month + '-' + day;
+  }//возвращает дату в нужном формате
+
+
+  function changeButtonName(){
+    let btnprev = document.querySelector(".prev")
+    let btnnext = document.querySelector(".next")
+
+    if (m == 0){btnprev.textContent = getNameMonth(m+11);}
+    else{btnprev.textContent = getNameMonth(m-1);}
+
+    if(m == 11){btnnext.textContent = getNameMonth(m-11);}
+    else{btnnext.textContent = getNameMonth(m+1)}
+}//меняет название месяцев на кнопках
+
+function btnnext(){
+    if(m!=11){
+        m += 1;
+    }
+    else {
+        y +=1;
+        m = 0;
+    }
+    drawdays();
+}//обработка нажатия на следующий месяц
+
+function btnprev(){
+    if(m!=0){
+        m -= 1;
+    }
+    else {
+        y -=1;
+        m = 11;
+    }
+    drawdays();
+}//обработка нажатия на предыдущий месяц
+
+
+function getWeekDay(dayNumber){
+    switch(dayNumber+1)
+    {
+        case 7: return "Вс";
+        case 1: return "Пн";
+        case 2: return "Вт";
+        case 3: return "Ср";
+        case 4: return "Чт";
+        case 5: return "Пт";
+        case 6: return "Сб";
+    } 
+}//возвращает название дней недели
+
+function getNameMonth(monthNumber){
+    switch(monthNumber){
+        case 0: return "Январь"
+        case 1: return "Февраль"
+        case 2: return "Март"
+        case 3: return "Апрель"
+        case 4: return "Май"
+        case 5: return "Июнь"
+        case 6: return "Июль"
+        case 7: return "Август"
+        case 8: return "Сентябрь"
+        case 9: return "Октябрь"
+        case 10: return "Ноябрь"
+        case 11: return "Декабрь"
+
+    }
+}//возвращает название месяцев
+
+function dateFormater(date) {
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+  
+    if (day < 10) {
+      day = '0' + day;
+    }
+    if (month < 10) {
+      month = '0' + month;
+    }
+  
+    return year + '-' + month + '-' + day;
+  }//возвращает дату в нужном формате
+
+
+  function changeButtonName(){
+    let btnprev = document.querySelector(".prev")
+    let btnnext = document.querySelector(".next")
+
+    if (m == 0){btnprev.textContent = getNameMonth(m+11);}
+    else{btnprev.textContent = getNameMonth(m-1);}
+
+    if(m == 11){btnnext.textContent = getNameMonth(m-11);}
+    else{btnnext.textContent = getNameMonth(m+1)}
+}//меняет название месяцев на кнопках
+
+function btnnext(){
+    if(m!=11){
+        m += 1;
+    }
+    else {
+        y +=1;
+        m = 0;
+    }
+    drawdays();
+}//обработка нажатия на следующий месяц
+
+function btnprev(){
+    if(m!=0){
+        m -= 1;
+    }
+    else {
+        y -=1;
+        m = 11;
+    }
+    drawdays();
+}//обработка нажатия на предыдущий месяц
+
+
+function getWeekDay(dayNumber){
+    switch(dayNumber+1)
+    {
+        case 7: return "Вс";
+        case 1: return "Пн";
+        case 2: return "Вт";
+        case 3: return "Ср";
+        case 4: return "Чт";
+        case 5: return "Пт";
+        case 6: return "Сб";
+    } 
+}//возвращает название дней недели
+
+function getNameMonth(monthNumber){
+    switch(monthNumber){
+        case 0: return "Январь"
+        case 1: return "Февраль"
+        case 2: return "Март"
+        case 3: return "Апрель"
+        case 4: return "Май"
+        case 5: return "Июнь"
+        case 6: return "Июль"
+        case 7: return "Август"
+        case 8: return "Сентябрь"
+        case 9: return "Октябрь"
+        case 10: return "Ноябрь"
+        case 11: return "Декабрь"
+
+    }
+}//возвращает название месяцев
 
 function dateFormater(date) {
     var day = date.getDate();

@@ -14,6 +14,7 @@
                         <div class="card-body">
                             <label class="form-label">Текущее название - {{event.event_name}}</label>
                             <input class="form-control mb-3" value="{{event.event_name}}" name = 'name'>
+                            <input class="form-control mb-3" value="{{event.short_name}}" name = 'shortname'>
                         </div>
                     </div>
 
@@ -56,6 +57,16 @@
                                         {%endfor%}
                                     </select>
                                 </div>
+
+                                <div class="col mb-3">
+                                    <label class="form-label">Тип события | - {{event.type_event}}</label>
+                                    <select class="form-select mb-3" name = "type_event">
+                                        {%for type in eventtypes%}
+                                        <option value="{{type}}">{{type}}</option>
+                                        {%endfor%}
+                                    </select>
+                                </div>
+
                             </div>
                         </div>
                     </div>

@@ -38,6 +38,16 @@ def get_event_for_tags(tags):
                     events.append(event)
     return events
 
+
+# получить события на определенную дату
+# def get_events_on_day(date):
+#     events = get_all_event()
+#     result = []
+#     for event in events:
+#         if event.event_data_end == date:
+#             result.append(event)
+#     return result
+
 # удалить событие
 def delEvent(event):
     db.session.delete(event)
@@ -52,7 +62,9 @@ def addEvent(event_name,
              vidotchet,
              tags,
              nalogs,
-             opfs):
+             opfs,
+             typeevent,
+             shortname):
 
     event = Event()
 
@@ -78,6 +90,16 @@ def addEvent(event_name,
         event.vidotchet = vidotchet
     else: event.vidotchet = None
 
+    if typeevent:
+        event.type_event = typeevent
+    else:
+        event.type_event = None
+
+    if shortname:
+        event.short_name = shortname
+    else:
+        event.short_name = None
+
 
     event.tag[:] = tags
     event.opf[:] = opfs
@@ -97,7 +119,9 @@ def editEvent(event,
              vidotchet,
              tags,
              nalogs,
-             opfs):
+             opfs,
+             typeevent,
+             shortname):
 
 
 
@@ -126,6 +150,16 @@ def editEvent(event,
         event.vidotchet = vidotchet
     else:
         event.vidotchet = None
+
+    if typeevent:
+        event.type_event = typeevent
+    else:
+        event.type_event = None
+
+    if shortname:
+        event.short_name = shortname
+    else:
+        event.short_name = None
 
     event.tag[:] = tags
     event.opf[:] = opfs

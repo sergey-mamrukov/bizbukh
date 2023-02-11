@@ -39,10 +39,12 @@ def get_client_info(client):
     for event in clientevents:
         if not get_status_event(client, event) == st_notready():
             e = {"nameevent":event.event_name,
+                 "shortname":event.short_name,
                  "eventid":str(event.id),
                  "datastart":str(event.event_data_start),
                  "dataend":str(event.event_data_end),
-                 "status":str(get_status_event(client,event))}
+                 "status":str(get_status_event(client,event)),
+                 "type_event":event.type_event}
 
             events.append(e)
 
@@ -87,6 +89,17 @@ def get_client_info_on_date(client, date):
                 "opf":opf,
                 # "sysnalog":systalog,
                 "events":events}
+
+    return result
+
+
+def get_event_info(event):
+    result = {  "eventname":event.event_name,
+                "shortname": event.short_name,
+                "datastart":str(event.event_data_start),
+                "dataend":str(event.event_data_end),
+                "eventid":event.id,
+                "type_event":event.type_event}
 
     return result
 

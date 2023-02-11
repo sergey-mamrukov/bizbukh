@@ -112,9 +112,12 @@ class Client(db.Model):
 # Модель события
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    event_name = db.Column(db.String(80),unique=True)
+    event_name = db.Column(db.Text())
     event_data_start = db.Column(db.Date())
     event_data_end = db.Column(db.Date())
+
+    type_event = db.Column(db.String)
+    short_name = db.Column(db.String)
 
 
     opf = db.relationship('Opf',secondary=eopfs,

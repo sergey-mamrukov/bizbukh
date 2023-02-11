@@ -1,6 +1,6 @@
 from flask import Blueprint, url_for, render_template, redirect, request
 
-
+from eventtype_helper import type_pay,type_report
 from event_helper import get_event,get_all_event, delEvent,addEvent,editEvent
 from controlorgan_helper import get_all_controlorgan, get_controlorgan
 from vidotchet_helper import get_all_vidotchet, get_vidotchet
@@ -32,6 +32,9 @@ def addevent():
     vidotchets = get_all_vidotchet()
     opfs = get_all_opf()
     nalogs = get_all_nalog()
+    eventtypes = [type_pay(),type_report()]
+
+
 
     # парсим форму
     event_name = request.form.get('name')
@@ -39,6 +42,9 @@ def addevent():
     data_end = request.form.get('data_end')
     controlorgan = get_controlorgan(request.form.get('controlorgan'))
     vidotchet = get_vidotchet(request.form.get('vidotchet'))
+    shortname = request.form.get('shortname')
+    type_event = request.form.get('type_event')
+
 
     eventTags = []
     for tag in tags:
@@ -60,7 +66,7 @@ def addevent():
     if request.method == 'POST':
 
         try:
-            addEvent(event_name,data_start,data_end,controlorgan,vidotchet,eventTags,eventNalogs,eventOpfs)
+            addEvent(event_name,data_start,data_end,controlorgan,vidotchet,eventTags,eventNalogs,eventOpfs,type_event,shortname)
             return redirect(url_for('event.eventlist'))
         except:
             print('error')
@@ -70,7 +76,9 @@ def addevent():
                            vidotchets = vidotchets,
                            tags = tags,
                            opfs = opfs,
-                           nalogs = nalogs)
+                           nalogs = nalogs,
+                           eventtypes = eventtypes,
+                           shotrname = shortname)
 
 # Редактирование события
 @event.route('/eventedit/<int:eventid>/', methods = ['GET', 'POST'])
@@ -84,6 +92,8 @@ def eventedit(eventid):
     vidotchets = get_all_vidotchet()
     opfs = get_all_opf()
     nalogs = get_all_nalog()
+    eventtypes = [type_pay(), type_report()]
+
 
     # парсим форму
     event_name = request.form.get('name')
@@ -91,6 +101,8 @@ def eventedit(eventid):
     data_end = request.form.get('data_end')
     controlorgan = get_controlorgan(request.form.get('controlorgan'))
     vidotchet = get_vidotchet(request.form.get('vidotchet'))
+    shortname = request.form.get('shortname')
+    type_event = request.form.get('type_event')
 
     eventTags = []
     for tag in tags:
@@ -110,7 +122,7 @@ def eventedit(eventid):
     # обрабатываем метод post
     if request.method == 'POST':
         try:
-            editEvent(event, event_name, data_start, data_end, controlorgan, vidotchet, eventTags, eventNalogs, eventOpfs)
+            editEvent(event, event_name, data_start, data_end, controlorgan, vidotchet, eventTags, eventNalogs, eventOpfs, type_event,shortname)
             return redirect(url_for('event.eventlist'))
         except:
             print('error')
@@ -122,7 +134,9 @@ def eventedit(eventid):
                            vidotchets = vidotchets,
                            tags = tags,
                            opfs = opfs,
-                           nalogs = nalogs)
+                           nalogs = nalogs,
+                           eventtypes = eventtypes,
+                           shotrname = shortname)
 
 # Удаление события
 @event.route('/eventdel/<int:eventid>/')

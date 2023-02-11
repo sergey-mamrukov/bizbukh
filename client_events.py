@@ -17,7 +17,9 @@ def get_client_event_all(client):
     events.extend(get_event_for_nalog(nalog))
     events.extend(get_event_for_tags(tags))
 
-    return events
+    # print(f"events - {events}")
+    result = list(set(events))
+    return result
 
 
 # возвращает список актуальных событий (которые не выполнены, т.е имеют статус "не выполнено" или нет в таблице выпоненных)
@@ -83,13 +85,13 @@ def get_status_event(client,event):
 # Получить все события на определенную дату по клиенту
 def get_event_on_client_day(client, data):
     allevent = get_client_event_all(client)
-    print (allevent)
+    # print (allevent)
     result = []
-    print (f"date input: {data}")
+    # print (f"date input: {data}")
     for event in allevent:
-        print(f"date event: {event.event_data_end}")
+        # print(f"date event: {event.event_data_end}")
         if str(event.event_data_end) == str(data):
-            print(event.event_name)
+            # print(event.event_name)
             result.append(event)
     return result
 
