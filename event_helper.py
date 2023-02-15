@@ -7,7 +7,7 @@ def get_event(id):
 
 # получить все события
 def get_all_event():
-    return Event.query.all()
+    return Event.query.order_by(Event.id).all()
 
 # получить события по ОПФ
 def get_event_for_opf(opf):
@@ -40,13 +40,13 @@ def get_event_for_tags(tags):
 
 
 # получить события на определенную дату
-# def get_events_on_day(date):
-#     events = get_all_event()
-#     result = []
-#     for event in events:
-#         if event.event_data_end == date:
-#             result.append(event)
-#     return result
+def get_events_on_day(date):
+    events = get_all_event()
+    result = []
+    for event in events:
+        if str(event.event_data_end) == date:
+            result.append(event)
+    return result
 
 # удалить событие
 def delEvent(event):

@@ -107,3 +107,33 @@ def get_all_clients():
 # получить определенного клиента по id
 def get_client(clientid):
     return Client.query.get(clientid)
+
+
+# получить всех клиентов по ОПФ
+def get_client_for_opf(opf):
+    clients = []
+    for client in get_all_clients():
+        if client.opf in opf:
+            clients.append(client)
+    return clients
+
+
+# получить событие по налогу
+def get_client_for_nalog(nalog):
+    clients = []
+    for client in get_all_clients():
+        if client.nalog in nalog :
+            clients.append(client)
+
+    return clients
+
+# получить событие по тегу
+def get_client_for_tags(tags):
+    clients = []
+    if tags:
+        allclients = get_all_clients()
+        for tag in tags:
+            for client in allclients:
+                if tag in client.tag:
+                    clients.append(client)
+    return clients

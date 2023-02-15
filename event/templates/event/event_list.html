@@ -20,7 +20,7 @@
 
         </div>
         <div class="table-responsive mt-3">
-            <table class="table align-middle">
+            <table id="example" class="table align-middle">
                 <thead class="table-secondary">
                 <tr>
                     <th>Событие</th>
@@ -59,4 +59,10 @@
 
 
 </div>
+
+<script>
+    $(document).ready(function () {
+    $('#example').DataTable();
+});
+</script>
 {% endblock %}

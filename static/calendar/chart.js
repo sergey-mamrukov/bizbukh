@@ -4,10 +4,18 @@ let m = d.getMonth();
 
 let allevents = []
 
+let spinner = document.createElement('div');
+    spinner.classList.add('spinner-border','position-absolute','top-50','start-50');
+    spinner.setAttribute("role","status");
+
+let cardbody = document.querySelector(".card-body");
+
+changeButtonName();
 drawevents();
 
 async function drawevents(){
     url = `http://127.0.0.1:5000/ajax/getallevents`
+    cardbody.appendChild(spinner);
 
     let eventrow = document.querySelector(".eventrow")
     
@@ -21,30 +29,29 @@ async function drawevents(){
     let date = new Date(y,m+1,0);//
     let count_day = date.getDate();//считаем количество дней в месяце
 
-    console.log(date)
+    // console.log(date)
   
     for(let i =1; i <= count_day; i++){
         let curdate = dateFormater(new Date(y,m,i))//текущая дата (отформатированная)
-        console.log(curdate) 
+        // console.log(curdate) 
         for(item in info){
             //&& info[item].type_event == "Отчет"
             if(info[item].dataend == curdate){ 
 
                 eventrow.innerHTML += `<td style="word-wrap:break-word;">
                 <div class = "">
-                   ${info[item].shortname}
+                  <a  href = "http://127.0.0.1:5000/calendar/change/${info[item].eventid}"> ${info[item].shortname}</a>
                 </div>
                 <div>(${info[item].type_event})</div>
                 <div class = "text-secondary">${info[item].dataend}</div>
                 </td>`;
-
 
                 allevents.push(info[item])
             }   
         }
     }
 
-
+    spinner.remove()
 
 
     let dateinfo = document.querySelector(".dateinfo");
@@ -59,6 +66,8 @@ async function drawevents(){
 
 async function drawinfo(){
     url = `http://127.0.0.1:5000/ajax/get`
+
+    cardbody.appendChild(spinner);
 
     let response = await fetch(url); 
     let info = await response.json(); // читаем ответ в формате JSON
@@ -77,7 +86,8 @@ async function drawinfo(){
 
         client_info.innerHTML += 
         `<td class = "text-light bg-secondary p-3">
-        <a class = "text-light" href = "http://127.0.0.1:5000/client/${info[item].client_id}">${info[item].clientname}</a>
+        <a class = "text-light" style = "" href = "http://127.0.0.1:5000/client/${info[item].client_id}">${info[item].clientname}</a>
+        
         </td>`;
 
         let clientevents = info[item].events
@@ -101,11 +111,11 @@ async function drawinfo(){
             }
            
         }
-        console.log(`-----------------${getNameMonth(m)}---${info[item].clientname}-----------------------`)
-        console.log(`actual ${actual}`)
-        console.log(`clientevents ${clientevents}`)
-        console.log(`allevents ${allevents}`)
-        console.log(`-------------------------------------------`)
+        // console.log(`-----------------${getNameMonth(m)}---${info[item].clientname}-----------------------`)
+        // console.log(`actual ${actual}`)
+        // console.log(`clientevents ${clientevents}`)
+        // console.log(`allevents ${allevents}`)
+        // console.log(`-------------------------------------------`)
        
         for(e in allevents){
             let nullcol = true;
@@ -134,7 +144,7 @@ async function drawinfo(){
             }
         }
 
-
+        spinner.remove();
         tbody.appendChild(client_info);
     }
     

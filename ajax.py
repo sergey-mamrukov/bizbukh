@@ -1,28 +1,6 @@
 from client_events import get_client_event_all,get_status_event,get_event_on_client_day
 from eventstatus_helper import st_notready
 
-
-'''
-{"client1": {"client_name":"client1",
-             "client_id":"123",
-             "datazp":"30",
-             "dataavansa":"15",
-             "opf":"ИП",
-             "sysnalog":"УСН",
-             "events":[{"nameevent":"event1",
-                        "eventid":"332",
-                        "datastart":"2023.01.10",
-                        "dataend":"2023.02.19",
-                        "status":"Выполнено"},
-                        {"nameevent":"event2",
-                        "eventid":"332",
-                        "datastart":"2023.01.10",
-                        "dataend":"2023.02.19",
-                        "status":"Не выполнено"}]}
-
-}
-'''
-
 # получение информации о клиенте и массива с событиями в формате json
 def get_client_info(client):
     client_name = client.client_name
@@ -99,9 +77,12 @@ def get_event_info(event):
                 "datastart":str(event.event_data_start),
                 "dataend":str(event.event_data_end),
                 "eventid":event.id,
-                "type_event":event.type_event}
+                "type_event":event.type_event,
+                }
 
     return result
+
+
 
 
 

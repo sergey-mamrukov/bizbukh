@@ -2,6 +2,8 @@ from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
 
+import time
+
 # Импорт моделей, форм
 from models import db
 
@@ -23,10 +25,10 @@ from vidotchet.vidotchet import vidotchet
 
 from eventready_helper import change_status
 from eventstatus_helper import st_no,st_ok,st_notready,st_proof
-from event_helper import get_event,get_all_event
+from event_helper import get_event
 from client_helper import get_all_clients,get_client
 from ajax import get_client_info, get_client_info_on_date,get_event_info
-from client_events import get_client_event_all
+from client_events import get_client_event_all,get_event_clients_all,get_status_event
 
 
 app = Flask(__name__)
@@ -56,12 +58,14 @@ def index():
 @app.route('/ajax/get')
 @cross_origin()
 def ajax1():
+
     if request.args:
         client_id = request.args.get('clientid')
         date = request.args.get('date')
         if client_id and date:
             client = get_client(client_id)
             info = get_client_info_on_date(client, date)
+
             return jsonify(info)
 
     else:
@@ -78,7 +82,9 @@ def ajax1():
 @app.route('/ajax/getallevents')
 @cross_origin()
 def ajax2():
+
     events = []
+
     clients = get_all_clients()
     for client in clients:
         events.extend(get_client_event_all(client))
@@ -89,13 +95,8 @@ def ajax2():
     for event in resevents:
         info.append(get_event_info(event))
 
+
     return jsonify(info)
-
-
-
-
-
-
 
 # меняет статус события
 @app.route('/ajax/changestatus/<int:clientid>/<int:eventid>/<int:status>')
@@ -127,6 +128,24 @@ def ajax3(clientid, eventid, status):
     return jsonify("error")
 
 
+# возвращает всех клиентов у события
+@app.route('/ajax/getallclientsforevent/<int:eventid>')
+@cross_origin()
+def ajax4(eventid):
+
+
+    event = get_event(eventid)
+    clients = get_event_clients_all(event)
+
+    result = []
+
+    for client in clients:
+        result.append({"clientname":client.client_name,
+                       "clientid": client.id,
+                       "status" :get_status_event(client,event)})
+
+
+    return jsonify(result)
 
 
 

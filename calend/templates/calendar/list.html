@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} События{% endblock %}
+{% block linkname_bread %} Список событий на {{date}}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h5 class="mb-0">События</h5>
+            <form method="POST" action="" class="ms-auto position-relative">
+                <div class="input-group">
+                    <input type="date" class="form-control" name="date" value = "{{date}}">
+                    <button type="submit" class="btn btn-outline-secondary"><i class="lni lni-search-alt"></i></button>
+                </div>
+            </form>
+
+        </div>
+        <div class="table mt-3">
+            {%if events%}
+            <table class="table table-borderless mb-0">
+                <thead class="table-secondary">
+                <tr>
+                    <th>Полное название</th>
+                    <th>Краткое название</th>
+                    <th>Тип события</th>
+                    <th>Дата начала</th>
+                    <th>Дата завершения</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for event in events%}
+                <tr>
+                    <td style = "max-width: 320px;">
+                        <div class="d-flex align-items-center gap-3">
+                            <a href = '/calendar/change/{{event.id}}' class="mb-0">{{event.event_name}}</a>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="mb-0" >{{event.short_name}}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="mb-0">{{event.type_event}}</span>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="mb-0">{{event.event_data_start}}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="mb-0">{{event.event_data_end}}</span>
+                        </div>
+                    </td>
+
+
+
+
+
+
+                </tr>
+                {% endfor %}
+
+                </tbody>
+
+
+            </table>
+            {%else%}
+            <div class="alert border-0 bg-light-warning alert-dismissible fade show py-2">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-3 text-warning"><i class="bi bi-exclamation-triangle-fill"></i>
+                      </div>
+                      <div class="ms-3">
+                        <div class="text-warning">Нет событий на текущую дату!</div>
+                      </div>
+                    </div>
+                  </div>
+            {%endif%}
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

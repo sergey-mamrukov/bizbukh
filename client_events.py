@@ -3,6 +3,7 @@ import datetime
 from event_helper import get_event_for_opf, get_event_for_nalog, get_event_for_tags
 from eventready_helper import get_ready, check_event_ready, change_status
 from eventstatus_helper import st_ok,st_notready,st_proof, st_no
+from client_helper import get_client_for_tags,get_client_for_nalog,get_client_for_opf
 
 
 # возвращает список всех событий для клиента
@@ -17,9 +18,26 @@ def get_client_event_all(client):
     events.extend(get_event_for_nalog(nalog))
     events.extend(get_event_for_tags(tags))
 
-    # print(f"events - {events}")
     result = list(set(events))
     return result
+
+# возвращает список клиентов ля события
+def get_event_clients_all(event):
+    opf = event.opf
+    nalog = event.nalog
+    tags = event.tag
+
+    clients = []
+
+    clients.extend(get_client_for_opf(opf))
+    clients.extend(get_client_for_nalog(nalog))
+    clients.extend(get_client_for_tags(tags))
+    # print(clients)
+    result = list(set(clients))
+    # print(result)
+
+    return result
+
 
 
 # возвращает список актуальных событий (которые не выполнены, т.е имеют статус "не выполнено" или нет в таблице выпоненных)
@@ -85,13 +103,9 @@ def get_status_event(client,event):
 # Получить все события на определенную дату по клиенту
 def get_event_on_client_day(client, data):
     allevent = get_client_event_all(client)
-    # print (allevent)
     result = []
-    # print (f"date input: {data}")
     for event in allevent:
-        # print(f"date event: {event.event_data_end}")
         if str(event.event_data_end) == str(data):
-            # print(event.event_name)
             result.append(event)
     return result
 

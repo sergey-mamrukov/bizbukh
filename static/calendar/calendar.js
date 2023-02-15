@@ -2,8 +2,17 @@ let d = new Date()
 let y = d.getFullYear();
 let m = d.getMonth();
 
+let spinner = document.createElement('div');
+    spinner.classList.add('spinner-border','position-absolute','top-50','start-50');
+    spinner.setAttribute("role","status");
+
+let cardbody = document.querySelector(".table");
+
+
 function drawdays(){
     let rowdays = document.querySelector(".days");
+
+    cardbody.appendChild(spinner);
     rowdays.innerHTML = `<td>
                               <h4>${getNameMonth(m)}</h4>
                          </td>`;//вывод названия месяца в первой ячейке таблицы
@@ -16,15 +25,15 @@ function drawdays(){
       let t = getWeekDay(new Date(y,m,i).getDay())//заполняем строчку днями
   
       if(t == "Сб" || t=="Вс"){
-      rowdays.innerHTML += `<td class = "text-danger">${i+1} \n ${t}</td>`;  
+      rowdays.innerHTML += `<td class = "text-danger"><div>${i+1}</div>${t}</td>`;  
       }//красим выходные красным цветом
       else{
-          rowdays.innerHTML += `<td>${i+1} \n ${t}</td>`;  
+          rowdays.innerHTML += `<td><div>${i+1}</div> ${t}</td>`;  
       }//обычные дни
       
       let dateinfo = document.querySelector(".dateinfo");
       dateinfo.textContent =  `${getNameMonth(m)} - ${y} года`;}//вывод информации в хлебных крошках
-  
+    spinner.remove();
      drawinfo();//вызов функции заполнения информацией
      changeButtonName()//вызов функции смены названия кнопок предыдущего и следующео месяца
       
@@ -33,7 +42,7 @@ function drawdays(){
 
 async function drawinfo(){
     url = `http://127.0.0.1:5000/ajax/get`
-
+    cardbody.appendChild(spinner);
     let response = await fetch(url); 
     let info = await response.json(); // читаем ответ в формате JSON
 
@@ -81,26 +90,26 @@ async function drawinfo(){
             //проверка количества событий со статусоми вывод с окрашиванием в разные цвета
             if(countevent >0){
                 if(countevent == countproof){
-                   client_info.innerHTML += `<td onclick = openmodal("${info[item].client_id}","${curdate}") class = "bg-success text-light">OK</td>`;            
+                   client_info.innerHTML += `<td onclick = openmodal("${info[item].client_id}","${curdate}") class = "bg-success text-light pointer">OK</td>`;            
                 }
 
                 if(countevent == countready+countproof && countevent != countproof){
-                    client_info.innerHTML += `<td onclick = openmodal("${info[item].client_id}","${curdate}") class = "bg-warning text-light">${countevent}-${countready+countproof}</td>`;
+                    client_info.innerHTML += `<td onclick = openmodal("${info[item].client_id}","${curdate}") class = "bg-warning text-light pointer">${countevent}-${countready+countproof}</td>`;
                 
                 }
 
                 if(countready+countproof < countevent){
-                    client_info.innerHTML += `<td onclick = openmodal("${info[item].client_id}","${curdate}") class = "bg-info text-light">${countevent}-${countready+countproof}</td>`;
+                    client_info.innerHTML += `<td onclick = openmodal("${info[item].client_id}","${curdate}") class = "bg-info text-light pointer">${countevent}-${countready+countproof}</td>`;
                 }
                
 
             }
             else{
-               client_info.innerHTML += `<td onclick = 'openmodal("${info[item].client_id}","${curdate}")' class = "bg-light text-secondary"></td>`;
+               client_info.innerHTML += `<td onclick = 'openmodal("${info[item].client_id}","${curdate}")' class = "bg-light text-secondary pointer"></td>`;
             }
         }
 
-
+        spinner.remove();
         tbody.appendChild(client_info);
     }
     
@@ -108,6 +117,7 @@ async function drawinfo(){
 }//вывод информации в таблицу
 
 async function getclientinfo(clientid, date){
+
     let url = `http://127.0.0.1:5000/ajax/get?clientid=${clientid}&date=${date}`
     let response = await fetch(url); 
     let info = await response.json(); // читаем ответ в формате JSON
@@ -155,7 +165,6 @@ async function getclientinfo(clientid, date){
             cardbody.innerHTML+=bnt_no;
         }
 
-        console.log(card)
         card.append(cardbody);
         bodymodal.append(card)
     } 
