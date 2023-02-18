@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
 
 {% block title_bread %} График событий{% endblock %}
-{% block linkname_bread %} на <span class = "dateinfo"></span> {% endblock %}
+{% block linkname_bread %} <span class = "dateinfo"></span> {% endblock %}
 
 {% block content %}
 
 
-<div class="card">
-    <div class="card card-body">
+<div class="">
+    <div class="cardbody">
         <div class="row row-cols-auto g-3 mb-3">
-            <div class="col">
-                <h3 class = "dateinfo"></h3>
-            </div>
             <div class="col btnnextprev">
                 <button class = "btn btn-primary px-5 prev" onclick = btnprev()></button>
             </div>
@@ -20,10 +17,10 @@
             </div>
         </div>
 
-        <div style="overflow-x: auto;">
-            <table class = "table table-hover table-bordered mb-0 table-responsive">
+        <div class = "table-responsive ">
+            <table class = "table">
                 <thead>
-                <tr class = "eventrow"></tr></thead>
+                <tr class = "d-flex eventrow"></tr></thead>
                 <tbody class = "info"></tbody>
             </table>
         </div>

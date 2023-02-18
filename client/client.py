@@ -10,6 +10,7 @@ from client_events import get_client_event_all,get_client_event_ready, get_clien
 from eventready_helper import change_status
 from eventstatus_helper import st_ok,st_proof,st_notready, st_no
 
+
 client = Blueprint('client', __name__, template_folder='templates')
 
 

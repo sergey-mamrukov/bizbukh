@@ -58,8 +58,6 @@ def delEvent(event):
 def addEvent(event_name,
              data_start,
              data_end,
-             controlorgan,
-             vidotchet,
              tags,
              nalogs,
              opfs,
@@ -79,16 +77,6 @@ def addEvent(event_name,
         event.event_data_start = None
         event.event_data_end = None
 
-
-    if controlorgan:
-        event.controlorgan = controlorgan
-    else:
-        event.controlorgan = None
-
-
-    if vidotchet:
-        event.vidotchet = vidotchet
-    else: event.vidotchet = None
 
     if typeevent:
         event.type_event = typeevent
@@ -115,8 +103,6 @@ def editEvent(event,
              event_name,
              data_start,
              data_end,
-             controlorgan,
-             vidotchet,
              tags,
              nalogs,
              opfs,
@@ -140,16 +126,6 @@ def editEvent(event,
     else:
         event.event_data_start = None
         event.event_data_end = None
-
-    if controlorgan:
-        event.controlorgan = controlorgan
-    else:
-        event.controlorgan = None
-
-    if vidotchet:
-        event.vidotchet = vidotchet
-    else:
-        event.vidotchet = None
 
     if typeevent:
         event.type_event = typeevent

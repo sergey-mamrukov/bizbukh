@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
 
 {% block title_bread %} Календарь событий{% endblock %}
-{% block linkname_bread %} на <span class = "dateinfo"></span> {% endblock %}
+{% block linkname_bread %} <span class = "dateinfo"></span> {% endblock %}
 
 {% block content %}
 
 <style>
-    .pointer{
-        cursor: pointer;   
-    }
+
 
 </style>
 
-<div class="card">
-    <div class="card card-body">
+<!--card card-body-->
+<div class="">
+    <div class="">
         <div class="row row-cols-auto g-3 mb-3">
-            <div class="col">
-                <h3 class = "dateinfo"></h3>
-            </div>
+            <!--            <div class="col">-->
+            <!--                <h3 class = "dateinfo"></h3>-->
+            <!--            </div>-->
             <div class="col">
                 <button class = "btn btn-primary px-5 prev" onclick = btnprev()>prev</button>
             </div>
@@ -26,14 +25,14 @@
             </div>
         </div>
 
-        <div style="overflow-x: auto;">
-        <table class = "table table-bordered mb-0 table-responsive">
-            <thead>
-            <tr class = "days"></tr></thead>
-            <tbody class = "info"></tbody>
-        </table>
-    </div>
-        
+        <div class = "table-responsive">
+            <table class = "table  mb-0 table-responsive">
+                <thead>
+                <tr class = "days d-flex"></tr></thead>
+                <tbody class = "info"></tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 
@@ -45,9 +44,13 @@
                 <button type="button" onclick = closemodal() class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                
 
-            
+            </div>
+            <div class="modal-footer">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control input_name_pevent" placeholder="Название события">
+                    <button class="btn btn-outline-secondary btn_add_pevent">Добавить событие</button>
+                </div>
             </div>
         </div>
     </div>

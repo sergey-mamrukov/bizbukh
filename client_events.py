@@ -5,8 +5,11 @@ from eventready_helper import get_ready, check_event_ready, change_status
 from eventstatus_helper import st_ok,st_notready,st_proof, st_no
 from client_helper import get_client_for_tags,get_client_for_nalog,get_client_for_opf
 
+from personalevent_helper import get_personal_event_all, get_personal_event_date_all
 
-# возвращает список всех событий для клиента
+
+
+# возвращает список всех статичных событий для клиента
 def get_client_event_all(client):
     opf = client.opf
     nalog = client.nalog
@@ -19,9 +22,31 @@ def get_client_event_all(client):
     events.extend(get_event_for_tags(tags))
 
     result = list(set(events))
+
     return result
 
-# возвращает список клиентов ля события
+
+
+
+# возвращает список персональных событий для клиента
+def get_client_personalevent_all(client):
+    p_events = get_personal_event_all(client)
+    # print(f'all_pevents: {p_events}')
+    return p_events
+
+# возвращает список персональных событий для клиента
+def get_client_personalevent_date_all(client,date):
+    p_events = get_personal_event_date_all(client,date)
+    # print(f'pevents on date: {p_events}')
+    return p_events
+
+
+
+
+
+
+
+# возвращает список клиентов для события
 def get_event_clients_all(event):
     opf = event.opf
     nalog = event.nalog
@@ -100,10 +125,13 @@ def get_status_event(client,event):
         change_status(client,event,st_no())
         return st_no()
 
+
+
 # Получить все события на определенную дату по клиенту
 def get_event_on_client_day(client, data):
     allevent = get_client_event_all(client)
     result = []
+
     for event in allevent:
         if str(event.event_data_end) == str(data):
             result.append(event)

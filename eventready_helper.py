@@ -1,4 +1,5 @@
 from models import db, Eventready
+from eventstatus_helper import *
 
 # проверяет есть ли запись в таблице выполненных событие
 def check_event_ready(client, event):
@@ -32,14 +33,12 @@ def add_eventready(client, event, status):
 
     else: print ('событие в таблце')
 
-# ищет и удаляет запись в таблице Eventready запись о выполненном событии
-def del_eventready(client,event):
-    if check_event_ready(client,event):
-        ready = get_ready_event(client,event)
-        if ready:
-            db.session.delete(ready)
-            db.session.commit()
-    else: print ('события нет в таблице')
+# ищет и удаляет все записи в таблице Eventready
+def del_eventready(client):
+    eventreadyes = Eventready.query.filter(Eventready.client_id == client.id).all()
+    for e in eventreadyes:
+        db.session.delete(e)
+    db.session.commit()
 
 
 # меняет статус события
@@ -53,7 +52,7 @@ def change_status(client, event, status):
                 db.session.commit()
             else: add_eventready(client,event,status)
 
-    else: add_eventready(client,event,status)
+    else: add_eventready(client,event, st_no())
 
 
 def get_ready(client):

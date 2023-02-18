@@ -50,23 +50,6 @@ class Systnalog(db.Model):
     def __init__(self, nalogname):
         self.nalog_name = nalogname
 
-# Модель контролирующего органа
-class Controlorgan(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    control_name = db.Column(db.String(80),unique=True)
-
-    def __init__(self, controlname):
-        self.control_name = controlname
-
-# Модель вида отчетности
-class Vidotchet(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    vid_name = db.Column(db.String(80),unique=True)
-
-    def __init__(self, vidname):
-        self.vid_name = vidname
-
-
 
 # Модель выполненных событий
 class Eventready(db.Model):
@@ -130,14 +113,17 @@ class Event(db.Model):
                           backref=db.backref('events', lazy='dynamic'))
 
 
-    vidotchet_id = db.Column(db.Integer, db.ForeignKey('vidotchet.id'))
-    vidotchet = db.relationship('Vidotchet', backref=db.backref("vidotchet"))
-
-    controlorgan_id = db.Column(db.Integer, db.ForeignKey('controlorgan.id'))
-    controlorgan = db.relationship('Controlorgan', backref=db.backref("controlorgan"))
 
 
+# Модель персонального события
+class PersonalEvent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    event_name = db.Column(db.Text())
+    event_data_end = db.Column(db.Date())
+    status = db.Column(db.Text())
 
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
+    client = db.relationship('Client', backref=db.backref("pe-client"))
 
 
 

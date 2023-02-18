@@ -39,29 +39,13 @@
                         <h5 class="card-header md-2">Параметры</h5>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col mb-3">
-                                    <label class="form-label">Контролирующий орган</label>
-                                    <select class="form-select mb-3" name = "controlorgan">
-                                        {%for control in controlorgans%}
-                                        <option value="{{control.id}}">{{control.control_name}}</option>
-                                        {%endfor%}
-                                    </select>
 
-                                </div>
-                                <div class="col mb-3">
-                                    <label class="form-label">Тип отчетности</label>
-                                    <select class="form-select mb-3" name = "vidotchet">
-                                        {%for vid in vidotchets%}
-                                        <option value="{{vid.id}}">{{vid.vid_name}}</option>
-                                        {%endfor%}
-                                    </select>
-                                </div>
 
-                                 <div class="col mb-3">
+                                <div class="col mb-3">
                                     <label class="form-label">Тип события</label>
                                     <select class="form-select mb-3" name = "type_event">
                                         {%for type in eventtypes%}
-                                        <option value="{{type}}">{{type}}</option>
+                                            <option value="{{type}}">{{type}}</option>
                                         {%endfor%}
                                     </select>
                                 </div>

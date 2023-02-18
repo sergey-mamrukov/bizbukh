@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title_bread %} События{% endblock %}
-{% block linkname_bread %} Список событий на {{date}}{% endblock %}
+{% block title_bread %}{% endblock %}
+{% block linkname_bread %}Список событий на {{date}}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-body">
+<div class="">
+    <div class="">
         <div class="d-flex align-items-center">
-            <h5 class="mb-0">События</h5>
+<!--            <h5 class="mb-0">События</h5>-->
             <form method="POST" action="" class="ms-auto position-relative">
                 <div class="input-group">
                     <input type="date" class="form-control" name="date" value = "{{date}}">
@@ -16,7 +16,7 @@
             </form>
 
         </div>
-        <div class="table mt-3">
+        <div class="table bg-white mt-3">
             {%if events%}
             <table class="table table-borderless mb-0">
                 <thead class="table-secondary">

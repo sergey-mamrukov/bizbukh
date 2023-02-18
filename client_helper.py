@@ -1,4 +1,5 @@
 from models import db, Client
+from eventready_helper import del_eventready
 
 
 # add new client
@@ -45,6 +46,8 @@ def addClient(client_name,
       # добавление клиента в базу
       db.session.add(client)
       db.session.commit()
+
+
 
 # edit client
 def editClient(client, client_name,
@@ -96,6 +99,8 @@ def editClient(client, client_name,
 
 # del client
 def delClient(client):
+      del_eventready(client)
+
       db.session.delete(client)
       db.session.commit()
 

@@ -27,7 +27,7 @@ async function getinfo(){
     for (item in info){
         let col = document.createElement("tr");
 
-        col.innerHTML += `<td>${info[item].clientname}</td>`;
+        col.innerHTML += `<td >${info[item].clientname}</td>`;
         if( info[item].status == null){
             col.innerHTML += `<td class = "text-danger">Не выполнено</td>`
         }
@@ -39,6 +39,9 @@ async function getinfo(){
         }
         if( info[item].status == "Подтверждено"){
             col.innerHTML += `<td class = "text-success">Выполнено (подтверждено)</td>`
+        }
+        if( info[item].status == "Не выполняется"){
+            col.innerHTML += `<td class = "text-secondary">Не выполняется</td>`
         }
             
         let btn_ok = `<button class="btn btn-outline-success px-5 me-3" onclick = changestatus(${info[item].clientid},${eventid},1)> Выполнить </button>`;
@@ -54,6 +57,9 @@ async function getinfo(){
 
         if(info[item].status == "Подтверждено"){
             col.innerHTML += `<td>${bnt_no} </td>`
+        }
+        if(info[item].status == "Не выполняется"){
+            col.innerHTML += `<td></td>`
         }
 
         tbody.appendChild(col)
