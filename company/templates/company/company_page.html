@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} Компания {% endblock %}
+{% block linkname_bread %} {% endblock %}
+
+
+{%block content%}
+
+
+<div class="mt-5">
+    <h3>user - {{current_user.login}}</h3>
+    <p>company_name - {{current_user.company.company_name}}</p>
+    <p>possition - {{current_user.possition}}</p>
+</div>
+
+<div class="mt-5">
+    <h3>Компании</h3>
+    {%for client in clients%}
+    <div class="">
+        {{client.id}}
+        {{client.client_name}}
+    </div>
+
+    {%endfor%}
+</div>
+
+{% endblock %}

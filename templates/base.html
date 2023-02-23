@@ -19,12 +19,19 @@
                     <li><a href="/calendar/chart" class="nav-link px-2 text-white">График</a></li>
                     <li><a href="/event" class="nav-link px-2 text-white">События</a></li>
                     <li><a href="/client" class="nav-link px-2 text-white">Организации</a></li>
+                    <li><a href="/user" class="nav-link px-2 text-white">Пользователи</a></li>
                 </ul>
 
-
+                {%if not current_user.is_authenticated%}
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Войти</button>
+                    <a href = "/login" class="btn btn-outline-light me-2">Войти</a>
                 </div>
+                {%else%}
+                <div class="text-end">
+                    <a href = "/logout" class="btn btn-outline-light me-2">Выйти</a>
+                </div>
+                {% endif %}
+
             </div>
         </div>
     </header>

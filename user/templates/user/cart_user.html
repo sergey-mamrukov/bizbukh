@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} Пользователь{% endblock %}
+{% block linkname_bread %} {{user.login}} - {{user.possition}} {% endblock %}
+
+{% block content %}
+
+<a href = "/user/del/{{user.id}}">Удалить пользователя</a>
+
+
+{% endblock %}

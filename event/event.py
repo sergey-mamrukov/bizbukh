@@ -11,11 +11,13 @@ event = Blueprint('event', __name__, template_folder='templates')
 @event.route('/')
 def eventlist():
     events = get_all_event()
+
     return render_template('event/event_list.html', events = events)
 
 
 @event.route('/<int:eventid>')
 def eventcart(eventid):
+
     event = get_event(eventid)
 
     return render_template('event/event_cart.html', event = event)

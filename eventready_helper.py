@@ -42,7 +42,7 @@ def del_eventready(client):
 
 
 # меняет статус события
-def change_status(client, event, status):
+def change_status_event(client, event, status):
     ready = get_ready(client)
 
     if ready:

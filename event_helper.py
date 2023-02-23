@@ -9,6 +9,7 @@ def get_event(id):
 def get_all_event():
     return Event.query.order_by(Event.id).all()
 
+
 # получить события по ОПФ
 def get_event_for_opf(opf):
     events = []

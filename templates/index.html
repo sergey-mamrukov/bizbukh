@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
 {%block content%}
-<h1>mainpage</h1>
+<h1>user - {{current_user.login}}</h1>
+
+<div class="mt-5">
+    <p>{{company.company_name}}</p>
+    <p>{{current_user.possition}}</p>
+</div>
+
 {% endblock %}

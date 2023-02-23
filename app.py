@@ -1,11 +1,12 @@
 import json
 
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, redirect,url_for
 from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
+from flask_login import current_user, login_user, logout_user
 
 
-from eventready_helper import change_status
+from eventready_helper import change_status_event
 from eventstatus_helper import st_no,st_ok,st_notready,st_proof
 from event_helper import get_event
 from client_helper import get_all_clients,get_client
@@ -13,9 +14,13 @@ from ajax import get_client_info, get_client_info_on_date,get_event_info,get_zp_
 from client_events import get_client_event_all,get_event_clients_all,get_status_event
 from personalevent_helper import get_personal_event, changestatusPersonalEvent,delPersonalEvent, addPersonalEvent
 
+from company_helper import addCompany, getCompany
+from user_helper import addUser
+
+
 
 # Импорт моделей, форм
-from models import db
+from models import db, login_manager, User
 
 
 # Импорт конфигурации
@@ -29,6 +34,9 @@ from systnalog.systnalog import systnalog
 from client.client import client
 from event.event import event
 from calend.calend import calend
+from company.company import company
+from user.user import user
+
 
 
 
@@ -38,19 +46,98 @@ cors = CORS(app)
 app.config.from_object(Config)
 db.init_app(app)
 migrate = Migrate(app, db)
+login_manager.init_app(app)
+
 
 app.register_blueprint(tag, url_prefix='/tag')
 app.register_blueprint(opf, url_prefix='/opf')
 app.register_blueprint(systnalog, url_prefix='/systnalog')
-app.register_blueprint(client,url_prefix='/client')
+app.register_blueprint(client, url_prefix='/client')
 app.register_blueprint(event, url_prefix='/event')
 app.register_blueprint(calend, url_prefix='/calendar')
+app.register_blueprint(company, url_prefix='/company')
+app.register_blueprint(user, url_prefix='/user')
+
+
+
 
 
 # Главный роут
 @app.route('/')
 def index():
-    return render_template("index.html")
+    if current_user.is_anonymous:
+        return redirect(url_for("login"))
+    company = current_user.company
+    return render_template("index.html", company = company)
+
+
+
+@app.route("/registration", methods = ['POST', 'GET'])
+def registration():
+    if request.method == 'POST':
+        company_name = request.form.get("company_name")
+        login = request.form.get("login")
+        password = request.form.get("password")
+        possition = 'admin'
+
+        company = addCompany(company_name)
+
+        addUser(login,password,company, possition)
+
+        print(f"name = {company_name}, login = {login}, password = {password}")
+
+        return redirect(url_for("login"))
+
+
+    return render_template("registration.html")
+
+
+
+@app.route("/login", methods = ['POST', 'GET'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    if request.method == 'POST':
+        login = request.form.get("login")
+        password = request.form.get("password")
+
+        user = User.query.filter(User.login == login).first()
+        if user and user.password == password:
+            login_user(user)
+            return (redirect(url_for("index")))
+        else: print ("error login or password")
+
+        print(f"login = {login}, password = {password}")
+
+
+    return render_template("authorization.html")
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # AJAX роуты
 
@@ -120,18 +207,18 @@ def ajax3(clientid, eventid, status):
     # 4 - st_notready
 
     if status == 1:
-        change_status(client,event,st_ok())
+        change_status_event(client,event,st_ok())
         return jsonify({"newstatus": st_ok()})
     if status == 2:
-        change_status(client,event,st_no())
+        change_status_event(client,event,st_no())
         return jsonify({"newstatus": st_no()})
 
     if status == 3:
-        change_status(client,event,st_proof())
+        change_status_event(client,event,st_proof())
         return jsonify({"newstatus": st_proof()})
 
     if status == 4:
-        change_status(client,event,st_notready())
+        change_status_event(client,event,st_notready())
         return jsonify({"newstatus": st_notready()})
 
     return jsonify("error")
@@ -211,6 +298,8 @@ def ajax7():
 
     return jsonify("error")
 
+def testr():
+    pass
 
 
 

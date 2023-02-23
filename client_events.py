@@ -1,7 +1,7 @@
 import datetime
 
 from event_helper import get_event_for_opf, get_event_for_nalog, get_event_for_tags
-from eventready_helper import get_ready, check_event_ready, change_status
+from eventready_helper import get_ready, check_event_ready, change_status_event
 from eventstatus_helper import st_ok,st_notready,st_proof, st_no
 from client_helper import get_client_for_tags,get_client_for_nalog,get_client_for_opf
 
@@ -122,7 +122,7 @@ def get_status_event(client,event):
                 return revent.status
 
     else:
-        change_status(client,event,st_no())
+        change_status_event(client,event,st_no())
         return st_no()
 
 

@@ -1,5 +1,6 @@
 from models import db, Client
 from eventready_helper import del_eventready
+from flask_login import current_user
 
 
 # add new client
@@ -14,6 +15,9 @@ def addClient(client_name,
 
       # создаем клиента
       client = Client()
+
+      client.company = current_user.company
+      client.user.append(current_user)
 
       # проверки и занесение параметров
       if client_name:
@@ -107,7 +111,13 @@ def delClient(client):
 
 # получить всех клиетов
 def get_all_clients():
-    return Client.query.all()
+    # return Client.query.all()
+    clients = Client.query.filter(Client.company == current_user.company).all()
+    result = []
+    for client in clients:
+        if current_user in client.user:
+            result.append(client)
+    return result
 
 # получить определенного клиента по id
 def get_client(clientid):

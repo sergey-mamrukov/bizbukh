@@ -1,13 +1,19 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, LoginManager
+
+
 
 db = SQLAlchemy()
+login_manager = LoginManager()
+
 
 # ----------------- Таблицы для связи многие ко многим для клиента -----------------
 # Вспомогательная таблица тэги + клиент
 tags = db.Table('tags', db.Column('tag_id', db.Integer, db.ForeignKey("tag.id")),
                   db.Column('client_id', db.Integer, db.ForeignKey("client.id")))
 
-
+users = db.Table('users', db.Column('user_id', db.Integer, db.ForeignKey("user.id")),
+                    db.Column('client_id',db.Integer, db.ForeignKey('client.id')))
 
 # ----------------- Таблицы для связи многие ко многим для события -----------------
 
@@ -20,6 +26,7 @@ etags = db.Table('etags', db.Column('tag_id', db.Integer, db.ForeignKey("tag.id"
 # Вспомогательная таблица события + налог
 enalogs = db.Table('enalogs', db.Column('sysnalog_id', db.Integer, db.ForeignKey("systnalog.id")),
                     db.Column('event_id',db.Integer, db.ForeignKey('event.id')))
+
 
 
 
@@ -89,6 +96,16 @@ class Client(db.Model):
     tag = db.relationship('Tag', secondary=tags,
                                backref=db.backref('clients', lazy='dynamic'))
 
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+    company = db.relationship('Company', backref=db.backref("cl-company"))
+
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # user = db.relationship('User', backref=db.backref("user", lazy='dynamic'))
+    user = db.relationship('User', secondary= users,
+                          backref=db.backref('clients', lazy='dynamic'))
+
+
+
 
 
 
@@ -124,6 +141,41 @@ class PersonalEvent(db.Model):
 
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     client = db.relationship('Client', backref=db.backref("pe-client"))
+
+    # company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+    # company = db.relationship('Company', backref=db.backref("company"))
+    #
+    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # user = db.relationship('User', backref=db.backref("user"))
+
+
+
+# Модель компании (бухфирмы)
+class Company(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company_name = db.Column(db.Text())
+
+
+
+
+@login_manager.user_loader
+def load_user(id):
+    return db.session.query(User).get(id)
+
+
+# # Модель пользователя
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    login = db.Column(db.String())
+    password = db.Column(db.String())
+    possition = db.Column(db.String())
+
+
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+    company = db.relationship('Company', backref=db.backref("us-company"))
+
+
+
 
 
 

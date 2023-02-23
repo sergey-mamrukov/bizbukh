@@ -1,5 +1,5 @@
 from client_events import get_event_on_client_day
-from eventstatus_helper import *
+from eventstatus_helper import st_no,st_ok,st_notready,st_proof
 from client_events import get_client_event_all,get_status_event,get_client_personalevent_date_all,get_client_personalevent_all
 
 

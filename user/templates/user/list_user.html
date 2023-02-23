@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title_bread %} Список пользователей{% endblock %}
+{% block linkname_bread %} {{current_user.login}} - {{current_user.possition}}{% endblock %}
+
+
+<a href = "/user/adduser">Создать пользователя</a>
+{% block content %}
+
+
+{%for user in users%}
+<p>id:{{user.id}} - login:{{user.login}}</p>
+<a href = "/user/{{user.id}}">{{user.login}}</a>
+{%endfor%}
+
+
+
+{% endblock %}
