@@ -67,8 +67,21 @@ app.register_blueprint(user, url_prefix='/user')
 def index():
     if current_user.is_anonymous:
         return redirect(url_for("login"))
-    company = current_user.company
-    return render_template("index.html", company = company)
+
+    if current_user.possition == "user":
+        company = current_user.company
+        return render_template("user.html", company=company)
+
+    if current_user.possition == "admin":
+        company = current_user.company
+        return render_template("admin.html", company=company)
+
+    if current_user.possition == "super-admin":
+        company = current_user.company
+        return render_template("super-admin.html", company=company)
+
+
+    return redirect(url_for("login"))
 
 
 
@@ -177,12 +190,7 @@ def ajax2():
     clients = get_all_clients()
     for client in clients:
         events.extend(get_client_event_all(client))
-        if client.client_datazp != 0:
-            info.append(get_zp_info("Зарплата полное название","Зарплата", client.client_datazp))
 
-        if client.client_dataavansa != 0:
-
-            info.append(get_zp_info("Аванс полное название","Аванс", client.client_dataavansa))
 
     resevents = list(set(events))
 

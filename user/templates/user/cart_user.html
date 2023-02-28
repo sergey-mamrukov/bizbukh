@@ -7,5 +7,9 @@
 
 <a href = "/user/del/{{user.id}}">Удалить пользователя</a>
 
+{%for client in clients%}
+    <p> {{client.client_name}}</p>
+{%endfor%}
+
 
 {% endblock %}

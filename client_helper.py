@@ -7,11 +7,11 @@ from flask_login import current_user
 def addClient(client_name,
               client_description,
               client_inn,
-              client_datazp,
-              client_dataavansa,
               opf,
               nalog,
-              tags):
+              tags,
+              company,
+              users):
 
       # создаем клиента
       client = Client()
@@ -33,19 +33,18 @@ def addClient(client_name,
       else:
             client.client_description = ""
 
-      if client_dataavansa and client_dataavansa != 0:
-            client.client_dataavansa = client_dataavansa
-      else:
-            client.client_dataavansa = 0
-
-      if client_datazp and client_datazp != 0:
-            client.client_datazp = client_datazp
-      else:
-            client.client_datazp = 0
 
       client.opf = opf
       client.nalog = nalog
       client.tag[:] = tags
+
+      client.company = company
+
+      # if current_user not  in users:
+      #     client.user.append(current_user)
+
+      client.user[:] = users
+
 
       # добавление клиента в базу
       db.session.add(client)
@@ -98,12 +97,17 @@ def editClient(client, client_name,
       client.nalog = nalog
       client.tag[:] = tags
 
+
+
       db.session.commit()
 
 
 # del client
 def delClient(client):
       del_eventready(client)
+      client.company = None
+      # client.user[:] = []
+      # db.session.commit()
 
       db.session.delete(client)
       db.session.commit()
@@ -112,10 +116,11 @@ def delClient(client):
 # получить всех клиетов
 def get_all_clients():
     # return Client.query.all()
+
     clients = Client.query.filter(Client.company == current_user.company).all()
     result = []
     for client in clients:
-        if current_user in client.user:
+        if current_user in client.user or current_user.possition == "admin":
             result.append(client)
     return result
 
@@ -152,3 +157,7 @@ def get_client_for_tags(tags):
                 if tag in client.tag:
                     clients.append(client)
     return clients
+
+# def getClentsForCompany(company):
+#     clients = get_all_clients()
+#     return clients

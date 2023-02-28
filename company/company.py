@@ -7,6 +7,6 @@ company = Blueprint('company', __name__, template_folder='templates')
 
 @company.route("/")
 def companyPage():
-    clients = getClientsForCompany(current_user.company.id)
+    clients = getClientsForCompany(current_user.company)
     print(clients)
-    return render_template("company/company_page.html", clients = clients)
+    return render_template("company/company_page.html")

@@ -18,3 +18,8 @@ def getClientsForCompany(company):
     clients = Client.query.filter(Client.company == company).all()
     return clients
 
+def delCompany(company):
+    db.session.delete(company)
+    db.session.commit()
+
+

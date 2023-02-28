@@ -97,11 +97,9 @@ class Client(db.Model):
                                backref=db.backref('clients', lazy='dynamic'))
 
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    company = db.relationship('Company', backref=db.backref("cl-company"))
+    company = db.relationship('Company', cascade="all,delete", backref=db.backref("cl-company"))
 
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # user = db.relationship('User', backref=db.backref("user", lazy='dynamic'))
-    user = db.relationship('User', secondary= users,
+    user = db.relationship('User', secondary= users,cascade="all,delete",
                           backref=db.backref('clients', lazy='dynamic'))
 
 
@@ -142,12 +140,6 @@ class PersonalEvent(db.Model):
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     client = db.relationship('Client', backref=db.backref("pe-client"))
 
-    # company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    # company = db.relationship('Company', backref=db.backref("company"))
-    #
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # user = db.relationship('User', backref=db.backref("user"))
-
 
 
 # Модель компании (бухфирмы)
@@ -172,7 +164,7 @@ class User(db.Model, UserMixin):
 
 
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    company = db.relationship('Company', backref=db.backref("us-company"))
+    company = db.relationship('Company', cascade="all,delete", backref=db.backref("us-company"))
 
 
 

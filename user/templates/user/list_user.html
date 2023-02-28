@@ -1,18 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title_bread %} Список пользователей{% endblock %}
-{% block linkname_bread %} {{current_user.login}} - {{current_user.possition}}{% endblock %}
+{% block title_bread %} Список пользователей комании - {% endblock %}
+{% block linkname_bread %} {{current_user.company.company_name}}{% endblock %}
 
 
-<a href = "/user/adduser">Создать пользователя</a>
 {% block content %}
+<div class="mt-3 mb-3">
+    <a href = "/user/adduser">Создать пользователя</a>
+</div>
 
+<table class = "table">
+    <tr>
+        <th>Логин</th>
+        <th>Пароль</th>
+    </tr>
 
-{%for user in users%}
-<p>id:{{user.id}} - login:{{user.login}}</p>
-<a href = "/user/{{user.id}}">{{user.login}}</a>
-{%endfor%}
-
+    {%for user in users%}
+        {%if not current_user == user%}
+            <tr>
+                <td><a href = "/user/{{user.id}}" >{{user.login}}</a></td>
+                <td>{{user.password}}</td>
+            </tr>
+        {%endif%}
+    {%endfor%}
+</table>
 
 
 {% endblock %}

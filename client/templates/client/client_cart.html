@@ -5,8 +5,8 @@
 
 {% block content %}
 
-{{client.user}}
-<div class="card">
+<a href = "/client/clientdel/{{client.id}}">удалить компанию</a>
+<div class="card mt-3">
     <div class="card-header">
         <h6>Организация</h6>
     </div>
@@ -36,12 +36,11 @@
         <label class = 'form-label'>Комментарий</label>
         <input class="form-control mb-3" type="text" placeholder= '{{client.client_description}}' disabled="">
 
-        <h6>Данные по зарплате</h6>
+        <h6>Доступ пользователей</h6>
         <div class="row">
-            <div class="col"><label class = 'form-label'>Дата ЗП</label>
-                <input class="form-control mb-3" type="text" placeholder= '{{client.client_datazp}}' disabled=""></div>
-            <div class="col"><label class = 'form-label'>Дата аванса</label>
-                <input class="form-control mb-3" type="text" placeholder= '{{client.client_dataavansa}}' disabled=""></div>
+            {%for user in client.user%}
+            <span>{{user.login}} </span>
+            {%endfor%}
         </div>
 
         {%if client.tag%}
@@ -55,7 +54,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">
         <h6>Все события</h6>
     </div>
@@ -79,7 +78,7 @@
 
     </div>
 </div>
-<div class="row">
+<div class="row mt-3">
     <div class="col">
         <div class="card">
             <div class="card-header">

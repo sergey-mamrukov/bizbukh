@@ -1,3 +1,5 @@
+from models import db
+
 from flask import Blueprint, url_for, render_template, redirect, request,abort
 
 from client_helper import addClient, editClient, delClient, get_all_clients, get_client
@@ -10,7 +12,8 @@ from client_events import get_client_event_all,get_client_event_ready, get_clien
 from eventready_helper import change_status_event
 from eventstatus_helper import st_ok,st_proof,st_notready, st_no
 from flask_login import current_user
-from models import db
+from user_helper import getUsersForCompany
+
 
 
 client = Blueprint('client', __name__, template_folder='templates')
@@ -34,9 +37,8 @@ def clientcart(clientid):
 
     client = get_client(clientid)
 
-    # client.user.append(current_user)
-    # db.session.commit()
-
+    if current_user not in client.user:
+        abort(404)
 
     all_events = []
     for event in get_client_event_all(client):
@@ -64,6 +66,10 @@ def addclient():
     nalogs = get_all_nalog()
     opfs = get_all_opf()
 
+    company = current_user.company
+    users = getUsersForCompany(company)
+
+
 
     # парсим форму
     clientTags = []
@@ -72,12 +78,17 @@ def addclient():
         if (request.form.get(f'checktag_{tag.id}')) == 'on':
             clientTags.append(tag)
 
+
+    clientUsers = []
+
+    for user in users:
+        if (request.form.get(f'checkuser_{user.id}')) == 'on':
+            clientUsers.append(user)
+
     client_name = request.form.get('name')
     client_description = request.form.get('description')
     client_inn = request.form.get('inn')
 
-    client_datazp = request.form.get('datazp')
-    client_dataavansa = request.form.get('dataavans')
 
     opf = get_opf(request.form.get('radioopf'))
     nalog = get_nalog(request.form.get('radionalog'))
@@ -85,12 +96,13 @@ def addclient():
     # обрабатываем метод post
     if request.method == 'POST':
         try:
-            addClient(client_name,client_description,client_inn, client_datazp,client_dataavansa,opf,nalog,clientTags)
+            addClient(client_name,client_description,client_inn,opf,nalog,clientTags,company,clientUsers)
             # редиректим на список клиентов
+
             return redirect(url_for('client.clientlist'))
         except: print('error')
 
-    return render_template("client/add_client.html", tags = tags, nalogs=nalogs, opfs =opfs)
+    return render_template("client/add_client.html", tags = tags, nalogs=nalogs, opfs =opfs, users = users)
 
 # Редактирование организации
 @client.route('/clientedit/<int:clientid>', methods = ['GET', 'POST'])
@@ -102,7 +114,6 @@ def clientedit(clientid):
     client = get_client(clientid)
 
     if current_user not in client.user:
-        # pass
         abort(404)
 
     tags = get_all_tag()
@@ -144,6 +155,9 @@ def clientdel(clientid):
         return redirect(url_for("login"))
 
     client = get_client(clientid)
+    if current_user not in client.user:
+        abort(404)
+
     delClient(client)
     return redirect(url_for('client.clientlist'))
 
@@ -158,6 +172,9 @@ def eventok(eventid, clientid):
         return redirect(url_for("login"))
 
     client = get_client(clientid)
+    if current_user not in client.user:
+        abort(404)
+
     event = get_event(eventid)
     status = st_ok()
     change_status_event(client,event,status)
@@ -171,6 +188,9 @@ def eventno(eventid, clientid):
         return redirect(url_for("login"))
 
     client = get_client(clientid)
+    if current_user not in client.user:
+        abort(404)
+
     event = get_event(eventid)
     change_status_event(client,event, st_no())
     return redirect(url_for('client.clientcart',clientid = clientid))
@@ -182,6 +202,8 @@ def eventproof(eventid, clientid):
         return redirect(url_for("login"))
 
     client = get_client(clientid)
+    if current_user not in client.user:
+        abort(404)
     event = get_event(eventid)
     status = st_proof()
     change_status_event(client,event,status)
@@ -194,6 +216,9 @@ def eventnotready(eventid, clientid):
         return redirect(url_for("login"))
 
     client = get_client(clientid)
+    if current_user not in client.user:
+        abort(404)
+
     event = get_event(eventid)
     status = st_notready()
     change_status_event(client,event,status)

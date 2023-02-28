@@ -15,12 +15,36 @@
         <div class="container-xxl">
             <div class="d-flex flex-wrap">
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/calendar" class="nav-link px-2 text-white">Календарь</a></li>
-                    <li><a href="/calendar/chart" class="nav-link px-2 text-white">График</a></li>
-                    <li><a href="/event" class="nav-link px-2 text-white">События</a></li>
-                    <li><a href="/client" class="nav-link px-2 text-white">Организации</a></li>
-                    <li><a href="/user" class="nav-link px-2 text-white">Пользователи</a></li>
+                     {%if current_user.is_authenticated and current_user.possition == "user"%}
+                        <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
+                        <li><a href="/calendar" class="nav-link px-2 text-white">Календарь</a></li>
+                        <li><a href="/calendar/chart" class="nav-link px-2 text-white">График</a></li>
+                    {%endif%}
+
+                    {%if current_user.is_authenticated and current_user.possition == "admin"%}
+                        <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
+                        <li><a href="/calendar" class="nav-link px-2 text-white">Календарь</a></li>
+                        <li><a href="/calendar/chart" class="nav-link px-2 text-white">График</a></li>
+                        <li><a href="/client" class="nav-link px-2 text-white">Организации</a></li>
+                        <li><a href="/user" class="nav-link px-2 text-white">Пользователи</a></li>
+                        <li><a href="/company" class="nav-link px-2 text-white">Моя компания</a></li>
+                    {%endif%}
+
+                     {%if current_user.is_authenticated and current_user.possition == "super-admin"%}
+                        <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
+                        <li><a href="/calendar" class="nav-link px-2 text-white">Календарь</a></li>
+                        <li><a href="/calendar/chart" class="nav-link px-2 text-white">График</a></li>
+                        <li><a href="/client" class="nav-link px-2 text-white">Организации</a></li>
+                        <li><a href="/user" class="nav-link px-2 text-white">Пользователи</a></li>
+                    {%endif%}
+
                 </ul>
+
+                {%if current_user.is_authenticated%}
+                <div class="text-end me-5 mt-1 text-white">
+                    {{current_user.login}}
+                </div>
+                {%endif%}
 
                 {%if not current_user.is_authenticated%}
                 <div class="text-end">
