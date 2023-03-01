@@ -7,9 +7,41 @@
 
 <a href = "/user/del/{{user.id}}">Удалить пользователя</a>
 
-{%for client in clients%}
-    <p> {{client.client_name}}</p>
-{%endfor%}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Информация о пользователе</h3>
+    </div>
+    <div class="card-body">
+        <div class="datagrid">
+            <div class="datagrid-item">
+                <div class="datagrid-title">Фамилия</div>
+                <div class="datagrid-content">{{user.surname}}</div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Имя</div>
+                <div class="datagrid-content">{{user.name}}</div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Должность</div>
+                <div class="datagrid-content">
+                    {%if user.possition == 'user'%}
+                    Бухгалтер
+                    {%endif%}
+                </div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Логин (почта)</div>
+                <div class="datagrid-content">{{user.login}}</div>
+            </div>
+            <div class="datagrid-item">
+                <div class="datagrid-title">Пароль</div>
+                <div class="datagrid-content">{{user.password}}</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
 
 {% endblock %}

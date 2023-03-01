@@ -8,7 +8,7 @@ let spinner = document.createElement('div');
     spinner.classList.add('spinner-border','position-absolute','top-50','start-50');
     spinner.setAttribute("role","status");
 
-let cardbody = document.querySelector(".cardbody");
+let cardbody = document.querySelector(".card-body");
 
 changeButtonName();
 drawevents();

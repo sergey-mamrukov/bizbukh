@@ -162,6 +162,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String())
     possition = db.Column(db.String())
 
+    name = db.Column(db.String())
+    surname = db.Column(db.String())
+
 
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     company = db.relationship('Company', cascade="all,delete", backref=db.backref("us-company"))

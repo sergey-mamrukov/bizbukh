@@ -46,6 +46,26 @@ async function drawinfo(){
     let response = await fetch(url); 
     let info = await response.json(); // читаем ответ в формате JSON
 
+    if(info.length == 0){ 
+        spinner.remove();
+        cardbody.innerHTML = `
+        <div class="alert border-0 bg-danger alert-dismissible fade show py-2">
+            <div class="d-flex align-items-center">
+                <div class="fs-3 text-light-danger"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                <div class="ms-3">
+                    <div class="text-light">Недостаточно данных. Добавьте компанию или измените параметры компании</div>
+                </div>
+            </div>
+      </div>`
+
+      let btnprev = document.querySelector(".prev")
+      let btnnext = document.querySelector(".next")
+      btnnext.remove();
+      btnprev.remove();
+      let dateinfo = document.querySelector(".dateinfo");
+      dateinfo.remove();
+        return;
+    }
 
     let date = new Date(y,m+1,0);
     let count_day = date.getDate();

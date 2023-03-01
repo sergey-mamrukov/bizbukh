@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, render_template, jsonify, request, redirect,url_for
+from flask import Flask, render_template, jsonify, request, redirect,url_for, flash
 from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
 from flask_login import current_user, login_user, logout_user
@@ -15,7 +15,7 @@ from client_events import get_client_event_all,get_event_clients_all,get_status_
 from personalevent_helper import get_personal_event, changestatusPersonalEvent,delPersonalEvent, addPersonalEvent
 
 from company_helper import addCompany, getCompany
-from user_helper import addUser
+from user_helper import addUser, checkUser
 
 
 
@@ -90,20 +90,30 @@ def registration():
     if request.method == 'POST':
         company_name = request.form.get("company_name")
         login = request.form.get("login")
+
+        name = request.form.get("name")
+        surname = request.form.get("surname")
+
         password = request.form.get("password")
-        possition = 'admin'
+        password2 = request.form.get("password2")
 
-        company = addCompany(company_name)
-
-        addUser(login,password,company, possition)
-
-        print(f"name = {company_name}, login = {login}, password = {password}")
-
-        return redirect(url_for("login"))
-
+        if not company_name:
+            flash("Название компании должно быть заполнено")
+        elif not name:
+            flash("Поле фамилия должно быть заполнено!")
+        elif not surname:
+            flash("Поле фамилия должно быть заполено")
+        elif not login:
+            flash("Некорректный email")
+        elif not (password2 == password and len(password) >= 8):
+            flash("Пароль должен быть не менее 8 символов! Пароли должны совпадать!")
+        else:
+            possition = 'admin'
+            company = addCompany(company_name)
+            addUser(login, password, company, possition, name, surname)
+            return redirect(url_for("login"))
 
     return render_template("registration.html")
-
 
 
 @app.route("/login", methods = ['POST', 'GET'])
@@ -119,12 +129,33 @@ def login():
         if user and user.password == password:
             login_user(user)
             return (redirect(url_for("index")))
-        else: print ("error login or password")
-
-        print(f"login = {login}, password = {password}")
-
+        else:
+            flash("Неправильный email или пароль!")
 
     return render_template("authorization.html")
+
+
+
+
+@app.route("/forgotpassword", methods = ['POST', 'GET'])
+def forgotpassword():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+
+    # if request.method == 'POST':
+    #     login = request.form.get("login")
+    #     password = request.form.get("password")
+    #
+    #     user = User.query.filter(User.login == login).first()
+    #     if user and user.password == password:
+    #         login_user(user)
+    #         return (redirect(url_for("index")))
+    #     else: print ("error login or password")
+    #
+    #     print(f"login = {login}, password = {password}")
+
+
+    return render_template("forgotpassword.html")
 
 
 @app.route('/logout')

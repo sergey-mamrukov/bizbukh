@@ -23,10 +23,18 @@
                         <h5 class="card-header md-2">Организационно-правовая форма</h5>
                         <div class="card-body">
                             {%for opf in opfs%}
+
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="radioopf" id="radioopf_{{opf.id}}" value="{{opf.id}}">
+                                <input class="form-check-input"
+                                       {%if client.opf == opf%}
+                                       checked
+                                       {%endif%}
+                                       type="radio" name="radioopf" id="radioopf_{{opf.id}}" value="{{opf.id}}">
                                 <label class="form-check-label" for="radioopf_{{opf.id}}">{{opf.opf_name}}</label>
                             </div>
+
+
+
                             {%endfor%}
                         </div>
                     </div>
@@ -37,18 +45,38 @@
                             {%for nalog in nalogs%}
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="radionalog" id="radionalog_{{nalog.id}}" value="{{nalog.id}}">
+                                <input class="form-check-input" type="radio"
+
+                                       {%if client.nalog == nalog%}
+                                       checked
+                                       {%endif%}
+
+                                       name="radionalog" id="radionalog_{{nalog.id}}" value="{{nalog.id}}">
                                 <label class="form-check-label" for="radionalog_{{nalog.id}}">{{nalog.nalog_name}}</label>
                             </div>
                             {%endfor%}
                         </div>
                     </div>
 
-                     <div class="card mt-2">
-                        <h5 class="card-header md-2">Зарплата</h5>
+                    <div class="card mt-2">
+                        <h5 class="card-header md-2">Доступ пользователей</h5>
                         <div class="card-body">
-                            <input class="form-control mb-3"  name = 'datazp' value="{{client.client_datazp}}">
-                            <input class="form-control mb-3"  name = 'dataavans' value="{{client.client_dataavansa}}">
+                            {%for user in users%}
+                            <div class="form-check form-switch form-check-inline">
+                                <input class="form-check-input" type="checkbox"
+                                       {%if user in client.user%}
+                                       checked
+                                       {%endif%}
+
+                                       {%if user.possition=='admin'%}
+                                       disabled
+                                       checked
+                                       {%endif%}
+
+                                       id="checkuser_{{user.id}}" name = 'checkuser_{{user.id}}'>
+                                <label class="form-check-label" for="checkuser_{{user.id}}">{{user.login}}</label>
+                            </div>
+                            {%endfor%}
                         </div>
                     </div>
 
@@ -57,7 +85,11 @@
                         <div class="card-body">
                             {%for tag in tags%}
                             <div class="form-check form-switch form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="checktag_{{tag.id}}" name = 'checktag_{{tag.id}}'>
+                                <input class="form-check-input" type="checkbox"
+                                       {%if tag in client.tag%}
+                                       checked
+                                       {%endif%}
+                                       id="checktag_{{tag.id}}" name = 'checktag_{{tag.id}}'>
                                 <label class="form-check-label" for="checktag_{{tag.id}}">{{tag.tag_name}}</label>
                             </div>
                             {%endfor%}

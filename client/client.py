@@ -37,7 +37,7 @@ def clientcart(clientid):
 
     client = get_client(clientid)
 
-    if current_user not in client.user:
+    if current_user not in client.user and current_user.possition != "admin":
         abort(404)
 
     all_events = []
@@ -68,6 +68,7 @@ def addclient():
 
     company = current_user.company
     users = getUsersForCompany(company)
+
 
 
 
@@ -113,7 +114,10 @@ def clientedit(clientid):
     # ищем клиента по id
     client = get_client(clientid)
 
-    if current_user not in client.user:
+    company = current_user.company
+    users = getUsersForCompany(company)
+
+    if current_user not in client.user and current_user.possition != "admin":
         abort(404)
 
     tags = get_all_tag()
@@ -127,26 +131,29 @@ def clientedit(clientid):
         if (request.form.get(f'checktag_{tag.id}')) == 'on':
             clientTags.append(tag)
 
+    clientUsers = []
+
+    for user in users:
+        if (request.form.get(f'checkuser_{user.id}')) == 'on':
+            clientUsers.append(user)
+
     client_name = request.form.get('name')
     client_description = request.form.get('description')
     client_inn = request.form.get('inn')
 
-    client_datazp = request.form.get('datazp')
-    client_dataavansa = request.form.get('dataavans')
 
     opf = get_opf(request.form.get('radioopf'))
     nalog = get_nalog(request.form.get('radionalog'))
 
     if request.method == 'POST':
         try:
-            editClient(client, client_name, client_description, client_inn, client_datazp, client_dataavansa, opf, nalog,
-                      clientTags)
+            editClient(client, client_name, client_description, client_inn, opf, nalog,clientTags, clientUsers)
             # редиректим на список клиентов
             return redirect(url_for('client.clientlist'))
         except:
             print('error')
 
-    return render_template("client/edit_client.html", tags = tags, nalogs=nalogs, opfs =opfs, client=client)
+    return render_template("client/edit_client.html", tags = tags, nalogs=nalogs, opfs =opfs, client=client, users = users)
 
 # Удаление организации
 @client.route('/clientdel/<int:clientid>/')
@@ -155,7 +162,7 @@ def clientdel(clientid):
         return redirect(url_for("login"))
 
     client = get_client(clientid)
-    if current_user not in client.user:
+    if current_user not in client.user and current_user.possition != "admin":
         abort(404)
 
     delClient(client)

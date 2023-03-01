@@ -1,9 +1,8 @@
-from models import db, User, Company, Client
-from flask_login import current_user
+from models import db, User
 from client_helper import get_all_clients, delClient
 from company_helper import delCompany
 
-def addUser(login, password, company, possition):
+def addUser(login, password, company, possition, name, surname):
     user = User()
 
     user.login = login
@@ -11,8 +10,22 @@ def addUser(login, password, company, possition):
     user.company = company
     user.possition = possition
 
+    if(name):
+        user.name = name
+    else: user.name = "Нет имени"
+
+    if(surname):
+        user.surname = surname
+    else: user.surname = "Нет фамилии"
+
+
     db.session.add(user)
     db.session.commit()
+
+def checkUser(login):
+    if User.query.filter(User.login == login):
+        return True
+    else: return  False
 
 def delUser(user):
     db.session.delete(user)
@@ -34,8 +47,6 @@ def getClientsForUser(user):
             result.append(client)
 
     return result
-
-
 
 
 def delaccaunt(company):

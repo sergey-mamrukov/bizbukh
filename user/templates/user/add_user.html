@@ -1,24 +1,64 @@
 {% extends 'base.html' %}
 
-{% block title_bread %} Создание пользователя{% endblock %}
+{% block title_bread %}{% endblock %}
 {% block linkname_bread %}{% endblock %}
 
 {% block content %}
 
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Создание пользователя</h5>
+    </div>
+    <div class="card-body">
 
-<div class="mx-auto" style="width: 500px;">
-<form method="POST" class = "mt-5 ">
 
-        <div class="mt-2 form-floating">
-            <input type="text" class="form-control" name="login" >
-            <label>Логин</label>
+        <form method="POST" class = "">
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="mb-3">
+                        <label class="form-label">Логин пользователя (email)</label>
+                        <input type="text" class="form-control" name="login" placeholder="ivan@mail.ru">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Пароль</label>
+                        <input type="text" class="form-control" name="password" placeholder="пароль" value="{{pwd}}">
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Добавить пользователя</button>
+                </div>
+
+                <div class="col-xl-6">
+                    <div class="mb-3">
+                        <label class="form-label">Фамилия</label>
+                        <input type="text" class="form-control" name="surname" placeholder="Иванов">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Имя</label>
+                        <input type="text" class="form-control" name="name" placeholder="Иван">
+                    </div>
+
+
+                </div>
+            </div>
+        </form>
+                {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger pl-4 " role="alert">
+            <div class="text-muted">{{ message }}</div>
         </div>
-        <div class="mt-2 form-floating">
-            <input type="text" class="form-control" name="password">
-            <label>Пароль</label>
-        </div>
 
-        <button class="mt-3 w-100 btn btn-lg btn-primary" type="submit">Добавить пользователя</button>
-    </form>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+
+    </div>
+
+
+
 </div>
+
 {% endblock %}

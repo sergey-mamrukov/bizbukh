@@ -50,8 +50,15 @@
                         <div class="card-body">
                             {%for user in users%}
                             <div class="form-check form-switch form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="checkuser_{{user.id}}" name = 'checkuser_{{user.id}}'>
-                                <label class="form-check-label" for="checkuser_{{user.id}}">{{user.login}}</label>
+                                <input class="form-check-input" type="checkbox"
+                                       {%if user.possition=='admin'%}
+                                       disabled
+                                       checked
+                                       {%endif%}
+
+
+                                       id="checkuser_{{user.id}}" name = 'checkuser_{{user.id}}'>
+                                <label class="form-check-label" for="checkuser_{{user.id}}">{{user.name}} {{user.surname}}</label>
                             </div>
                             {%endfor%}
                         </div>

@@ -56,11 +56,10 @@ def addClient(client_name,
 def editClient(client, client_name,
               client_description,
               client_inn,
-              client_datazp,
-              client_dataavansa,
               opf,
               nalog,
-              tags):
+              tags,
+              users):
 
       # обнуление тэгов, опф и налога
       client.opf = None
@@ -83,19 +82,12 @@ def editClient(client, client_name,
       else:
             client.client_description = ""
 
-      if client_dataavansa and client_dataavansa != 0:
-            client.client_dataavansa = client_dataavansa
-      else:
-            client.client_dataavansa = 0
 
-      if client_datazp and client_datazp != 0:
-            client.client_datazp = client_datazp
-      else:
-            client.client_datazp = 0
 
       client.opf = opf
       client.nalog = nalog
       client.tag[:] = tags
+      client.user[:] = users
 
 
 
