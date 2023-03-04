@@ -29,6 +29,23 @@
                             <h3 class="m-0 mb-1"><a href="/user/{{user.id}}">{{user.name}} {{user.surname}}</a></h3>
                             <div class="text-muted">Администратор</div>
                         </div>
+                         <div class="d-flex card-inactive">
+                        <a href="" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7"></path>
+                            </svg>
+                            Перейти</a>
+                        <a href="" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                                <path d="M13.5 6.5l4 4"></path>
+                            </svg>
+                            Изменить</a>
+
+                    </div>
                     </div>
                 </div>
                 {%endif%}
@@ -41,6 +58,23 @@
                             <h3 class="m-0 mb-1"><a href="/user/{{user.id}}">{{user.name}} {{user.surname}}</a></h3>
                             <div class="text-muted">Бухгалтер</div>
                         </div>
+                         <div class="d-flex">
+                        <a href="/user/{{user.id}}" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7"></path>
+                            </svg>
+                            Перейти</a>
+                        <a href="/user/edit/{{user.id}}" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                                <path d="M13.5 6.5l4 4"></path>
+                            </svg>
+                            Изменить</a>
+
+                    </div>
                     </div>
                 </div>
                 {%endif%}

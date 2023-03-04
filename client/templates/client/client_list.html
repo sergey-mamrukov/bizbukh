@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title_bread %}Организации{% endblock %}
+{% block title_bread %}{% endblock %}
 {% block linkname_bread %}{% endblock %}
 
 {% block content %}
@@ -21,52 +21,39 @@
 
     </div>
     <div class="card-body">
-        <table class="table table-vcenter card-table">
-            <thead class="">
-            <tr>
-                <th>Организация</th>
-                <th>Действия</th>
-            </tr>
-            </thead>
+        <div class="row row-cards">
+            {%for client in clients%}
+            <div class="col-md-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body p-4">
 
-            <tbody>
-            {% for client in clients%}
-
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center gap-3 cursor-pointer">
-                        <a href = '{{client.id}}' class="mb-0">{{client.client_name}}</a>
+                        <div class=" h3 m-0 mb-1">{{client.client_name}}</div>
+                        <div class="text-muted mt-3">ИНН: {{client.inn}}</div>
+                        <div class="text-muted">{{client.opf.opf_name}}</div>
+                        <div class="text-muted">{{client.nalog.nalog_name}}</div>
                     </div>
-                </td>
+                    <div class="d-flex">
+                        <a href="/client/{{client.id}}" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7"></path>
+                            </svg>
+                            Перейти</a>
+                        <a href="/client/clientedit/{{client.id}}" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                                <path d="M13.5 6.5l4 4"></path>
+                            </svg>
+                            Изменить</a>
 
-
-                <td>
-                    <div class="btn-list flex-nowrap">
-                        <a href="/client/clientedit/{{client.id}}" class="btn">
-                            Изменить
-                        </a>
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown" aria-expanded="false">
-                                Действия
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" style="">
-                                <a class="dropdown-item" href="/client/clientdel/{{client.id}}">
-                                    Удалить
-                                </a>
-                            </div>
-                        </div>
                     </div>
-                </td>
-            </tr>
+                </div>
+            </div>
+            {%endfor%}
 
-            {% endfor %}
-
-
-
-
-            </tbody>
-        </table>
-
+        </div>
     </div>
 </div>
 

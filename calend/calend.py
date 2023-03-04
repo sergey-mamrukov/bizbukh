@@ -10,9 +10,14 @@ calend = Blueprint('calend', __name__, template_folder='templates')
 def calendarwiev():
     return render_template('calendar/calendar.html')
 
+
 @calend.route('/chart')
 def chartview():
     return render_template('calendar/chart.html')
+
+@calend.route('/chart/2')
+def chartview2():
+    return render_template('calendar/chart2.html')
 
 @calend.route('/change/<int:eventid>')
 def eventview(eventid):

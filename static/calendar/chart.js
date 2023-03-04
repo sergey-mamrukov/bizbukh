@@ -77,7 +77,6 @@ async function drawevents(){
 }
 
 
-
 async function drawinfo(){
     url = `http://127.0.0.1:5000/ajax/get`
 
@@ -183,13 +182,6 @@ async function drawinfo(){
     }
     
 }//вывод информации в таблицу
-
-
-
-
-
-
-
 
 
 

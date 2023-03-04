@@ -9,21 +9,25 @@ def addUser(login, password, company, possition, name, surname):
     user.password = password
     user.company = company
     user.possition = possition
-
-    if(name):
-        user.name = name
-    else: user.name = "Нет имени"
-
-    if(surname):
-        user.surname = surname
-    else: user.surname = "Нет фамилии"
-
+    user.name = name
+    user.surname = surname
 
     db.session.add(user)
     db.session.commit()
 
+
+def editUser(user, login, password, name, surname):
+    user.login = login
+    user.password = password
+    user.name = name
+    user.surname = surname
+    db.session.commit()
+
+
+
+
 def checkUser(login):
-    if User.query.filter(User.login == login):
+    if User.query.filter(User.login == login).first():
         return True
     else: return  False
 
@@ -57,7 +61,6 @@ def delaccaunt(company):
 
     for user in users:
         delUser(User.query.get(user.id))
-
 
     delCompany(company)
 

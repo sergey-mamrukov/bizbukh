@@ -1,88 +1,85 @@
 {% extends 'base.html' %}
 
-{% block title_bread %} Организация{% endblock %}
-{% block linkname_bread %} Добавлене организации{% endblock %}
+{% block title_bread %}{% endblock %}
+{% block linkname_bread %}{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-xl-10 mx-auto">
-        <div class="card">
-            <div class="card-body">
-                <form method="POST" action="">
-
-                    <div class="card mt-2">
-                        <h5 class="card-header md-2">Название и описание организации</h5>
-                        <div class="card-body">
-                            <input class="form-control mb-3" placeholder="Название организации (обязательное поле)" name = 'name'>
-                            <input class="form-control mb-3" placeholder="ИНН (обязательное поле)" name = 'inn'>
-                            <textarea class="form-control mb-3" rows="2" cols="3" placeholder="Описнаие организации" name = 'description'></textarea>
-                        </div>
-                    </div>
-
-                    <div class="card mt-2">
-                        <h5 class="card-header md-2">Организационно-правовая форма</h5>
-                        <div class="card-body">
-                            {%for opf in opfs%}
-
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="radioopf" id="radioopf_{{opf.id}}" value="{{opf.id}}">
-                                <label class="form-check-label" for="radioopf_{{opf.id}}">{{opf.opf_name}}</label>
-                            </div>
-                            {%endfor%}
-                        </div>
-                    </div>
-
-                    <div class="card mt-2">
-                        <h5 class="card-header md-2">Система налогообложения</h5>
-                        <div class="card-body">
-                            {%for nalog in nalogs%}
-
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="radionalog" id="radionalog_{{nalog.id}}" value="{{nalog.id}}">
-                                <label class="form-check-label" for="radionalog_{{nalog.id}}">{{nalog.nalog_name}}</label>
-                            </div>
-                            {%endfor%}
-                        </div>
-                    </div>
-
-                    <div class="card mt-2">
-                        <h5 class="card-header md-2">Доступ пользователей</h5>
-                        <div class="card-body">
-                            {%for user in users%}
-                            <div class="form-check form-switch form-check-inline">
-                                <input class="form-check-input" type="checkbox"
-                                       {%if user.possition=='admin'%}
-                                       disabled
-                                       checked
-                                       {%endif%}
 
 
-                                       id="checkuser_{{user.id}}" name = 'checkuser_{{user.id}}'>
-                                <label class="form-check-label" for="checkuser_{{user.id}}">{{user.name}} {{user.surname}}</label>
-                            </div>
-                            {%endfor%}
-                        </div>
-                    </div>
 
-                    <div class="card mt-2">
-                        <h5 class="card-header md-2">Тэги организации</h5>
-                        <div class="card-body">
-                            {%for tag in tags%}
-                            <div class="form-check form-switch form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="checktag_{{tag.id}}" name = 'checktag_{{tag.id}}'>
-                                <label class="form-check-label" for="checktag_{{tag.id}}">{{tag.tag_name}}</label>
-                            </div>
-                            {%endfor%}
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary px-5 radius-30">Добавить</button>
-
-                </form>
-            </div>
-
-        </div>
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Добавление организации</h5>
     </div>
+    <div class="card-body">
+        <form method="POST" action="">
+            <div class="row">
+                <div class="col-xl-5">
+                    <div class="mb-3">
+                        <label class="form-label">Название организации</label>
+                        <input type="text" class="form-control" name = 'name' placeholder="ИП Иванов Иван Иванович">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Комментарий</label>
+                        <input type="text" class="form-control" name = 'description' placeholder="Какая-то информация о компании, которая поможет вам">
+                    </div>
+                     <div class="mb-3">
+                        <label class="form-label">Доступ пользователей</label>
+                        {%for user in users%}
+                        <div class="form-check form-switch form-check-inline">
+                            <input class="form-check-input" type="checkbox"
+                                   {%if user.possition=='admin'%}
+                                   disabled
+                                   checked
+                                   {%endif%}
+                                   id="checkuser_{{user.id}}" name = 'checkuser_{{user.id}}'>
+                            <label class="form-check-label" for="checkuser_{{user.id}}">{{user.name}} {{user.surname}}</label>
+                        </div>
+                        {%endfor%}
+                    </div>
+                    <br>
+
+                </div>
+                <div class="col-xl-7">
+                    <div class="mb-3">
+                        <label class="form-label">Параметры организации</label>
+                        {%for tag in tags%}
+                        <div class="form-check form-switch form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="checktag_{{tag.id}}" name = 'checktag_{{tag.id}}'>
+                            <label class="form-check-label" for="checktag_{{tag.id}}">{{tag.tag_name}}</label>
+                        </div>
+                        {%endfor%}
+
+                    </div>
+                        <div class="mb-3">
+                        <label class="form-label">Организационо-правовая форма</label>
+                        {%for opf in opfs%}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radioopf" id="radioopf_{{opf.id}}" value="{{opf.id}}">
+                            <label class="form-check-label" for="radioopf_{{opf.id}}">{{opf.opf_name}}</label>
+                        </div>
+                        {%endfor%}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Система налогообложения</label>
+                        {%for nalog in nalogs%}
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="radionalog" id="radionalog_{{nalog.id}}" value="{{nalog.id}}">
+                            <label class="form-check-label" for="radionalog_{{nalog.id}}">{{nalog.nalog_name}}</label>
+                        </div>
+                        {%endfor%}
+
+                    </div>
+
+                </div>
+            </div>
+                <button type="submit" class="btn btn-primary px-5 radius-30">Добавить</button>
+
+        </form>
+    </div>
+
 </div>
+
+
 
 {% endblock %}

@@ -3,7 +3,7 @@ from flask_login import current_user
 
 from secrets import token_hex
 
-from user_helper import getUsersForCompany,getUser,addUser, getClientsForUser,delUser,delaccaunt
+from user_helper import getUsersForCompany,getUser,addUser, getClientsForUser,delUser,delaccaunt,editUser,checkUser
 
 user = Blueprint("user",__name__,template_folder="templates")
 
@@ -39,12 +39,14 @@ def add_user():
 
         if not login:
             flash("Поле email должно быть заполнено!")
-        if not name:
-            flash("Поле фамилия должно быть заполнено!")
+        elif not name:
+            flash("Поле имя должно быть заполнено!")
         elif not surname:
             flash("Поле фамилия должно быть заполено")
         elif not (password and len(password) >= 8):
             flash("Пароль должен быть не менее 8 символов!")
+        elif checkUser(login):
+            flash("Пользовательс таким email уже существует в системе")
         else:
             addUser(login, password, company, possition, name, surname)
             return redirect(url_for("user.list_user"))
@@ -64,9 +66,38 @@ def cart_user(userid):
     return render_template("user/cart_user.html",user = user, clients = clients)
 
 
-@user.route("/edit/<int:userid>")
-def edit_user():
-    return render_template("user/edit_user.html")
+@user.route("/edit/<int:userid>", methods = ['GET','POST'])
+def edit_user(userid):
+    user = getUser(userid)
+
+    if current_user.possition != "admin":
+        return redirect(url_for("user.list_user"))
+
+    if request.method == 'POST':
+
+        login = request.form.get("login")
+        password = request.form.get("password")
+        name = request.form.get("name")
+        surname = request.form.get("surname")
+
+
+
+        if not login:
+            flash("Поле email должно быть заполнено!")
+        if not name:
+            flash("Поле имя должно быть заполнено!")
+        elif not surname:
+            flash("Поле фамилия должно быть заполено")
+        elif not (password and len(password) >= 8):
+            flash("Пароль должен быть не менее 8 символов!")
+        elif checkUser(login) and user.login != login:
+            flash("Пользовательс таким email уже существует в системе")
+        else:
+            editUser(user,login,password,name,surname)
+            return redirect(url_for("user.list_user"))
+
+
+    return render_template("user/edit_user.html",user=user)
 
 @user.route("/del/<int:userid>")
 def del_user(userid):
@@ -74,7 +105,6 @@ def del_user(userid):
 
     delUser(user)
     return redirect(url_for("user.list_user"))
-
 
 
 
