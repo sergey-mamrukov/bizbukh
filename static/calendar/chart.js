@@ -1,86 +1,180 @@
-let d = new Date() 
+const urlajax = `http://127.0.0.1:5000`;
+let d = new Date()
 let y = d.getFullYear();
-let m = d.getMonth();
+// let m = d.getMonth();
+let m =1;
+/// берем сегодняшнюю дату
 
 let allevents = []
 
-let spinner = document.createElement('div');
-    spinner.classList.add('spinner-border','position-absolute','top-50','start-50');
-    spinner.setAttribute("role","status");
+let place = document.getElementById("chart");
 
-let cardbody = document.querySelector(".card-body");
 
-changeButtonName();
-drawevents();
+let card = `
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title caltitle"></h3>
+        <div class="card-actions">
+            <button onclick = 'btnprev()'class="btn prev"></button>
+            <button onclick = 'btnnext()'class="btn next"></button>
+        </div>
+    </div>
+    <div class="card-body card-body1">
+        <div class="table-responsive">
+            <table class = 'table'>
+                <thead>
+                <tr class = "eventrow"></tr>
+                </thead>
+                <tbody class = "info"></tbody>
+            </table>
+        </div>
+    </div>
+</div>`;
 
-async function drawevents(){
-    url = `http://127.0.0.1:5000/ajax/getallevents`
-    cardbody.appendChild(spinner);
+
+
+let loader = `
+<div class="text-center container-slim mt-3 loader1">
+    <div class="mb-2">
+        <span class=" bg-primary text-white avatar">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hourglass-empty" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M6 20v-2a6 6 0 1 1 12 0v2a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1z"></path>
+        <path d="M6 4v2a6 6 0 1 0 12 0v-2a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1z"></path>
+        </svg>
+        </span>
+
+    </div>
+    <div class="text-muted mb-3">Подождите, данные загружаются</div>
+    <div class="progress progress-sm">
+        <div class="progress-bar progress-bar-indeterminate"></div>
+    </div>
+</div>`;
+
+
+let alertnotdata = `
+<div class="alert alert-danger alert1" role="alert">
+  <h4 class="alert-title">Недостаточно данных&hellip;</h4>
+  <div class="text-muted">Недостаточно данных для формирования графика. Исправьте данные о компаниях или создайте новые.</div>
+</div>`;
+
+
+function addloader(){
+    cardbody = document.querySelector(".card-body1");
+    loader1 = document.querySelector(".loader1");
+    if (!loader1) {cardbody.innerHTML += loader;}
+}//добавление лоадера
+
+function delloader(){
+    loader1 = document.querySelector(".loader1");
+    if(loader1){loader1.remove();}
+    
+}//удаление лоадера
+
+function cleartbody(){
+    let tbody = document.querySelector(".info");
+    tbody.innerHTML = "";//обнуляем таблицу для перерисовки данных
+}//очистка тела таблицы с данными (дни не удаляются, только информация о клиентах и событиях)
+
+
+function clearevent(){
+    let eventrow = document.querySelector(".eventrow");
+    eventrow.innerHTML = "";//обнуляем таблицу для перерисовки данных
+}//очистка строки с событиями
+
+
+function addalert(){
+    cardbody = document.querySelector(".card-body1");
+    alert1 = document.querySelector(".alert1");
+    if (!alert1) {cardbody.innerHTML += alertnotdata;}
+}
+
+function delalert(){
+    alert1 = document.querySelector(".alert1");
+    if(alert1){alert1.remove()}
+}
+
+
+
+place.innerHTML = card
+
+let cardbody = document.querySelector(".card-body1");
+
+async function drawevents() {
+    // url = `${urlajax}/ajax/getallevents`
+    // cardbody.appendChild(spinner);
+    addloader();
+
+    let dateinfo = document.querySelector(".caltitle");
+      dateinfo.textContent =  `${getNameMonth(m)} - ${y} года`;//вывод информации в хлебных крошках
 
     let eventrow = document.querySelector(".eventrow")
 
-    
-    let response = await fetch(url); 
+
+    let response = await fetch(`${urlajax}/ajax/getallevents`);
     let info = await response.json(); // читаем ответ в формате JSON
+    
+    console.log(`info ${info}`)
+    if (info.length == 0){console.log(info.length)}
 
-    if(info.length == 0){ 
-        spinner.remove();
-        cardbody.innerHTML = `
-        <div class="alert border-0 bg-danger alert-dismissible fade show py-2">
-            <div class="d-flex align-items-center">
-                <div class="fs-3 text-light-danger"><i class="bi bi-exclamation-triangle-fill"></i></div>
-                <div class="ms-3">
-                    <div class="text-light">Недостаточно данных. Добавьте компанию или измените параметры компании</div>
-                </div>
-            </div>
-      </div>`
-        return;
-    }
+    eventrow.innerHTML = `<td style = "min-width:170px;" class = " "> </td>`;//вывод названия месяца в первой ячейке таблицы
 
-    eventrow.innerHTML = `<td class = "border col-3" ><h4>${getNameMonth(m)}</h4></td>`;//вывод названия месяца в первой ячейке таблицы
 
-    let date = new Date(y,m+1,0);//
+
+    let date = new Date(y, m + 1, 0);//
     let count_day = date.getDate();//считаем количество дней в месяце
 
-    // console.log(date)
   
-    for(let i =1; i <= count_day; i++){
-        let curdate = dateFormater(new Date(y,m,i))//текущая дата (отформатированная)
-        
-        for(item in info){
-          
-            if(info[item].dataend == curdate){ 
+    for (let i = 1; i <= count_day; i++) {
+        let curdate = dateFormater(new Date(y, m, i))//текущая дата (отформатированная)
 
-                eventrow.innerHTML += `<td class = "border col-2 align-bottom">
-                
-                <a  href = "http://127.0.0.1:5000/calendar/change/${info[item].eventid}"> ${info[item].shortname}</a>
-                <br>
-                
-                (${info[item].type_event})
-                <div class = "text-secondary">${info[item].dataend}</div>
+        for (item in info) {
+
+            if (info[item].dataend == curdate) {
+
+                eventrow.innerHTML += `
+                <td  style = "min-width:150px; height:80px;" class = "border p-1 text-center align-middle">
+                    <div class = "row text-center  top-50">
+                        <a  class = "text-wrap" href = "${urlajax}/calendar/change/${info[item].eventid}"> ${info[item].shortname}</a>
+                    </div>
+
+                    <div class = "row text-center top-50">
+                        <span>(${info[item].type_event})</span>
+                    </div>
+
+                    <div class = "row text-center top-50">
+                        <div class = "text-secondary">${info[item].dataend}</div>
+                    </div>
+                           
                 </td>`;
 
                 allevents.push(info[item])
-            }   
+            }
         }
     }
+    delloader();
 
-    spinner.remove()
-
-
-    let dateinfo = document.querySelector(".dateinfo");
-    dateinfo.textContent =  `на ${getNameMonth(m)} - ${y} года`;//вывод информации в хлебных крошках
-    drawinfo();
-    changeButtonName()//вызов функции смены названия кнопок предыдущего и следующео месяца 
+    if (allevents.length == 0){
+        addalert();
+    }
+    else{
+        delalert();
+        drawinfo();
+    }
     
+    
+    changeButtonName()//вызов функции смены названия кнопок предыдущего и следующео месяца 
+
 
 }
 
 
 async function drawinfo(){
+    
+
     url = `http://127.0.0.1:5000/ajax/get`
 
-    cardbody.appendChild(spinner);
+    addloader()
 
     let response = await fetch(url); 
     let info = await response.json(); // читаем ответ в формате JSON
@@ -93,12 +187,10 @@ async function drawinfo(){
 
     for(item in info){
         let client_info = document.createElement("tr");
-        client_info.classList.add("d-flex")
 
         client_info.innerHTML += 
-        `<td class = "col-3 text-light bg-secondary p-3">
-        <a class = "text-light" style = "" href = "http://127.0.0.1:5000/client/${info[item].client_id}">${info[item].clientname}</a>
-        
+        `<td class = " border text-wrap p-0 ps-1" style = "width:170px; min-height:41px; position:absolute; background-color:#ffffff;">
+        <div class = "" href = "http://127.0.0.1:5000/client/${info[item].client_id}">${info[item].clientname}</div>
         </td>`;
 
         let clientevents = info[item].events
@@ -112,12 +204,7 @@ async function drawinfo(){
             }
            
         }
-        // console.log(`-----------------${getNameMonth(m)}---${info[item].clientname}-----------------------`)
-        // console.log(`actual ${actual}`)
-        // console.log(`clientevents ${clientevents}`)
-        // console.log(`allevents ${allevents}`)
-        // console.log(`-------------------------------------------`)
-        
+
         console.log(allevents)
 
         for(e in allevents){
@@ -128,60 +215,56 @@ async function drawinfo(){
             for(a in actual){ 
                 if(allevents[e].eventid == actual[a].eventid){
                     if(actual[a].status == "Подтверждено"){
-                        client_info.innerHTML += `<td class = "border col-2 bg-success text-light">Подтверждено</td>`;
+                        client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-success text-light">Подтверждено</td>`;
                     }
                     if(actual[a].status == "Выполнено"){
-                        client_info.innerHTML += `<td class = "border col-2 bg-success-subtle text-secondary">Выполнено</td>`;
+                        client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-success-subtle text-secondary">Выполнено</td>`;
                     }
                     if(actual[a].status == "Не выполнено"){
-                        client_info.innerHTML += `<td class = "border col-2 bg-danger-subtle text-secondary">Не выполнено</td>`;
+                        client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-danger-subtle text-secondary">Не выполнено</td>`;
                     }
 
                     if(actual[a].status == "Не выполняется"){
-                        client_info.innerHTML += `<td class = "border col-2 bg-dark-subtle text-secondary">Не выполняется</td>`;
+                        client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-dark-subtle text-secondary">Не выполняется</td>`;
                     }
 
                     if(actual[a].status == "None"){
-                        client_info.innerHTML += `<td class = "border col-2 bg-danger-subtle text-secondary">Не выполнено</td>`;
+                        client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-danger-subtle text-secondary">Не выполнено</td>`;
                         // ${actual[a].status}
                     }
-
-                    // console.log(info[item].clientname)
-                    // console.log(allevents[e].dataend)
-                    // console.log(`${y}-${m}-${info[item].dataavansa}`)
-
-
                     
                     nullcol= false
-                }
-
-
-
-            
+                }            
             }
 
-            // if(allevents[e].dataend == info[item].dataavansa && allevents[e].shortname == "Аванс"){
-            //     client_info.innerHTML += `<td class = "bg-info text-light">${actual[a].status}</td>`;
-            //     // console.log(info[item].clientname)
-            //     nullcol= false
-            // }
-
-            // if(allevents[e].dataend == info[item].datazp && allevents[e].shortname == "Зарплата"){
-            //     client_info.innerHTML += `<td class = "bg-info text-light">${actual[a].status}</td>`;
-            //     // console.log(info[item].clientname)
-            //     nullcol= false
-            // }
 
             if(nullcol){
-                client_info.innerHTML += `<td class = "border col-2 bg-light text-secondary"> </td>`;
+                client_info.innerHTML += `<td class = "border  bg-light text-secondary"> </td>`;
             }
         }
 
-        spinner.remove();
         tbody.appendChild(client_info);
     }
-    
+    delloader();
 }//вывод информации в таблицу
+
+
+
+
+changeButtonName()
+drawevents()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -223,6 +306,8 @@ function btnnext(){
         m = 0;
     }
     allevents = [];
+    clearevent();
+    cleartbody();
     drawevents();
 }//обработка нажатия на следующий месяц
 
@@ -235,6 +320,8 @@ function btnprev(){
         m = 11;
     }
     allevents = [];
+    clearevent();
+    cleartbody();
     drawevents();
 }//обработка нажатия на предыдущий месяц
 

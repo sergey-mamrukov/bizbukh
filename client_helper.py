@@ -4,46 +4,47 @@ from flask_login import current_user
 
 
 # add new client
-def addClient(client_name,
-              client_description,
-              client_inn,
-              opf,
-              nalog,
-              tags,
-              company,
-              users):
+def addClient(data):
 
       # создаем клиента
       client = Client()
 
-      client.company = current_user.company
+      client.company = data['company']
       client.user.append(current_user)
 
-      # проверки и занесение параметров
-      if client_name:
-            client.client_name = client_name
-      else: client.client_name = "error name"
+      client.client_name = data['client_name']
+      client.client_description = data['client_description']
 
-      if client_inn:
-            client.client_inn = client_inn
-      else: client.client_inn = '0000000000'
+      if data['opf']: client.opf = data['opf']
+      else: client.opf = None
 
-      if client_description:
-            client.client_description = client_description
-      else:
-            client.client_description = ""
+      if data['clientTags']: client.tag[:] = data['clientTags']
+      else: client.tag[:] = []
+
+      if data['nalog']: client.nalog = data['nalog']
+      else: client.nalog = None
+
+      client.user[:] = data['clientUsers']
+
+      client.client_fullname = data['client_fullname']
+      client.client_shortname = data['client_shortname']
+      client.client_uraddress = data['client_uraddress']
+      client.client_pochtaddress = data['client_pochtaddress']
+      client.client_kpp = data['client_kpp']
+      client.client_inn = data['client_inn']
+      client.client_ogrn = data['client_ogrn']
+      client.client_director = data['client_director']
+      client.client_osnovanie = data['client_osnovanie']
 
 
-      client.opf = opf
-      client.nalog = nalog
-      client.tag[:] = tags
+      client.client_bank_name = data['client_bank_name']
+      client.client_bank_rs = data['client_bank_rs']
+      client.client_bank_ks = data['client_bank_ks']
+      client.client_bank_bik = data['client_bank_bik']
 
-      client.company = company
-
-      # if current_user not  in users:
-      #     client.user.append(current_user)
-
-      client.user[:] = users
+      client.client_contact_name = data['client_contact_name']
+      client.client_contact_phone = data['client_contact_phone']
+      client.client_contact_email = data['client_contact_email']
 
 
       # добавление клиента в базу
@@ -53,45 +54,44 @@ def addClient(client_name,
 
 
 # edit client
-def editClient(client, client_name,
-              client_description,
-              client_inn,
-              opf,
-              nalog,
-              tags,
-              users):
+def editClient(data):
 
-      # обнуление тэгов, опф и налога
-      client.opf = None
-      client.tag[:] = []
-      client.nalog = None
+    client = data['client']
 
-      # проверки и занесение параметров
-      if client_name:
-            client.client_name = client_name
-      else:
-            client.client_name = "error name"
+    client.client_name = data['client_name']
+    client.client_description = data['client_description']
 
-      if client_inn:
-            client.client_inn = client_inn
-      else:
-            client.client_inn = '0000000000'
+    if data['opf']: client.opf = data['opf']
+    else: client.opf = None
 
-      if client_description:
-            client.client_description = client_description
-      else:
-            client.client_description = ""
+    if data['clientTags']: client.tag[:] = data['clientTags']
+    else: client.tag[:] = []
 
+    if data['nalog']: client.nalog = data['nalog']
+    else: client.nalog = None
 
+    client.user[:] = data['clientUsers']
 
-      client.opf = opf
-      client.nalog = nalog
-      client.tag[:] = tags
-      client.user[:] = users
+    client.client_fullname = data['client_fullname']
+    client.client_shortname = data['client_shortname']
+    client.client_uraddress = data['client_uraddress']
+    client.client_pochtaddress = data['client_pochtaddress']
+    client.client_kpp = data['client_kpp']
+    client.client_inn = data['client_inn']
+    client.client_ogrn = data['client_ogrn']
+    client.client_director = data['client_director']
+    client.client_osnovanie = data['client_osnovanie']
 
+    client.client_bank_name = data['client_bank_name']
+    client.client_bank_rs = data['client_bank_rs']
+    client.client_bank_ks = data['client_bank_ks']
+    client.client_bank_bik = data['client_bank_bik']
 
+    client.client_contact_name = data['client_contact_name']
+    client.client_contact_phone = data['client_contact_phone']
+    client.client_contact_email = data['client_contact_email']
 
-      db.session.commit()
+    db.session.commit()
 
 
 # del client

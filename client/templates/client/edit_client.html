@@ -1,114 +1,290 @@
 {% extends 'base.html' %}
 
-{% block title_bread %}{% endblock %}
+{% block title_bread %}Редактирование организации{% endblock %}
 {% block linkname_bread %}{% endblock %}
 
 {% block content %}
+<form method="POST" action="">
+
+    <div class="row mb-3 mt-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Основные параметры</h5>
+                <div class="card-actions">
+                    <a href="/client/clientdel/{{client.id}}" class="btn btn-ghost-danger w-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 7h16"></path>
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                            <path d="M10 12l4 4m0 -4l-4 4"></path>
+                        </svg>
+                        Удалить компанию
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-xl-5">
+                        <div class="mb-3">
+                            <label class="form-label">Название организации</label>
+                            <input type="text" class="form-control" name = 'name' value = '{{client.client_name}}'>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Комментарий</label>
+                            <input type="text" class="form-control" name = 'description' value="{{client.client_description}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Доступ пользователей</label>
+                            {%for user in users%}
+                            <div class="form-check form-switch form-check-inline">
+                                <input class="form-check-input" type="checkbox"
+                                       {%if user in client.user%}
+                                       checked
+                                       {%endif%}
+
+                                       {%if user.possition=='admin'%}
+                                       disabled
+                                       checked
+                                       {%endif%}
+                                       id="checkuser_{{user.id}}" name = 'checkuser_{{user.id}}'>
+                                <label class="form-check-label" for="checkuser_{{user.id}}">{{user.name}} {{user.surname}}</label>
+                            </div>
+                            {%endfor%}
+                        </div>
+                        <br>
+
+                    </div>
+                    <div class="col-xl-7">
+                        <div class="mb-3">
+                            <label class="form-label">Параметры организации</label>
+                            {%for tag in tags%}
+                            <div class="form-check form-switch form-check-inline">
+                                <input class="form-check-input" type="checkbox"
+                                       {%if tag in client.tag%}
+                                       checked
+                                       {%endif%}
+                                       id="checktag_{{tag.id}}" name = 'checktag_{{tag.id}}'>
+                                <label class="form-check-label" for="checktag_{{tag.id}}">{{tag.tag_name}}</label>
+                            </div>
+                            {%endfor%}
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Организационо-правовая форма</label>
+                            {%for opf in opfs%}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input"
+                                       {%if client.opf == opf%}
+                                       checked
+                                       {%endif%}
+
+                                       type="radio" name="radioopf" id="radioopf_{{opf.id}}" value="{{opf.id}}">
+                                <label class="form-check-label" for="radioopf_{{opf.id}}">{{opf.opf_name}}</label>
+                            </div>
+                            {%endfor%}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Система налогообложения</label>
+                            {%for nalog in nalogs%}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio"
+                                       {%if client.nalog == nalog%}
+                                       checked
+                                       {%endif%}
+                                       name="radionalog" id="radionalog_{{nalog.id}}" value="{{nalog.id}}">
+                                <label class="form-check-label" for="radionalog_{{nalog.id}}">{{nalog.nalog_name}}</label>
+                            </div>
+                            {%endfor%}
+
+                        </div>
+
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary px-5 radius-30">Сохранить изменения</button>
 
 
+            </div>
 
-<div class="card">
-  <div class="card-header">
-    <h5 class="card-title">Редактирование организации</h5>
-    <div class="card-actions">
-      <a href="/client/clientdel/{{client.id}}" class="btn btn-ghost-danger w-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M4 7h16"></path>
-          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-          <path d="M10 12l4 4m0 -4l-4 4"></path>
-        </svg>
-        Удалить компанию
-      </a>
+        </div>
     </div>
-  </div>
-  <div class="card-body">
-    <form method="POST" action="">
-      <div class="row">
-        <div class="col-xl-5">
-          <div class="mb-3">
-            <label class="form-label">Название организации</label>
-            <input type="text" class="form-control" name = 'name' value = '{{client.client_name}}'>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Комментарий</label>
-            <input type="text" class="form-control" name = 'description' value="{{client.client_description}}">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Доступ пользователей</label>
-            {%for user in users%}
-            <div class="form-check form-switch form-check-inline">
-              <input class="form-check-input" type="checkbox"
-                     {%if user in client.user%}
-                     checked
-                     {%endif%}
 
-                     {%if user.possition=='admin'%}
-                     disabled
-                     checked
-                     {%endif%}
-                     id="checkuser_{{user.id}}" name = 'checkuser_{{user.id}}'>
-              <label class="form-check-label" for="checkuser_{{user.id}}">{{user.name}} {{user.surname}}</label>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class = "card-title">Реквизиты организации</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Полное название организации</label>
+                        <input type="text" class="form-control" name="client_fullname"
+                               {%if client.client_fullname%}
+                               value="{{client.client_fullname}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Сокращенное название</label>
+                        <input type="text" class="form-control" name="client_shortname"
+                               {%if client.client_shortname%}
+                               value="{{client.client_shortname}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Юридический адрес</label>
+                        <input type="text" class="form-control" name="client_uraddress"
+                               {%if client.client_uraddress%}
+                               value="{{client.client_uraddress}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Почтовый адрес</label>
+                        <input type="text" class="form-control" name="client_pochtaddress"
+                               {%if client.client_pochtaddress%}
+                               value="{{client.client_pochtaddress}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ИНН</label>
+                        <input type="text" class="form-control" name="client_inn"
+                               {%if client.client_inn%}
+                               value="{{client.client_inn}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">КПП</label>
+                        <input type="text" class="form-control" name="client_kpp"
+                               {%if client.client_kpp%}
+                               value="{{client.client_kpp}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ОГРН</label>
+                        <input type="text" class="form-control" name="client_ogrn"
+                               {%if client.client_ogrn%}
+                               value="{{client.client_ogrn}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Директор</label>
+                        <input type="text" class="form-control" name="client_director"
+                               {%if client.client_director%}
+                               value="{{client.client_director}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Дествует на основании</label>
+                        <input type="text" class="form-control" name="client_osnovanie"
+                               {%if client.client_osnovanie%}
+                               value="{{client.client_osnovanie}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+
+
+                </div>
             </div>
-            {%endfor%}
-          </div>
-          <br>
-
         </div>
-        <div class="col-xl-7">
-          <div class="mb-3">
-            <label class="form-label">Параметры организации</label>
-            {%for tag in tags%}
-            <div class="form-check form-switch form-check-inline">
-              <input class="form-check-input" type="checkbox"
-                     {%if tag in client.tag%}
-                     checked
-                     {%endif%}
-                     id="checktag_{{tag.id}}" name = 'checktag_{{tag.id}}'>
-              <label class="form-check-label" for="checktag_{{tag.id}}">{{tag.tag_name}}</label>
+
+        <div class="col-lg-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class = "card-title">Контакты организации</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Телефон ответственного лица</label>
+                        <input type="text" name="client_phone" class="form-control" data-mask="+7 (000) 000-00-00"
+                               {%if client.client_contact_phone%}
+                               value="{{client.client_contact_phone}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ФИО ответственного лица</label>
+                        <input type="text" name="client_name" class="form-control"
+                               {%if client.client_contact_name%}
+                               value="{{client.client_contact_name}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Почта</label>
+                        <input type="text" class="form-control" name="client_email"
+                               {%if client.client_contact_email%}
+                               value="{{client.client_contact_email}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                </div>
             </div>
-            {%endfor%}
 
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Организационо-правовая форма</label>
-            {%for opf in opfs%}
-            <div class="form-check form-check-inline">
-              <input class="form-check-input"
-                     {%if client.opf == opf%}
-                     checked
-                     {%endif%}
-
-                     type="radio" name="radioopf" id="radioopf_{{opf.id}}" value="{{opf.id}}">
-              <label class="form-check-label" for="radioopf_{{opf.id}}">{{opf.opf_name}}</label>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class = "card-title">Банковские реквизиты</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Расчетный счет</label>
+                        <input type="text" class="form-control" name="client_rs"
+                               {%if client.client_bank_rs%}
+                               value="{{client.client_bank_rs}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Корреспондентский счет</label>
+                        <input type="text" class="form-control" name="client_ks"
+                               {%if client.client_bank_ks%}
+                               value="{{client.client_bank_ks}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">БИК банка</label>
+                        <input type="text" class="form-control" name="client_bik"
+                               {%if client.client_bank_bik%}
+                               value="{{client.client_bank_bik}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Банк</label>
+                        <input type="text" class="form-control" name="client_bank"
+                               {%if client.client_bank_name%}
+                               value="{{client.client_bank_name}}"
+                               {%else%}
+                               value=""
+                               {%endif%}>
+                    </div>
+                </div>
             </div>
-            {%endfor%}
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Система налогообложения</label>
-            {%for nalog in nalogs%}
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio"
-                     {%if client.nalog == nalog%}
-                     checked
-                     {%endif%}
-                     name="radionalog" id="radionalog_{{nalog.id}}" value="{{nalog.id}}">
-              <label class="form-check-label" for="radionalog_{{nalog.id}}">{{nalog.nalog_name}}</label>
-            </div>
-            {%endfor%}
-
-          </div>
-
         </div>
-      </div>
-      <button type="submit" class="btn btn-primary px-5 radius-30">Сохранить изменения</button>
-
-    </form>
-  </div>
-
-</div>
-
-
-
+    </div>
+</form>
 {% endblock %}

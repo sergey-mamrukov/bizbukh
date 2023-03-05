@@ -1,168 +1,180 @@
 {% extends 'base.html' %}
 
-{% block title_bread %} Организация{% endblock %}
-{% block linkname_bread %} {{client.client_name}}{% endblock %}
+{% block title_bread %} Страница организации{% endblock %}
+{% block linkname_bread %}{% endblock %}
 
 {% block content %}
 
-<a href = "/client/clientdel/{{client.id}}">удалить компанию</a>
-<div class="card mt-3">
-    <div class="card-header">
-        <h6>Организация</h6>
-    </div>
-    <div class="card-body">
+<!--<div class="card">-->
+<!--    <div class="card-header">-->
 
-        <div class="row">
-            <div class="col">
-                <label class = 'form-label'>Название организации</label>
-                <input class="form-control mb-3" type="text" placeholder= '{{client.client_name}}' disabled="">
+<!--    </div>-->
+<!--    <div class="card-body">-->
 
-                <label class = 'form-label'>Организационно-правовая форма</label>
-
-                <input class="form-control mb-3" type="text" placeholder= '{{client.opf.opf_name}}' disabled="">
-
-            </div>
-            <div class="col">
-                <label class = 'form-label'>ИНН</label>
-                <input class="form-control mb-3" type="text" placeholder= '{{client.client_inn}}' disabled="">
-
-                <label class = 'form-label'>Система налогообложения</label>
-
-                <input class="form-control mb-3" type="text" placeholder= '{{client.nalog.nalog_name}}' disabled="">
-
-            </div>
-        </div>
-
-        <label class = 'form-label'>Комментарий</label>
-        <input class="form-control mb-3" type="text" placeholder= '{{client.client_description}}' disabled="">
-
-        <h6>Доступ пользователей</h6>
-        <div class="row">
-            {%for user in client.user%}
-            <span>{{user.login}} </span>
-            {%endfor%}
-        </div>
-
-        {%if client.tag%}
-        <h6>Тэги организации</h6>
-        <ul class="list-group">
-            {%for tag in client.tag%}
-            <li class="list-group-item">{{tag.tag_name}}</li>
-            {%endfor%}
-        </ul>
-        {%endif%}
-    </div>
-</div>
-
-<div class="card mt-3">
-    <div class="card-header">
-        <h6>Все события</h6>
-    </div>
-    <div class="card-body">
+<!--    </div>-->
+<!--</div>-->
 
 
-        {%for event in all_events%}
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div>
-                    <h5 class="card-title">{{event[0].event_name}} | {{event[1]}}</h5>
-                </div>
-                <div class="row row-cols-auto">
-                    <div class="col">
-                        <a type="button"href = '/client/eventnotready/{{event[0].id}}/{{client.id}}' class="btn btn-outline-secondary px-5">Не выполняется</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {%endfor%}
-
-    </div>
-</div>
 <div class="row mt-3">
-    <div class="col">
+    <div class="col-lg-6 mb-2">
         <div class="card">
             <div class="card-header">
-                <h6>Актуальные события</h6>
+                <h5 class = "card-title">Информация о компании</h5>
             </div>
             <div class="card-body">
-
-
-                {%for event in actual_events%}
-                <div class="card shadow-none border">
-                    <div class="card-body">
-                        <div>
-                            <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
-                        </div>
-                        <div class="row row-cols-auto">
-                            <div class="col">
-                                <a type="button"href = '/client/eventok/{{event.id}}/{{client.id}}' class="btn btn-outline-success px-5">Выполнено</a>
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Название компании</label>
+                    <input type="text" class="form-control" value="{{client.client_name}}" disabled="">
                 </div>
-                {%endfor%}
+
+                <div class="mb-3">
+                    <label class="form-label">Комментарий</label>
+                    <input type="text" class="form-control" value="{{client.client_description}}" disabled="">
+                </div>
+
 
             </div>
         </div>
+        <div class="card mt-2">
+            <div class="card-header">
+                <h5 class = "card-title">Контакты организации</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Телефон ответственного лица</label>
+                    <input type="text" class="form-control" value="{{client.client_contact_phone}}" disabled="">
+                    <label class="form-label mt-2">ФИО ответственного лица</label>
+                    <input type="text" class="form-control" value="{{client.client_contact_name}}" disabled="">
+
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Почта</label>
+                    <input type="text" class="form-control" value="{{client.client_contact_email}}" disabled="">
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card mt-2">
+            <div class="card-header">
+                <h5 class = "card-title">Параметры компании</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Орг. прав. форма</label>
+                    <input type="text" class="form-control" value="{{client.opf.opf_name}}" disabled="">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Система налогообложения</label>
+                    <input type="text" class="form-control" value="{{client.nalog.nalog_name}}" disabled="">
+                </div>
+
+                <div class="list-group list-group-flush">
+                    {%for tag in client.tag%}
+                    <span class="list-group-item list-group-item-action disabled">{{tag.tag_name}}</span>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-2">
+            <div class="card-header">
+                <h5 class = "card-title">Бухгалтеры, обслуживающие компанию</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    {%for user in client.user%}
+                    <span class="list-group-item list-group-item-action disabled">{{user.surname}} {{user.name}}</span>
+                    {%endfor%}
+                </div>
+            </div>
+
+        </div>
+
+
+
+
     </div>
-    <div class="col">
+
+    <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h6>Выполненные события</h6>
+                <h5 class = "card-title">Реквизиты организации</h5>
             </div>
             <div class="card-body">
-
-
-                {%for event in ready_events%}
-                <div class="card shadow-none border">
-                    <div class="card-body">
-                        <div>
-                            <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
-                        </div>
-                        <div class="row row-cols-auto">
-                            <div class="col">
-                                <a type="button"href = '/client/eventproof/{{event.id}}/{{client.id}}' class="btn btn-success px-5">Подтвердить</a>
-                            </div>
-
-                            <div class="col">
-                                <a type="button"href = '/client/eventno/{{event.id}}/{{client.id}}' class="btn btn-outline-danger px-5">Отменить</a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                {%endfor%}
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">
-        <h6>Невыполняется</h6>
-    </div>
-    <div class="card-body">
-
-
-        {%for event in notready_events%}
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div>
-                    <h5 class="card-title">{{event.event_name}} | {{event.event_data}}</h5>
-                </div>
-                <div class="row row-cols-auto">
-                    <div class="col">
-                        <a type="button"href = '/client/eventno/{{event.id}}/{{client.id}}' class="btn btn-outline-warning px-5">Выполняется (стутус не выполнено)</a>
-                    </div>
-
+                <div class="table-responsive">
+                    <table class="table table-vcenter card-table table-striped">
+                        <tbody>
+                        <tr>
+                            <td>Полное название организации</td>
+                            <td>{{client.client_fullname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Сокращенное название</td>
+                            <td>{{client.client_shortname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Юридический адрес</td>
+                            <td>{{client.client_uraddress}}</td>
+                        </tr>
+                        <tr>
+                            <td>Почтовый адрес</td>
+                            <td>{{client.client_pochtaddress}}</td>
+                        </tr>
+                        <tr>
+                            <td>ИНН / КПП</td>
+                            <td>{{client.client_inn}} / {{client.client_kpp}}</td>
+                        </tr>
+                        <tr>
+                            <td>ОГРН</td>
+                            <td>{{client.client_ogrn}}</td>
+                        </tr>
+                        <tr>
+                            <td>Директор</td>
+                            <td>
+                                <div>{{client.client_director}}</div>
+                                <div>{{client.client_osnovanie}}</div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        {%endfor%}
 
+        <div class="card mt-2">
+            <div class="card-header">
+                <h5 class = "card-title">Банковские реквизиты</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-vcenter card-table table-striped">
+                        <tbody>
+                        <tr>
+                            <td>Расчетный счет</td>
+                            <td>{{client.client_bank_rs}}</td>
+                        </tr>
+                        <tr>
+                            <td>Кор. счет</td>
+                            <td>{{client.client_bank_ks}}</td>
+                        </tr>
+                        <tr>
+                            <td>БИК банка</td>
+                            <td>{{client.client_bank_bik}}</td>
+                        </tr>
+                        <tr>
+                            <td>Банк</td>
+                            <td>{{client.client_bank_name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
 
 

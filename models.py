@@ -80,10 +80,28 @@ class Client(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     client_name = db.Column(db.String(80))
     client_description = db.Column(db.Text)
-    client_inn = db.Column(db.String(25))
-    client_datazp = db.Column(db.Integer)
-    client_dataavansa = db.Column(db.Integer)
 
+    # Реквизиты организации
+    client_inn = db.Column(db.String(25))
+    client_fullname = db.Column(db.Text())
+    client_shortname = db.Column(db.Text())
+    client_uraddress = db.Column(db.Text())
+    client_pochtaddress = db.Column(db.Text())
+    client_kpp = db.Column(db.Text())
+    client_ogrn = db.Column(db.Text())
+    client_director = db.Column(db.Text())
+    client_osnovanie = db.Column(db.Text())
+
+    # Банковские реквизиты
+    client_bank_name = db.Column(db.Text())
+    client_bank_bik = db.Column(db.Text())
+    client_bank_rs = db.Column(db.Text())
+    client_bank_ks = db.Column(db.Text())
+
+    # Контакты организации
+    client_contact_name = db.Column(db.Text())
+    client_contact_phone = db.Column(db.Text())
+    client_contact_email = db.Column(db.Text())
 
 
     nalog_id = db.Column(db.Integer, db.ForeignKey('systnalog.id'))

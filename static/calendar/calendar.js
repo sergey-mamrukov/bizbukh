@@ -70,6 +70,12 @@ let loader = `
     </div>
 </div>`;
 
+let alertnotdata = `
+<div class="alert alert-danger alert1" role="alert">
+  <h4 class="alert-title">Недостаточно данных&hellip;</h4>
+  <div class="text-muted">Недостаточно данных для формирования графика. Исправьте данные о компаниях или создайте новые.</div>
+</div>`;
+
 
 function addloader(){
     cardbody = document.querySelector(".card-body1");
@@ -82,6 +88,18 @@ function delloader(){
     if(loader1){loader1.remove();}
     
 }//удаление лоадера
+
+
+function addalert(){
+    cardbody = document.querySelector(".card-body1");
+    alert1 = document.querySelector(".alert1");
+    if (!alert1) {cardbody.innerHTML = alertnotdata;}
+}
+
+function delalert(){
+    alert1 = document.querySelector(".alert1");
+    if(alert1){alert1.remove()}
+}
 
 function cleartbody(){
     let tbody = document.querySelector(".info");
@@ -139,26 +157,11 @@ function drawdays(){
     let response = await fetch(url); 
     let info = await response.json(); // читаем ответ в формате JSON
 
-    // if(info.length == 0){ 
-    //     spinner.remove();
-    //     cardbody.innerHTML = `
-    //     <div class="alert border-0 bg-danger alert-dismissible fade show py-2">
-    //         <div class="d-flex align-items-center">
-    //             <div class="fs-3 text-light-danger"><i class="bi bi-exclamation-triangle-fill"></i></div>
-    //             <div class="ms-3">
-    //                 <div class="text-light">Недостаточно данных. Добавьте компанию или измените параметры компании</div>
-    //             </div>
-    //         </div>
-    //   </div>`
-
-    //   let btnprev = document.querySelector(".prev")
-    //   let btnnext = document.querySelector(".next")
-    //   btnnext.remove();
-    //   btnprev.remove();
-    //   let dateinfo = document.querySelector(".dateinfo");
-    //   dateinfo.remove();
-    //     return;
-    // }
+    if(info.length == 0){ 
+        cleartbody();
+        addalert();
+        return;
+    }
 
     let date = new Date(y,m+1,0);
     let count_day = date.getDate();

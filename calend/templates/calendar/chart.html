@@ -1,51 +1,8 @@
 {% extends 'base.html' %}
-
 {% block title_bread %} График событий{% endblock %}
-{% block linkname_bread %} <span class = "dateinfo"></span> {% endblock %}
 
 {% block content %}
-
-
-<div class="card">
-    <div class="card-body">
-        <div class="row row-cols-auto g-3 mb-3">
-            <div class="col btnnextprev">
-                <button class = "btn btn-primary px-5 prev" onclick = btnprev()></button>
-            </div>
-            <div class="col btnnextprev">
-                <button class = "btn btn-primary px-5 next" onclick = btnnext()></button>
-            </div>
-        </div>
-
-        <div class = "table-responsive ">
-            <table class = "table">
-                <thead>
-                <tr class = "d-flex eventrow"></tr></thead>
-                <tbody class = "info"></tbody>
-            </table>
-        </div>
-        
-    </div>
-</div>
-
-
-
-
-<div class="modal fade ttt" tabindex="-1" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" onclick = closemodal() class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                
-
-            
-            </div>
-        </div>
-    </div>
-</div>
-<!-- <div class="modal-backdrop fade show"></div> -->
+<div class = "mt-3" id = 'chart'></div>
 <script src ={{url_for('static',filename='/calendar/chart.js')}}></script>
+
 {% endblock %}

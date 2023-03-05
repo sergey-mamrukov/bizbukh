@@ -15,10 +15,6 @@ def calendarwiev():
 def chartview():
     return render_template('calendar/chart.html')
 
-@calend.route('/chart/2')
-def chartview2():
-    return render_template('calendar/chart2.html')
-
 @calend.route('/change/<int:eventid>')
 def eventview(eventid):
     event = get_event(eventid)

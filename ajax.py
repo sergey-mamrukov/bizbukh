@@ -2,10 +2,8 @@ from client_events import get_event_on_client_day
 from eventstatus_helper import st_no,st_ok,st_notready,st_proof
 from client_events import get_client_event_all,get_status_event,get_client_personalevent_date_all,get_client_personalevent_all
 
-
-
-
-
+from dadata import Dadata
+from config import token_dadata, secret_datdata
 
 
 
@@ -13,8 +11,8 @@ from client_events import get_client_event_all,get_status_event,get_client_perso
 def get_client_info(client):
     client_name = client.client_name
     client_id = client.id
-    datazp = client.client_datazp
-    dataavansa = client.client_dataavansa
+    # datazp = client.client_datazp
+    # dataavansa = client.client_dataavansa
     opf = client.opf.opf_name
 
     clientevents = get_client_event_all(client)
@@ -51,8 +49,8 @@ def get_client_info(client):
 
     result = { "clientname":client_name,
                    "client_id":client_id,
-                   "datazp":datazp,
-                   "dataavansa":dataavansa,
+                   # "datazp":datazp,
+                   # "dataavansa":dataavansa,
                    "opf":opf,
                    "events":events}
 
@@ -63,8 +61,8 @@ def get_client_info(client):
 def get_client_info_on_date(client, date):
     client_name = client.client_name
     client_id = client.id
-    datazp = client.client_datazp
-    dataavansa = client.client_dataavansa
+    # datazp = client.client_datazp
+    # dataavansa = client.client_dataavansa
     opf = client.opf.opf_name
 
     clientevents = get_event_on_client_day(client,date)
@@ -98,8 +96,8 @@ def get_client_info_on_date(client, date):
 
     result = { "clientname":client_name,
                 "client_id":client_id,
-                "datazp":datazp,
-                "dataavansa":dataavansa,
+                # "datazp":datazp,
+                # "dataavansa":dataavansa,
                 "opf":opf,
                 "events":events}
 
@@ -124,6 +122,62 @@ def get_zp_info(fullname, shortname, dataend):
                 }
 
     return result
+
+
+
+def get_info_on_inn(clientinn):
+    error = False
+
+    with Dadata(token_dadata, secret_datdata) as dadata:
+        result = dadata.find_by_id("party", clientinn)
+
+        if result:
+            type = result[0]['data']['type']
+            inn = result[0]['data']['inn']
+
+            ogrn = result[0]['data']['ogrn']
+            full_name = result[0]['data']['name']['full_with_opf']
+            short_name = result[0]['data']['name']['short_with_opf']
+            address = result[0]['data']['address']['value']
+
+            persone_name = ''
+            persone_post = ''
+            kpp = ''
+
+            if result[0]['data']['type'] == "LEGAL":
+                persone_name = result[0]['data']['management']['name']
+                persone_post = result[0]['data']['management']['post']
+                kpp = result[0]['data']['kpp']
+            if result[0]['data']['type'] == "INDIVIDUAL":
+                persone_name = f"{result[0]['data']['fio']['surname']} {result[0]['data']['fio']['name']} {result[0]['data']['fio']['patronymic']}"
+        else:
+            type = ''
+            inn = ''
+            ogrn = ''
+            full_name = ''
+            short_name = ''
+            address = ''
+            persone_name = ''
+            persone_post = ''
+            kpp = ''
+            error = True
+
+    j = {
+            'type': type,
+            'inn': inn,
+            'kpp': kpp,
+            'ogrn': ogrn,
+            'full_name': full_name,
+            'short_name': short_name,
+            'address': address,
+            'persone_name': persone_name,
+            'persone_post': persone_post,
+            'error': error}
+
+    return j
+
+
+
 
 
 

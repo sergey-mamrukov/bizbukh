@@ -10,7 +10,7 @@ from eventready_helper import change_status_event
 from eventstatus_helper import st_no,st_ok,st_notready,st_proof
 from event_helper import get_event
 from client_helper import get_all_clients,get_client
-from ajax import get_client_info, get_client_info_on_date,get_event_info,get_zp_info
+from ajax import get_client_info, get_client_info_on_date,get_event_info,get_zp_info, get_info_on_inn
 from client_events import get_client_event_all,get_event_clients_all,get_status_event
 from personalevent_helper import get_personal_event, changestatusPersonalEvent,delPersonalEvent, addPersonalEvent
 
@@ -162,6 +162,9 @@ def forgotpassword():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+
 
 
 
@@ -337,8 +340,16 @@ def ajax7():
 
     return jsonify("error")
 
-def testr():
-    pass
+
+@app.route('/ajax/getinfoinn/')
+@cross_origin()
+def ajax8():
+    inn = ''
+    if request.args:
+        inn = request.args.get('inn')
+
+    result = get_info_on_inn(inn)
+    return result
 
 
 
