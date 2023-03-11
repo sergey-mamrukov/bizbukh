@@ -6,7 +6,7 @@ from tag_helper import get_all_tag
 from nalog_helper import get_all_nalog, get_nalog
 from event_helper import get_event
 
-from client_events import get_client_event_all,get_client_event_ready, get_client_event_actual, get_client_event_notready,get_status_event
+from client_events import get_client_event_all,get_client_event_ready, get_client_event_actual, get_client_event_notready, get_status_event
 from eventready_helper import change_status_event
 from eventstatus_helper import st_ok,st_proof,st_notready, st_no
 from flask_login import current_user
@@ -25,6 +25,15 @@ def clientlist():
 
     clients = get_all_clients()
     return render_template("client/client_list.html",clients = clients)
+
+@client.route('/<int:clientid>/zp')
+def clientzp(clientid):
+    if current_user.is_anonymous:
+        return redirect(url_for("login"))
+
+    client = get_client(clientid)
+
+    return render_template("client/client_zp.html", client = client)
 
 # Вывод карточки организации
 @client.route('/<int:clientid>')
@@ -51,6 +60,30 @@ def clientcart(clientid):
     return render_template('client/client_cart.html', client=client, all_events = all_events,
                            ready_events = ready_events, notready_events = notready_events,
                            actual_events = actual_events)
+
+
+# Вывод карточки организации
+@client.route('/<int:clientid>/events')
+def clientevents(clientid):
+    if current_user.is_anonymous:
+        return redirect(url_for("login"))
+
+    client = get_client(clientid)
+
+    if current_user.possition != "admin":
+        abort(404)
+
+
+
+    return render_template('client/client_events.html', client=client)
+
+
+
+
+
+
+
+
 
 
 # Добавление организации
@@ -138,19 +171,12 @@ def addclient():
         'company':company
         }
 
-
-
-
-
-
-
-
     # обрабатываем метод post
     if request.method == 'POST':
         # try:
             addClient(data)
-            # редиректим на список клиентов
 
+            # редиректим на список клиентов
             return redirect(url_for('client.clientlist'))
         # except: print('error')
 

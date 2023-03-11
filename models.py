@@ -152,8 +152,11 @@ class Event(db.Model):
 class PersonalEvent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     event_name = db.Column(db.Text())
+    short_name = db.Column(db.Text())
     event_data_end = db.Column(db.Date())
     status = db.Column(db.Text())
+    is_zp = db.Column(db.Boolean())
+    type_event = db.Column(db.String)
 
     client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
     client = db.relationship('Client', backref=db.backref("pe-client"))

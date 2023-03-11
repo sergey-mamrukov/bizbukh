@@ -10,13 +10,13 @@ async function getinfo(){
 
     let table = document.createElement("table")
 
-    table.classList.add("table", "mt-3", "table-sm")
+    table.classList.add("table","table-vcenter", "card-table")
 
     let header = document.createElement("thead");
     let headerrow = document.createElement("tr");
-    headerrow.innerHTML = `<th>Название компании</th>
-                        <th>Статус выполнения</th>
-                        <th>Действие</th>
+    headerrow.innerHTML = `<th class = "col-6">Название компании</th>
+                        <th class = "col">Статус выполнения</th>
+                        <th class = "col">Действие</th>
                         `;
     header.appendChild(headerrow);
     table.appendChild(header);
@@ -44,19 +44,34 @@ async function getinfo(){
             col.innerHTML += `<td class = "text-secondary">Не выполняется</td>`
         }
             
-        let btn_ok = `<button class="btn btn-outline-success px-5 me-3" onclick = changestatus(${info[item].clientid},${eventid},1)> Выполнить </button>`;
-        let bnt_no = `<button class="btn btn-outline-danger px-5 me-3" onclick = changestatus(${info[item].clientid},${eventid},2)> Отменить выполнение </button>`;
-        let bnt_proof = `<button class="btn btn-outline-success px-5 me-3" onclick = changestatus(${info[item].clientid},${eventid},3)> Подтвердить выполнение </button>`;
+        let btn_ok = `<button class="btn btn-outline-success" onclick = changestatus(${info[item].clientid},${eventid},1)> Выполнить </button>`;
+        let bnt_no = `<button class="btn btn-outline-danger" onclick = changestatus(${info[item].clientid},${eventid},2)> Отменить </button>`;
+        let bnt_proof = `<button class="btn btn-success" onclick = changestatus(${info[item].clientid},${eventid},3)> Подтвердить </button>`;
         
-        if(info[item].status == "Не выполнено" || info[item].status == null){
-            col.innerHTML += `<td>${btn_ok}</td>`
+        if(info[item].status == "Не выполнено"){
+            col.innerHTML += `<td>
+            <div class = "row">
+                <div class = "col-6">${btn_ok}</div>
+                <div class = "col-6"></div>
+            </div>
+            </td>`
         }
         if(info[item].status == "Выполнено"){
-            col.innerHTML += `<td>${bnt_proof} ${bnt_no} </td>`
+            col.innerHTML += `<td>
+            <div class = "row">
+                <div class = "col-6">${bnt_proof}</div>
+                <div class = "col-6">${bnt_no}</div>
+            </div>
+            </td>`
         }
 
         if(info[item].status == "Подтверждено"){
-            col.innerHTML += `<td>${bnt_no} </td>`
+            col.innerHTML += `<td>
+            <div class = "row">
+                <div class = "col-6"></div>
+                <div class = "col-6">${bnt_no}</div>
+            </div>
+            </td>`
         }
         if(info[item].status == "Не выполняется"){
             col.innerHTML += `<td></td>`
@@ -84,9 +99,8 @@ async function getinfo(){
 async function changestatus(clientid, eventid, status){
     urlchange = `http://127.0.0.1:5000/ajax/changestatus/${clientid}/${eventid}/${status}`;
     
-    let response = await fetch(urlchange); 
-    // let info = await response.json(); // читаем ответ в формате JSON
-    
+    // let response = 
+    await fetch(urlchange); 
     table = document.querySelector("table")
     table.remove()
 

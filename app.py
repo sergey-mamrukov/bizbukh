@@ -10,9 +10,9 @@ from eventready_helper import change_status_event
 from eventstatus_helper import st_no,st_ok,st_notready,st_proof
 from event_helper import get_event
 from client_helper import get_all_clients,get_client
-from ajax import get_client_info, get_client_info_on_date,get_event_info,get_zp_info, get_info_on_inn
+from ajax import get_client_info, get_client_info_on_date,get_event_info,get_zp_info, get_info_on_inn,get_client_info_on_month
 from client_events import get_client_event_all,get_event_clients_all,get_status_event
-from personalevent_helper import get_personal_event, changestatusPersonalEvent,delPersonalEvent, addPersonalEvent
+from personalevent_helper import get_personal_event, changestatusPersonalEvent,delPersonalEvent, addPersonalEvent, addzpEvent, get_personal_zp_event_all
 
 from company_helper import addCompany, getCompany
 from user_helper import addUser, checkUser
@@ -196,12 +196,23 @@ def ajax1():
     if request.args:
         client_id = request.args.get('clientid')
         date = request.args.get('date')
+        yearmonth = request.args.get('yearmonth')
         if client_id and date:
             client = get_client(client_id)
             info = get_client_info_on_date(client, date)
-
-
             return jsonify(info)
+
+        elif client_id and yearmonth:
+            client = get_client(client_id)
+            info = get_client_info_on_month(client, yearmonth)
+            return jsonify(info)
+
+        elif client_id:
+            client = get_client(client_id)
+            info = get_client_info(client)
+            return jsonify(info)
+
+
 
     else:
         allclients = get_all_clients()
@@ -219,18 +230,28 @@ def ajax1():
 def ajax2():
 
     events = []
+    # pevents = []
     info = []
 
     clients = get_all_clients()
     for client in clients:
         events.extend(get_client_event_all(client))
 
+    # for client in clients:
+    #     pevents.extend(get_personal_zp_event_all(client))
 
+    # respevents = list(set(pevents))
     resevents = list(set(events))
 
+    # print(pevents)
+    # print(respevents)
 
     for event in resevents:
         info.append(get_event_info(event))
+
+    # for event in respevents:
+    #     info.append(get_event_info(event))
+
 
 
 
@@ -247,6 +268,7 @@ def ajax3(clientid, eventid, status):
     # 2 - st_no
     # 3 - st_proof
     # 4 - st_notready
+    # 5- выполняется, перевод на st_no
 
     if status == 1:
         change_status_event(client,event,st_ok())
@@ -262,6 +284,10 @@ def ajax3(clientid, eventid, status):
     if status == 4:
         change_status_event(client,event,st_notready())
         return jsonify({"newstatus": st_notready()})
+
+    if status == 5:
+        change_status_event(client,event,st_no())
+        return jsonify({"newstatus": st_no()})
 
     return jsonify("error")
 
@@ -323,7 +349,7 @@ def ajax6(clientid, eventid, status):
 
     return jsonify("error")
 
-# удаление персонального события
+# добавление персонального события
 @app.route('/ajax/addpevent/', methods = ['POST'])
 @cross_origin()
 def ajax7():
@@ -336,9 +362,9 @@ def ajax7():
 
     addPersonalEvent(client,nameevent,date)
 
-
-
     return jsonify("error")
+
+
 
 
 @app.route('/ajax/getinfoinn/')
@@ -350,6 +376,24 @@ def ajax8():
 
     result = get_info_on_inn(inn)
     return result
+
+
+# добавление события по заплате
+@app.route('/ajax/addzpevent/', methods = ['POST'])
+@cross_origin()
+def ajax9():
+    info = json.loads(str(request.data, encoding='utf-8'))
+
+    for i in info:
+        clientid = i['client_id']
+        data = i['data']
+        name = i['name']
+        shortname = i['shortname']
+
+        client = get_client(clientid)
+
+        addzpEvent(client,name,shortname,data)
+    return jsonify({'status_add':'ok'})
 
 
 

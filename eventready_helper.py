@@ -43,6 +43,7 @@ def del_eventready(client):
 
 # меняет статус события
 def change_status_event(client, event, status):
+    # print(f"client - {client.client_name}, event - {event.event_name}, status - {status}")
     ready = get_ready(client)
 
     if ready:
@@ -50,6 +51,7 @@ def change_status_event(client, event, status):
             if r.event == event:
                 r.status = status
                 db.session.commit()
+                return
             else: add_eventready(client,event,status)
 
     else: add_eventready(client,event, st_no())

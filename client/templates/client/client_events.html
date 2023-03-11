@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title_bread %}События клиента{% endblock %}
+{% block linkname_bread %}{{client.client_name}}{% endblock %}
+
+{% block content %}
+<span class="clientid" style = "display: none;">{{client.id}}</span>
+<div class = "place"></div>
+
+
+<script src = "{{url_for('static',filename = '/js/client_events.js')}}"></script>
+{% endblock %}>

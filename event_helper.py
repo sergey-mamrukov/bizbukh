@@ -1,4 +1,4 @@
-from models import db, Event
+from models import db, Event, PersonalEvent
 
 
 # получить событие по id
@@ -7,37 +7,10 @@ def get_event(id):
 
 # получить все события
 def get_all_event():
-    return Event.query.order_by(Event.id).all()
+    result = Event.query.all()
+    print(result)
+    return result
 
-
-# получить события по ОПФ
-def get_event_for_opf(opf):
-    events = []
-    for event in get_all_event():
-        if opf in event.opf:
-            events.append(event)
-
-    return events
-
-
-# получить событие по налогу
-def get_event_for_nalog(nalog):
-    events = []
-    for event in get_all_event():
-        if nalog in event.nalog:
-            events.append(event)
-    return events
-
-# получить событие по списку тэгов
-def get_event_for_tags(tags):
-    events = []
-    if tags:
-        allevent = get_all_event()
-        for tag in tags:
-            for event in allevent:
-                if tag in event.tag:
-                    events.append(event)
-    return events
 
 
 # получить события на определенную дату

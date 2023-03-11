@@ -1,8 +1,7 @@
 const urlajax = `http://127.0.0.1:5000`;
 let d = new Date()
 let y = d.getFullYear();
-// let m = d.getMonth();
-let m =1;
+let m = d.getMonth();
 /// берем сегодняшнюю дату
 
 let allevents = []
@@ -117,7 +116,7 @@ async function drawevents() {
     console.log(`info ${info}`)
     if (info.length == 0){console.log(info.length)}
 
-    eventrow.innerHTML = `<td style = "min-width:170px;" class = " "> </td>`;//вывод названия месяца в первой ячейке таблицы
+    eventrow.innerHTML = `<td style = "min-width:170px;" class = " "> </td>`;//вывод первой ячейки таблицы
 
 
 
@@ -135,7 +134,7 @@ async function drawevents() {
                 eventrow.innerHTML += `
                 <td  style = "min-width:150px; height:80px;" class = "border p-1 text-center align-middle">
                     <div class = "row text-center  top-50">
-                        <a  class = "text-wrap" href = "${urlajax}/calendar/change/${info[item].eventid}"> ${info[item].shortname}</a>
+                        <a target="_blank" class = "text-wrap" href = "${urlajax}/calendar/change/${info[item].eventid}"> ${info[item].shortname}</a>
                     </div>
 
                     <div class = "row text-center top-50">
@@ -228,10 +227,10 @@ async function drawinfo(){
                         client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-dark-subtle text-secondary">Не выполняется</td>`;
                     }
 
-                    if(actual[a].status == "None"){
-                        client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-danger-subtle text-secondary">Не выполнено</td>`;
-                        // ${actual[a].status}
-                    }
+                    // if(actual[a].status == "None"){
+                    //     client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-danger-subtle text-secondary">Не выполнено</td>`;
+                    //     // ${actual[a].status}
+                    // }
                     
                     nullcol= false
                 }            

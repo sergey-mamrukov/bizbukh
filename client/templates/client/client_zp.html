@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title_bread %}Сформировать события по зарплате{% endblock %}
+{% block linkname_bread %}{% endblock %}
+
+{% block content %}
+<span class="clientid" style = "display: none;">{{client.id}}</span>
+<div class = "place">
+    <div class = "mb-2 settingscol">
+        <div class="card">
+            <div class="card-header">
+                <h5 class = "card-title">Плинировщик зарплаты для компании {{client.client_name}}</h5>
+            </div>
+
+            <div class="card-body card-settings">
+                <div class = "row">
+                    <div class = "col select-year"><label class="form-label">Выберите год</label></div>
+
+                    <div class = "col">
+                        <label class="form-label">День аванса</label>
+                        <input class = "form-control day-avans" placeholder = "День аванса 1-31">
+                    </div>
+
+                    <div class = "col">
+                        <label class="form-label">День зарплаты</label>
+                        <input class = "form-control day-zp" placeholder = "День зарплаты 1-31">
+                    </div>
+
+                    <div class = "col align-self-end">
+
+                        <button class = "btn btn-info" onclick = "fillday()">Заполнить везде</button>
+                    </div>
+
+                    <div class = "col align-self-end d-flex justify-content-end">
+                        <button class = "btn btn-primary" onclick = "result()">Сфомиовать задачи</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class = "tablecol">
+        <div class="card">
+            <div class="card-body">
+                <table class = "table">
+                    <thead>
+                    <tr>
+                        <th>Месяц</th>
+                        <th>Дата аванса</th>
+                        <th>Дата зарплаты</th>
+                    </tr>
+                    </thead>
+
+                    <tbody class = "table-body">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<script src = "{{url_for('static',filename = '/js/zarplata.js')}}"></script>
+
+{% endblock %}

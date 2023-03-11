@@ -1,10 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
+{% block title_bread %}Пользователь{% endblock %}
+{% block linkname_bread %} {% endblock %}
 
 {% block content %}
 
 <div class="card">
     <div class="card-header">
-        <h5 class="card-title">Редактирование пользователя</h5>
+        <h5 class="card-title">Основные данные</h5>
         <div class="card-actions">
             <a href="/user/del/{{user.id}}" class="btn btn-ghost-danger w-100">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

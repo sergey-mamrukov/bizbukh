@@ -90,6 +90,7 @@ function delloader(){
 }//удаление лоадера
 
 
+
 function addalert(){
     cardbody = document.querySelector(".card-body1");
     alert1 = document.querySelector(".alert1");
@@ -192,7 +193,7 @@ function drawdays(){
 
             //проходимся по событиям
             for(e in events){  
-                if (info[item].events[e].dataend == curdate) {
+                if (info[item].events[e].dataend == curdate && info[item].events[e].status != "Не выполняется") {
                     countevent ++;
                     if (info[item].events[e].status == "Выполнено"){
                         countready ++;
@@ -340,8 +341,11 @@ function dateFormater(date) {
     let bodymodal = document.querySelector(".modal-body");
     bodymodal.innerHTML = "";//обнуляем тело модалки
 
-    for(e in info.events){
 
+
+    
+    for(e in info.events){
+        
         if(!info.events[e].ispersonal){
             //добавляем общее событие
 
@@ -382,7 +386,7 @@ function dateFormater(date) {
             
             cardbody.innerHTML += `Действие с событием</br>`
 
-            if(info.events[e].status == "Не выполнено" || info.events[e].status == "None"){
+            if(info.events[e].status == "Не выполнено"){
                 
                 cardbody.innerHTML+=btn_ok;
 
@@ -450,7 +454,7 @@ function dateFormater(date) {
             
             cardbody.innerHTML += `Действие с событием</br>`
 
-            if(info.events[e].status == "Не выполнено" || info.events[e].status == "None"){
+            if(info.events[e].status == "Не выполнено"){
                 
                 cardbody.innerHTML+=btn_ok;
 
@@ -471,7 +475,9 @@ function dateFormater(date) {
             card.append(cardbody);
             bodymodal.append(card)
         }
-    }    
+    }  
+ 
+
 }
 
 async function changestatus(clientid, eventid, status, date){
