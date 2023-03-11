@@ -230,21 +230,25 @@ def ajax1():
 def ajax2():
 
     events = []
-    # pevents = []
+    pevents = []
     info = []
 
     clients = get_all_clients()
     for client in clients:
         events.extend(get_client_event_all(client))
 
-    # for client in clients:
-    #     pevents.extend(get_personal_zp_event_all(client))
+    for client in clients:
+        pevents.extend(get_personal_zp_event_all(client))
 
-    # respevents = list(set(pevents))
+    respevents = []
+    for zpevent in pevents:
+        pass
+
+
     resevents = list(set(events))
 
     # print(pevents)
-    # print(respevents)
+    print(respevents)
 
     for event in resevents:
         info.append(get_event_info(event))

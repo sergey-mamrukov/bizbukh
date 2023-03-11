@@ -4,7 +4,6 @@
 {% block linkname_bread %}{% endblock %}
 
 {% block content %}
-<a href="/client/{{client.id}}/zp">Сфомировать ЗП</a>
 <div class="row">
     <div class="col-lg-6 mb-2">
         <div class="card">
@@ -89,6 +88,19 @@
     </div>
 
     <div class="col-lg-6">
+        {%if current_user.possition == "admin"%}
+        <div class="card mb-2">
+            <div class="card-header">
+                <h5 class = "card-title">События организации</h5>
+            </div>
+            <div class="card-body">
+                <a class="btn btn-outline-primary" href = "/client/{{client.id}}/events">Посмотреть все события</a>
+                <a class="btn btn-outline-primary" href = "/client/{{client.id}}/zp">Сформировать зарплатные события</a>
+            </div>
+        </div>
+
+        {% endif %}
+
         <div class="card">
             <div class="card-header">
                 <h5 class = "card-title">Реквизиты организации</h5>

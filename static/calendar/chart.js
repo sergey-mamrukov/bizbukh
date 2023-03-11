@@ -100,12 +100,10 @@ place.innerHTML = card
 let cardbody = document.querySelector(".card-body1");
 
 async function drawevents() {
-    // url = `${urlajax}/ajax/getallevents`
-    // cardbody.appendChild(spinner);
     addloader();
 
     let dateinfo = document.querySelector(".caltitle");
-      dateinfo.textContent =  `${getNameMonth(m)} - ${y} года`;//вывод информации в хлебных крошках
+    dateinfo.textContent =  `${getNameMonth(m)} - ${y} года`;//вывод информации в хлебных крошках
 
     let eventrow = document.querySelector(".eventrow")
 
@@ -227,10 +225,7 @@ async function drawinfo(){
                         client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-dark-subtle text-secondary">Не выполняется</td>`;
                     }
 
-                    // if(actual[a].status == "None"){
-                    //     client_info.innerHTML += `<td style = "width:170px; height:41px;" class = "border text-center align-middle p-0 bg-danger-subtle text-secondary">Не выполнено</td>`;
-                    //     // ${actual[a].status}
-                    // }
+                 
                     
                     nullcol= false
                 }            
