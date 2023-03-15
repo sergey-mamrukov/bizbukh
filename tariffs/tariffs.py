@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template,url_for,request,flash,redirect
+from flask import Flask, Blueprint, render_template,url_for,flash,redirect
 from flask_login import current_user
 
 from tariff_helper import change_tariff, switch_tariff
