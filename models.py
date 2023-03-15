@@ -168,6 +168,11 @@ class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company_name = db.Column(db.Text())
 
+    count_user = db.Column(db.Integer())
+    count_client = db.Column(db.Integer())
+    company_status = db.Column(db.Text())
+    company_date_created = db.Column(db.Date())
+
 
 
 
@@ -188,7 +193,8 @@ class User(db.Model, UserMixin):
 
 
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
-    company = db.relationship('Company', cascade="all,delete", backref=db.backref("us-company"))
+    # company = db.relationship('Company', cascade="all,delete", backref=db.backref("us-company"))
+    company = db.relationship('Company', backref=db.backref("us-company"))
 
 
 

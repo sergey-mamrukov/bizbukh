@@ -1,6 +1,7 @@
 from models import db, Event, PersonalEvent
 
 
+
 # получить событие по id
 def get_event(id):
     return Event.query.get(id)

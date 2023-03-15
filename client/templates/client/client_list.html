@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title_bread %}Организации{% endblock %}
-{% block linkname_bread %}{% endblock %}
+{% block linkname_bread %}{{count_clients_in_company}} из {{company.count_client}}{% endblock %}
 
 {% block content %}
 
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger pl-4 " role="alert">
+    <div class="text-muted">{{ message }}</div>
+</div>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
 
 
 <div class="card">

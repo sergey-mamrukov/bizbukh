@@ -36,6 +36,7 @@ from event.event import event
 from calend.calend import calend
 from company.company import company
 from user.user import user
+from tariffs.tariffs import tariffs
 
 
 
@@ -57,7 +58,7 @@ app.register_blueprint(event, url_prefix='/event')
 app.register_blueprint(calend, url_prefix='/calendar')
 app.register_blueprint(company, url_prefix='/company')
 app.register_blueprint(user, url_prefix='/user')
-
+app.register_blueprint(tariffs, url_prefix='/tariffs')
 
 
 
@@ -97,21 +98,21 @@ def registration():
         password = request.form.get("password")
         password2 = request.form.get("password2")
 
-        if not company_name:
-            flash("Название компании должно быть заполнено")
-        elif not name:
-            flash("Поле фамилия должно быть заполнено!")
-        elif not surname:
-            flash("Поле фамилия должно быть заполено")
-        elif not login:
-            flash("Некорректный email")
-        elif not (password2 == password and len(password) >= 8):
-            flash("Пароль должен быть не менее 8 символов! Пароли должны совпадать!")
-        else:
-            possition = 'admin'
-            company = addCompany(company_name)
-            addUser(login, password, company, possition, name, surname)
-            return redirect(url_for("login"))
+        # if not company_name:
+        #     flash("Название компании должно быть заполнено")
+        # elif not name:
+        #     flash("Поле фамилия должно быть заполнено!")
+        # elif not surname:
+        #     flash("Поле фамилия должно быть заполено")
+        # elif not login:
+        #     flash("Некорректный email")
+        # elif not (password2 == password and len(password) >= 8):
+        #     flash("Пароль должен быть не менее 8 символов! Пароли должны совпадать!")
+        # else:
+        possition = 'admin'
+        company = addCompany(company_name)
+        addUser(login, password, company, possition, name, surname)
+        return redirect(url_for("login"))
 
     return render_template("registration.html")
 

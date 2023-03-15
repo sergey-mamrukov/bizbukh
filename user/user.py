@@ -4,6 +4,7 @@ from flask_login import current_user
 from secrets import token_hex
 
 from user_helper import getUsersForCompany,getUser,addUser, getClientsForUser,delUser,delaccaunt,editUser,checkUser
+from tariff_helper import check_count_user
 
 user = Blueprint("user",__name__,template_folder="templates")
 
@@ -11,17 +12,24 @@ user = Blueprint("user",__name__,template_folder="templates")
 def list_user():
 
     users = getUsersForCompany(current_user.company)
-    # print(users)
+    company = current_user.company
+    count_users_in_company = len(getUsersForCompany(company))
     if current_user.possition != "admin":
         return redirect(url_for("user.list_user"))
 
-    return render_template("user/list_user.html",users=users)
+    return render_template("user/list_user.html",users=users, company=company, count_users_in_company=count_users_in_company)
 
 
 @user.route("/adduser", methods= ['POST','GET'])
 def add_user():
     if current_user.possition != "admin":
         return redirect(url_for("user.list_user"))
+
+    if not check_count_user(current_user.company):
+        flash("Ошибка добавления пользователей! Перейдите на другой тариф.")
+        return redirect(url_for("user.list_user"))
+
+
 
     if request.method == 'POST':
 
@@ -33,8 +41,6 @@ def add_user():
 
         company = current_user.company
         possition = 'user'
-
-
 
 
         if not login:

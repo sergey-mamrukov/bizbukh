@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, render_template, redirect, request,abort
+from flask import Blueprint, url_for, render_template, redirect, request,abort, flash
 
 from client_helper import addClient, editClient, delClient, get_all_clients, get_client
 from opf_helper import get_all_opf, get_opf
@@ -10,7 +10,9 @@ from client_events import get_client_event_all,get_client_event_ready, get_clien
 from eventready_helper import change_status_event
 from eventstatus_helper import st_ok,st_proof,st_notready, st_no
 from flask_login import current_user
-from user_helper import getUsersForCompany
+from client_helper import getClientsForCompany
+from user_helper import  getUsersForCompany
+from tariff_helper import check_count_client
 
 
 
@@ -23,8 +25,11 @@ def clientlist():
     if current_user.is_anonymous:
         return redirect(url_for("login"))
 
+    company = current_user.company
+    count_clients_in_company = len(getClientsForCompany(company))
+
     clients = get_all_clients()
-    return render_template("client/client_list.html",clients = clients)
+    return render_template("client/client_list.html",clients = clients, count_clients_in_company = count_clients_in_company, company=company)
 
 @client.route('/<int:clientid>/zp')
 def clientzp(clientid):
@@ -91,6 +96,10 @@ def clientevents(clientid):
 def addclient():
     if current_user.is_anonymous:
         return redirect(url_for("login"))
+
+    if not check_count_client(current_user.company):
+        flash("Ошибка добавления организации! Перейдите на другой тариф.")
+        return redirect(url_for("client.clientlist"))
 
     # формируем списки с параметрами
     tags = get_all_tag()

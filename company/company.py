@@ -1,5 +1,5 @@
 from flask import Flask,render_template,url_for, Blueprint
-from company_helper import getClientsForCompany
+from client_helper import getClientsForCompany
 
 from flask_login import current_user
 

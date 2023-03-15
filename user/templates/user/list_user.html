@@ -1,10 +1,22 @@
 {% extends 'base.html' %}
 
 {% block title_bread %}Пользователи{% endblock %}
-{% block linkname_bread %}{% endblock %}
+{% block linkname_bread %}{{count_users_in_company}} из {{company.count_user}}{% endblock %}
 
 
 {% block content %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger pl-4 " role="alert">
+    <div class="text-muted">{{ message }}</div>
+</div>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+
 <div class="card">
     <div class="card-header">
         <h5 class="card-title">Список пользователей</h5>
@@ -21,15 +33,15 @@
     <div class="card-body">
         <div class="row row-cards">
             {%for user in users%}
-                {%if user.possition == 'admin'%}
-                <div class="col-md-6 col-lg-3">
-                    <div class="card card-inactive">
-                        <div class="card-body p-4 text-center">
-                            <span class="avatar avatar-xl mb-3 rounded" style="background-image: url('{{url_for('static', filename = 'avatar.png')}}')"></span>
-                            <h3 class="m-0 mb-1"><a href="/user/{{user.id}}">{{user.name}} {{user.surname}}</a></h3>
-                            <div class="text-muted">Администратор</div>
-                        </div>
-                         <div class="d-flex card-inactive">
+            {%if user.possition == 'admin'%}
+            <div class="col-md-6 col-lg-3">
+                <div class="card card-inactive">
+                    <div class="card-body p-4 text-center">
+                        <span class="avatar avatar-xl mb-3 rounded" style="background-image: url('{{url_for('static', filename = 'avatar.png')}}')"></span>
+                        <h3 class="m-0 mb-1"><a href="/user/{{user.id}}">{{user.name}} {{user.surname}}</a></h3>
+                        <div class="text-muted">Администратор</div>
+                    </div>
+                    <div class="d-flex card-inactive">
                         <a href="" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -46,19 +58,19 @@
                             Изменить</a>
 
                     </div>
-                    </div>
                 </div>
-                {%endif%}
+            </div>
+            {%endif%}
 
-                {%if not current_user == user%}
-                <div class="col-md-6 col-lg-3">
-                    <div class="card">
-                        <div class="card-body p-4 text-center">
-                            <span class="avatar avatar-xl mb-3 rounded" style="background-image: url('{{url_for('static', filename = 'avatar.png')}}')"></span>
-                            <h3 class="m-0 mb-1"><a href="/user/{{user.id}}">{{user.name}} {{user.surname}}</a></h3>
-                            <div class="text-muted">Бухгалтер</div>
-                        </div>
-                         <div class="d-flex">
+            {%if not current_user == user%}
+            <div class="col-md-6 col-lg-3">
+                <div class="card">
+                    <div class="card-body p-4 text-center">
+                        <span class="avatar avatar-xl mb-3 rounded" style="background-image: url('{{url_for('static', filename = 'avatar.png')}}')"></span>
+                        <h3 class="m-0 mb-1"><a href="/user/{{user.id}}">{{user.name}} {{user.surname}}</a></h3>
+                        <div class="text-muted">Бухгалтер</div>
+                    </div>
+                    <div class="d-flex">
                         <a href="/user/{{user.id}}" class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/mail -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -75,10 +87,11 @@
                             Изменить</a>
 
                     </div>
-                    </div>
                 </div>
-                {%endif%}
+            </div>
+            {%endif%}
             {%endfor%}
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}

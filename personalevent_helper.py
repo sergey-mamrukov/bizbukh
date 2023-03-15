@@ -77,3 +77,10 @@ def changestatusPersonalEvent(pevent,status):
 def delPersonalEvent(pevent):
     db.session.delete(pevent)
     db.session.commit()
+
+
+# удалить персональное событие
+def delPersonalEventAll_client(client):
+    events = get_personal_event_all(client)
+    for event in events:
+        delPersonalEvent(event)

@@ -1,6 +1,7 @@
 from models import db, Client
 from eventready_helper import del_eventready
 from flask_login import current_user
+from personalevent_helper import delPersonalEventAll_client
 
 
 # add new client
@@ -101,6 +102,8 @@ def delClient(client):
       # client.user[:] = []
       # db.session.commit()
 
+      delPersonalEventAll_client(client)
+
       db.session.delete(client)
       db.session.commit()
 
@@ -153,3 +156,9 @@ def get_client_for_tags(tags):
 # def getClentsForCompany(company):
 #     clients = get_all_clients()
 #     return clients
+
+
+
+def getClientsForCompany(company):
+    clients = Client.query.filter(Client.company == company).all()
+    return clients
